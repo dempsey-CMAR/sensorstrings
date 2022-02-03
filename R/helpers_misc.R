@@ -63,3 +63,112 @@ convert_timestamp_to_datetime <- function(sensor.data){
 
   sensor.data
 }
+
+
+
+#' Extract HOBO serial number from the data file
+#'
+#' @param hobo_colnames Column names of the HOBO file, as imported by
+#'   \code{ss_read_hobo_data}.
+#'
+#' @return Returns a character string of the HOBO serial number.
+#' @export
+#'
+
+extract_hobo_sn <- function(hobo_colnames){
+
+  SN <- hobo_colnames %>%
+
+
+    str_match(hobo_colnames, pattern = "Temp")
+
+
+    t() %>%
+    data.frame() %>%
+    select(X3) %>%
+    separate(col = "X3", into = c("VAR", "LOGGER_SN", "SENSOR_SN"), sep = ", ")
+
+  LOGGER_SN <- SN %>%
+    select(LOGGER_SN) %>%
+    separate(LOGGER_SN, into = c(NA, "LOGGER_SN"), sep = ": ")
+
+  SENSOR_SN <- SN %>%
+    select(SENSOR_SN) %>%
+    separate(SENSOR_SN, into = c(NA, "SENSOR_SN"), sep = ": ")
+  SENSOR_SN$SENSOR_SN <-str_remove(SENSOR_SN$SENSOR_SN, pattern = "\\)")
+
+  if(LOGGER_SN$LOGGER_SN == SENSOR_SN$SENSOR_SN) {
+
+    SENSOR_SN$SENSOR_SN
+
+  } else {
+
+    stop(
+      glue(
+        "In HOBO file LOGR S/N ({LOGGER_SN$LOGGER_SN}) does not match SEN S/N ({SENSOR_SN$SENSOR_SN})"
+      )
+    )
+
+  }
+
+}
+
+
+#' Extract measurement time zone from the data file
+#'
+#' @param hobo_colnames Column names of the HOBO file, as imported by
+#'   \code{ss_read_hobo_data}.
+#'
+#' @return Returns a character string of the HOBO serial number.
+#' @export
+#'
+
+extract_hobo_tz <- function(hobo_colnames){
+
+  TZ_i <- colnames(hobo_i) %>%
+    t() %>%
+    data.frame() %>%
+    select(X2) %>%
+    separate(col = "X2", into = c(NA, "TIMEZONE"), sep = ", ")
+
+
+}
+
+
+
+# extract_deployment_dates() ----------------------------------------------
+
+# function to convert deployment and retrieval dates to datetimes
+# option to trim data to these dates in the compile_xx_data() functions
+
+# deployment.dates is a dataframe with two columns: start.date and end.date
+# there should be one observation in each column
+# each observation must be a Date object
+
+# returns a dataframe with 1 observation in two columns: start_date and end_date
+# start_date holds a datetime for the start of the deployment (with time of 00:00:00)
+# end_date holds a datetime for the end of the deployment (with time of 23:59:59)
+
+
+#'@importFrom tidyr separate
+#'@importFrom lubridate as_datetime
+
+extract_deployment_dates <- function(deployment_dates){
+
+  # name deployment.dates
+  names(deployment_dates) <- c("start_date", "end_date")
+
+  # paste date and time and convert to a datetime object
+  start_date <- as_datetime(paste(deployment_dates$start_date, "00:00:00"))
+  end_date <- as_datetime(paste(deployment_dates$end_date, "23:59:59"))
+
+  # return start and end datetimes
+  data.frame(start = start_date, end = end_date)
+}
+
+
+
+
+
+
+
