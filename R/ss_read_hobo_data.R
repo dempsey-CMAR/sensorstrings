@@ -1,13 +1,8 @@
 #' @title Import data from HOBO and TidbiT sensors
 #'
-#' @details The HOBO and TidBiT data must be saved in a folder named Hobo in
-#'   .csv or .xlsx format.
+#' @details
 #'
-#'   The same data imported from .csv and .xlsx will have a string mismatch in
-#'   the Names attribute. The degree symbol in the temperature column is
-#'   replaced by "A" when read from a .csv file.
-#'
-#' @param path File path to the HOBO folder.
+#' @param path File path to the hobo file.
 #'
 #' @param file_name Name of the file to import, including file extension.
 #'
@@ -29,7 +24,7 @@
 ss_read_hobo_data <- function(path, file_name){
 
   # finish path
-  path <- file.path(str_glue("{path}/Hobo/{file_name}"))
+  path <- file.path(str_glue("{path}/{file_name}"))
 
   # extract the file extension
   file_type <- extract_file_extension(file_name)
