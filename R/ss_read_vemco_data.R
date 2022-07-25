@@ -26,7 +26,7 @@
 #' @export
 
 
-ss_read_vemco_data <- function(path, file_name){
+ss_read_vemco_data <- function(path, file_name) {
 
   # finish path
   path <- file.path(str_glue("{path}/Vemco/{file_name}"))
@@ -35,25 +35,20 @@ ss_read_vemco_data <- function(path, file_name){
   file_type <- extract_file_extension(file_name)
 
   # use appropriate function to import data
-  if(file_type == "csv") {
-
+  if (file_type == "csv") {
     dat <- data.table::fread(
-      path, header = TRUE, data.table = FALSE, na.strings = ""
+      path,
+      header = TRUE, data.table = FALSE, na.strings = ""
     ) %>%
       as_tibble()
-
   }
 
-  if(file_type == "xlsx") {
-
+  if (file_type == "xlsx") {
     dat <- read_excel(path, col_names = TRUE)
-
   }
 
 
-# Export -----------------------------------------------------
+  # Export -----------------------------------------------------
 
   dat
-
 }
-

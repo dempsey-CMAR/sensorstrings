@@ -13,6 +13,5 @@ utils::globalVariables(
     "ROW",
     "TIMESTAMP",
     "Timestamp(UTC)"
-
   )
 )

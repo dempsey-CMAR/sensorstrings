@@ -30,29 +30,26 @@
 # Otherwise the date should be a character string that can be converted to POSIXct using
 ## lubridate::parse_date_time()
 
-convert_timestamp_to_datetime <- function(sensor.data){
-
-  date_format <- sensor.data$TIMESTAMP[1]  # first datetime value; use to check the format
+convert_timestamp_to_datetime <- function(sensor.data) {
+  date_format <- sensor.data$TIMESTAMP[1] # first datetime value; use to check the format
 
   # if saved as a number in Excel
-  if(!is.na(suppressWarnings(as.numeric(date_format)))) {
-
+  if (!is.na(suppressWarnings(as.numeric(date_format)))) {
     sensor.data <- sensor.data %>%
       mutate(TIMESTAMP = janitor::convert_to_datetime(as.numeric(TIMESTAMP)))
-
-  } else{
+  } else {
 
     # if saved as a character string in Excel
-    parse.orders <- c("ymd IMS p", "Ymd IMS p",
-                      "Ymd HM", "Ymd HMS",
-                      "dmY HM", "dmY HMS",
-                      "dmY IM p", "dmY IMS p")
+    parse.orders <- c(
+      "ymd IMS p", "Ymd IMS p",
+      "Ymd HM", "Ymd HMS",
+      "dmY HM", "dmY HMS",
+      "dmY IM p", "dmY IMS p"
+    )
 
-    if(!is.na(suppressWarnings(parse_date_time(date_format, orders = parse.orders)))){
-
+    if (!is.na(suppressWarnings(parse_date_time(date_format, orders = parse.orders)))) {
       sensor.data <- sensor.data %>%
         mutate(TIMESTAMP = lubridate::parse_date_time(TIMESTAMP, orders = parse.orders))
-
     } else {
 
       # Error message if the date format is incorrect
@@ -75,33 +72,28 @@ convert_timestamp_to_datetime <- function(sensor.data){
 #' @export
 #'
 
-extract_hobo_sn <- function(hobo_colnames){
-
+extract_hobo_sn <- function(hobo_colnames) {
   SN <- hobo_colnames[str_detect(hobo_colnames, pattern = "Temp")]
   SN <- str_split(SN, pattern = ", ")
 
   LOGGER_SN <- str_split(SN[[1]][2], pattern = ": ")
   LOGGER_SN <- LOGGER_SN[[1]][2]
 
-  SENSOR_SN <-  str_split(SN[[1]][3], pattern = ": ")
+  SENSOR_SN <- str_split(SN[[1]][3], pattern = ": ")
   SENSOR_SN <- str_remove(SENSOR_SN[[1]][2], pattern = "\\)")
 
-  if(LOGGER_SN == SENSOR_SN) {
-
+  if (LOGGER_SN == SENSOR_SN) {
     SENSOR_SN
-
   } else {
 
 
-    #check this
+    # check this
     stop(
       glue(
         "In HOBO file LOGR S/N ({LOGGER_SN$LOGGER_SN}) does not match SEN S/N ({SENSOR_SN$SENSOR_SN})"
       )
     )
-
   }
-
 }
 
 
@@ -114,19 +106,15 @@ extract_hobo_sn <- function(hobo_colnames){
 #' @export
 #'
 
-extract_hobo_tz <- function(hobo_colnames){
-
+extract_hobo_tz <- function(hobo_colnames) {
   TZ <- hobo_colnames[str_detect(hobo_colnames, pattern = "Date")]
   TZ <- str_split(TZ, pattern = ", ")
 
   TZ <- TZ[[1]][2]
 
-  if(TZ == "GMT+00:00") {
-
+  if (TZ == "GMT+00:00") {
     TZ
-
   } else {
-
     TZ
 
     warning(glue("Timezone of HOBO file is {TZ}"))
@@ -149,10 +137,10 @@ extract_hobo_tz <- function(hobo_colnames){
 # end_date holds a datetime for the end of the deployment (with time of 23:59:59)
 
 
-#'@importFrom tidyr separate
-#'@importFrom lubridate as_datetime
+#' @importFrom tidyr separate
+#' @importFrom lubridate as_datetime
 
-extract_deployment_dates <- function(deployment_dates){
+extract_deployment_dates <- function(deployment_dates) {
 
   # name deployment.dates
   names(deployment_dates) <- c("start_date", "end_date")
@@ -164,10 +152,3 @@ extract_deployment_dates <- function(deployment_dates){
   # return start and end datetimes
   data.frame(start = start_date, end = end_date)
 }
-
-
-
-
-
-
-

@@ -30,7 +30,7 @@
 #' @export
 
 
-ss_read_aquameasure_data <- function(path, file_name, force_POSIXct = TRUE){
+ss_read_aquameasure_data <- function(path, file_name, force_POSIXct = TRUE) {
 
   # finish path
   path <- file.path(str_glue("{path}/aquaMeasure/{file_name}"))
@@ -39,19 +39,17 @@ ss_read_aquameasure_data <- function(path, file_name, force_POSIXct = TRUE){
   file_type <- extract_file_extension(file_name)
 
   # csv file ----------------------------------------------------------------
-  if(file_type == "csv"){
-
+  if (file_type == "csv") {
     dat <- data.table::fread(
-      path, header = TRUE, data.table = FALSE, na.strings = ""
+      path,
+      header = TRUE, data.table = FALSE, na.strings = ""
     ) %>%
       as_tibble()
-
   }
 
-# xlsx file --------------------------------------------------------------
+  # xlsx file --------------------------------------------------------------
 
-  if(file_type == "xlsx") {
-
+  if (file_type == "xlsx") {
     dat <- read_excel(path, col_names = TRUE) %>%
       mutate(
         ROW = 1:n(),
@@ -67,20 +65,18 @@ ss_read_aquameasure_data <- function(path, file_name, force_POSIXct = TRUE){
       filter(!INDEX) %>%
       mutate(
         `Timestamp(UTC)` = janitor::convert_to_datetime(as.numeric(`Timestamp(UTC)`)),
-        `Timestamp(UTC)`= as.character(`Timestamp(UTC)`)
+        `Timestamp(UTC)` = as.character(`Timestamp(UTC)`)
       )
 
     # bind back togther
     dat <- rbind(dat_char, dat_date) %>%
       arrange(ROW) %>%
       select(-ROW, -INDEX)
-
   }
 
-# Export -----------------------------------------------------
+  # Export -----------------------------------------------------
 
-  if(isTRUE(force_POSIXct)) {
-
+  if (isTRUE(force_POSIXct)) {
     dat <- dat %>%
       mutate(
         `Timestamp(UTC)` = suppressWarnings(
@@ -89,6 +85,4 @@ ss_read_aquameasure_data <- function(path, file_name, force_POSIXct = TRUE){
       )
   }
   dat
-
 }
-
