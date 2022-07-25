@@ -4,20 +4,20 @@
 #'  separator.
 #'
 #' @param file_name Character string of a file name. Must only include one ".",
-#'  which is used as the seprator.
+#'  which is used as the separator.
 #'
 #' @export
 #'
 #' @importFrom tidyr separate
 
-extract_file_extension <- function(file_name){
-
-  extension <- file_name %>%
-    data.frame() %>%
-    separate(col = 1, into = c(NA, "EXT"), sep = "\\.")
-
-  extension$EXT
-}
+# extract_file_extension <- function(file_name){
+#
+#   extension <- file_name %>%
+#     data.frame() %>%
+#     separate(col = 1, into = c(NA, "EXT"), sep = "\\.")
+#
+#   extension$EXT
+# }
 
 # convert_timestamp_to_datetime() -----------------------------------------
 
@@ -77,32 +77,23 @@ convert_timestamp_to_datetime <- function(sensor.data){
 
 extract_hobo_sn <- function(hobo_colnames){
 
-  SN <- hobo_colnames %>%
+  SN <- hobo_colnames[str_detect(hobo_colnames, pattern = "Temp")]
+  SN <- str_split(SN, pattern = ", ")
 
+  LOGGER_SN <- str_split(SN[[1]][2], pattern = ": ")
+  LOGGER_SN <- LOGGER_SN[[1]][2]
 
-    str_match(hobo_colnames, pattern = "Temp")
+  SENSOR_SN <-  str_split(SN[[1]][3], pattern = ": ")
+  SENSOR_SN <- str_remove(SENSOR_SN[[1]][2], pattern = "\\)")
 
+  if(LOGGER_SN == SENSOR_SN) {
 
-    t() %>%
-    data.frame() %>%
-    select(X3) %>%
-    separate(col = "X3", into = c("VAR", "LOGGER_SN", "SENSOR_SN"), sep = ", ")
-
-  LOGGER_SN <- SN %>%
-    select(LOGGER_SN) %>%
-    separate(LOGGER_SN, into = c(NA, "LOGGER_SN"), sep = ": ")
-
-  SENSOR_SN <- SN %>%
-    select(SENSOR_SN) %>%
-    separate(SENSOR_SN, into = c(NA, "SENSOR_SN"), sep = ": ")
-  SENSOR_SN$SENSOR_SN <-str_remove(SENSOR_SN$SENSOR_SN, pattern = "\\)")
-
-  if(LOGGER_SN$LOGGER_SN == SENSOR_SN$SENSOR_SN) {
-
-    SENSOR_SN$SENSOR_SN
+    SENSOR_SN
 
   } else {
 
+
+    #check this
     stop(
       glue(
         "In HOBO file LOGR S/N ({LOGGER_SN$LOGGER_SN}) does not match SEN S/N ({SENSOR_SN$SENSOR_SN})"
@@ -125,13 +116,21 @@ extract_hobo_sn <- function(hobo_colnames){
 
 extract_hobo_tz <- function(hobo_colnames){
 
-  TZ_i <- colnames(hobo_i) %>%
-    t() %>%
-    data.frame() %>%
-    select(X2) %>%
-    separate(col = "X2", into = c(NA, "TIMEZONE"), sep = ", ")
+  TZ <- hobo_colnames[str_detect(hobo_colnames, pattern = "Date")]
+  TZ <- str_split(TZ, pattern = ", ")
 
+  TZ <- TZ[[1]][2]
 
+  if(TZ == "GMT+00:00") {
+
+    TZ
+
+  } else {
+
+    TZ
+
+    warning(glue("Timezone of HOBO file is {TZ}"))
+  }
 }
 
 
