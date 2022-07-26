@@ -56,9 +56,10 @@ ss_compile_hobo_data <- function(path,
                                  DO_correction = FALSE,
                                  Sal = NULL,
                                  method = "garcia-gordon") {
-  names(sn_table) <- c("SENSOR", "DEPTH")
-  sn_table <- sn_table %>%
-    separate(col = SENSOR, into = c(NA, "SERIAL"), remove = FALSE)
+
+  names(sn_table) <- c("sensor", "serial", "depth")
+  # sn_table <- sn_table %>%
+  #   separate(col = SENSOR, into = c(NA, "SERIAL"), remove = FALSE)
 
   # extract the deployment start and end dates from deployment_dates
   dates <- extract_deployment_dates(deployment_dates)
@@ -118,16 +119,26 @@ ss_compile_hobo_data <- function(path,
     }
 
 
+    # use serial number to identify the variable and depth (from sn_table)
+    sensor_info_i <- dplyr::filter(sn_table, serial == sn_i)
+
+    depth <- sensor_info.i$DEPTH
+    sensor.i <- sensor_info.i$SENSOR
 
 
 
 
 
-    # use serial number to identify the variable and depth (from serial.table)
-    depth_i <- sn_table %>%
-      dplyr::filter(SERIAL == sn_i) %>%
-      select(DEPTH)
-    depth_i <- depth_i$DEPTH
+
+#
+#
+#
+#
+#     # use serial number to identify the variable and depth (from serial.table)
+#     depth_i <- sn_table %>%
+#       dplyr::filter(SERIAL == sn_i) %>%
+#       select(DEPTH)
+#     depth_i <- depth_i$DEPTH
 
     # sensor type and serial number
     # sensor_i <- paste(serial.table.HOBO$SENSOR[i], serial.table.HOBO$SERIAL[i], sep = "-")
