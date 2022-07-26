@@ -1,7 +1,5 @@
 #' @title Import data from HOBO and TidbiT sensors
 #'
-#' @details
-#'
 #' @param path File path to the hobo file.
 #'
 #' @param file_name Name of the file to import, including file extension.
