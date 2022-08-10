@@ -111,7 +111,13 @@ ss_extract_hobo_units <- function(hobo_dat) {
       units = str_replace(units, pattern = "GMT", replacement = "utc"),
       units = str_remove(units, pattern = "\\+00:00"),
       units = str_replace(units, pattern = "mg/L", replacement = "mg_per_L"),
-      units = str_replace(units, pattern = "Â°C", replacement = "degree_C")
+      units = str_replace(units, pattern = "°C", replacement = "degree_C")
+      #units = str_replace(units, pattern = "A0194°C", replacement = "degree_C")
+      #units = str_replace(units, pattern = "A0194°C", replacement = "degree_C")
+      #units = str_replace(units, pattern = "A+0194°C", replacement = "degree_C")
+      #units = str_replace(units, pattern = "\\?°C", replacement = "degree_C")
+      #units = str_replace(units, pattern = "Â°C", replacement = "degree_C")
+      #units = str_replace(units, pattern = "[:alpha:]°C", replacement = "degree_C")
     )
 
 }
@@ -121,7 +127,7 @@ ss_extract_hobo_units <- function(hobo_dat) {
 
 #' temporary title
 #'
-#' @param unit_table column variable and unts
+#' @param unit_table column variable and units
 #'
 #' @return dataframe with col names
 #' @export

@@ -22,7 +22,7 @@ ss_read_hobo_data <- function(path, file_name) {
 
   # read in data
   # start with row that includes the "Date" header
-  data.table::fread(path, skip = "Date")
+  data.table::fread(path, skip = "Date", encoding =  "UTF-8")
 
 }
 
@@ -63,7 +63,6 @@ ss_read_hobo_data <- function(path, file_name) {
 #'   after 20:00 AST, which is 00:00 UTC the next day.) Default is /code{trim =
 #'   TRUE}.
 #'
-#'
 #' @param DO_correction Logical value. If /code{TRUE}, dissolved oxygen will be
 #'   corrected for salinity (argument /code{Sal} must be specified).
 #'
@@ -96,8 +95,8 @@ ss_compile_hobo_data <- function(path,
                                  method = "garcia-gordon") {
 
   names(sn_table) <- c("sensor", "serial", "depth")
-   sn_table <- sn_table %>%
-     mutate(sensor_serial = glue("{sensor}-{serial}"))
+  sn_table <- sn_table %>%
+    mutate(sensor_serial = glue("{sensor}-{serial}"))
 
   # extract the deployment start and end dates from deployment_dates
   dates <- extract_deployment_dates(deployment_dates)
@@ -120,7 +119,7 @@ ss_compile_hobo_data <- function(path,
   dat_files <- list.files(path, all.files = FALSE, pattern = "*csv")
 
 
-# check that dat_files seems ok -----------------------------------------------------
+  # check for surprises in dat_files -----------------------------------------------------
 
   if (length(dat_files) == 0) {
 
@@ -157,7 +156,7 @@ ss_compile_hobo_data <- function(path,
 
     # sn and timezone checks --------------------------------------------------
 
-    # is the file named correctly? Compare the file name to the serial number exracted from the file
+    # is the file named correctly? Compare the file name to the serial number extracted from the file
     file_name <- str_remove(file_name, ".csv")
     sn_i <- extract_hobo_sn(colnames(hobo_i))
 
@@ -184,19 +183,19 @@ ss_compile_hobo_data <- function(path,
     # put sensor info in after
 
 
-    hobo_i2 <- hobo_i %>%
+    hobo_i <- hobo_i %>%
       select(contains("Date Time"), contains("DO conc"), contains("Temp")) %>%
       rename(timestamp_ = 1) %>%
       convert_timestamp_to_datetime()
 
-    colnames(hobo_i2) <- new_col_names$col_name
+    colnames(hobo_i) <- new_col_names$col_name
 
     # add other useful columns and re-order ------------------------------------------------
 
     # use serial number to identify the variable and depth (from sn_table)
     sensor_info_i <- dplyr::filter(sn_table, serial == sn_i)
 
-    hobo_i2 <- hobo_i2 %>%
+    hobo_i2 <- hobo_i %>%
       mutate(
         deployment_range = paste(
           format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
@@ -242,7 +241,7 @@ ss_compile_hobo_data <- function(path,
     #     # dplyr::rename(`Dissolved Oxygen` = DO_corrected)
     # }
 
-   # vars.to.select <- colnames(hobo.i)[-1]
+    # vars.to.select <- colnames(hobo.i)[-1]
 
 
     # Format data -------------------------------------------------------------
