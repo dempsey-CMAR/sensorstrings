@@ -8,10 +8,17 @@
 
 utils::globalVariables(
   c(
-    # ss_read_aquameasure_data
-    "INDEX",
-    "ROW",
-    "TIMESTAMP",
-    "Timestamp(UTC)"
+    # ss_compile_hobo_data
+    "variable",
+    "serial",
+    "sensor",
+    "depth",
+    "timestamp_",
+    "HOBO_dat",
+    "deployment_range",
+
+    # make_column_names
+    "col_name"
+
   )
 )

@@ -10,8 +10,10 @@ License: GPL-3
 Imports: 
     data.table,
     dplyr,
+    glue,
     janitor,
     lubridate,
+    purrr,
     readxl,
     stringr,
     tidyr
@@ -20,4 +22,4 @@ Suggests:
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1

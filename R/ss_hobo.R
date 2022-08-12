@@ -80,7 +80,12 @@ ss_read_hobo_data <- function(path, file_name) {
 #'
 #' @author Danielle Dempsey
 #'
-#'
+#' @importFrom dplyr %>% contains filter mutate rename select
+#' @importFrom glue glue
+#' @importFrom lubridate hours
+#' @importFrom purrr map_df
+#' @importFrom stats na.omit
+#' @importFrom stringr regex str_extract str_remove
 #'
 #' @export
 
@@ -91,8 +96,7 @@ ss_compile_hobo_data <- function(path,
                                  deployment_dates,
                                  trim = TRUE,
                                  DO_correction = FALSE,
-                                 Sal = NULL,
-                                 method = "garcia-gordon") {
+                                 Sal = NULL) {
 
   names(sn_table) <- c("sensor", "serial", "depth")
   sn_table <- sn_table %>%

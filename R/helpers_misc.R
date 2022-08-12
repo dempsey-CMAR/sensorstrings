@@ -1,24 +1,3 @@
-#' @title Extracts the extension of a file name
-#'
-#' @details Extracts the file exension from a character string using //. as the
-#'  separator.
-#'
-#' @param file_name Character string of a file name. Must only include one ".",
-#'  which is used as the separator.
-#'
-#' @export
-#'
-#' @importFrom tidyr separate
-
-# extract_file_extension <- function(file_name){
-#
-#   extension <- file_name %>%
-#     data.frame() %>%
-#     separate(col = 1, into = c(NA, "EXT"), sep = "\\.")
-#
-#   extension$EXT
-# }
-
 # convert_timestamp_to_datetime() -----------------------------------------
 
 #' @importFrom janitor convert_to_datetime
@@ -63,6 +42,10 @@ convert_timestamp_to_datetime <- function(sensor.data) {
 #'   \code{ss_read_hobo_data}.
 #'
 #' @return Returns a character string of the HOBO serial number.
+#'
+#' @importFrom glue glue
+#' @importFrom stringr str_detect str_remove str_split
+#'
 #' @export
 #'
 
@@ -80,7 +63,6 @@ extract_hobo_sn <- function(hobo_colnames) {
     as.numeric(SENSOR_SN)
   } else {
 
-
     # check this
     stop(
       glue(
@@ -95,10 +77,13 @@ extract_hobo_sn <- function(hobo_colnames) {
 #'
 #' @param hobo_dat data as read in by \code{ss_read_hobo_data()}.
 #'
-#' @return
+#' @return placeholder
+#' @importFrom dplyr %>% contains mutate select
+#' @importFrom stringr str_replace str_remove
+#' @importFrom tidyr separate
+#'
 #' @export
 #'
-#' @examples
 ss_extract_hobo_units <- function(hobo_dat) {
 
   hobo_dat %>%
@@ -111,7 +96,10 @@ ss_extract_hobo_units <- function(hobo_dat) {
       units = str_replace(units, pattern = "GMT", replacement = "utc"),
       units = str_remove(units, pattern = "\\+00:00"),
       units = str_replace(units, pattern = "mg/L", replacement = "mg_per_L"),
-      units = str_replace(units, pattern = "°C", replacement = "degree_C")
+      units = str_replace(units, pattern = "\u00B0C", replacement = "degree_C")
+
+     #  units = str_replace(units, pattern = "\u0176", replacement = "degree_C")
+      # units = str_replace(units, pattern = "°C", replacement = "degree_C")
       #units = str_replace(units, pattern = "A0194°C", replacement = "degree_C")
       #units = str_replace(units, pattern = "A0194°C", replacement = "degree_C")
       #units = str_replace(units, pattern = "A+0194°C", replacement = "degree_C")
@@ -130,9 +118,13 @@ ss_extract_hobo_units <- function(hobo_dat) {
 #' @param unit_table column variable and units
 #'
 #' @return dataframe with col names
+#'
+#' @importFrom dplyr %>% arrange mutate
+#' @importFrom stringr str_detect str_replace
+#' @importFrom glue glue
+#'
 #' @export
 #'
-#' @examples
 ss_make_column_names <- function(unit_table) {
 
   # try to find a better way to do this
@@ -163,46 +155,6 @@ ss_make_column_names <- function(unit_table) {
 
 
 }
-
-
-#' Extract measurement time zone from the data file
-#'
-#' @param hobo_colnames Column names of the HOBO file, as imported by
-#'   \code{ss_read_hobo_data}.
-#'
-#' @return Returns a character string of the HOBO serial number.
-#' @export
-#'
-
-# extract_hobo_tz <- function(hobo_colnames) {
-#   TZ <- hobo_colnames[str_detect(hobo_colnames, pattern = "Date")]
-#   TZ <- str_split(TZ, pattern = ", ")
-#
-#   TZ <- TZ[[1]][2]
-#
-#   if (TZ == "GMT+00:00") {
-#     TZ
-#   } else {
-#     TZ
-#
-#     warning(glue("Timezone of HOBO file is {TZ}"))
-#   }
-# }
-
-
-
-# extract_deployment_dates() ----------------------------------------------
-
-# function to convert deployment and retrieval dates to datetimes
-# option to trim data to these dates in the compile_xx_data() functions
-
-# deployment.dates is a dataframe with two columns: start.date and end.date
-# there should be one observation in each column
-# each observation must be a Date object
-
-# returns a dataframe with 1 observation in two columns: start_date and end_date
-# start_date holds a datetime for the start of the deployment (with time of 00:00:00)
-# end_date holds a datetime for the end of the deployment (with time of 23:59:59)
 
 
 #' @importFrom tidyr separate
