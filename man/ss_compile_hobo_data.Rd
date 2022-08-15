@@ -9,17 +9,16 @@ ss_compile_hobo_data(
   sn_table,
   deployment_dates,
   trim = TRUE,
-  DO_correction = FALSE,
-  Sal = NULL
+  verbose = TRUE
 )
 }
 \arguments{
 \item{path}{File path to the Hobo folder.}
 
-\item{sn_table}{UPDATE THIS A table with the serial number of each HOBO and TidBiT sensor
-on the string, in the form "HOBO-xxxxxxxx" or "TidbiT-xxxxxxxx" (first
-column) and corresponding depth at which it was deployed in the form "2m"
-(second column).}
+\item{sn_table}{UPDATE THIS A table with the serial number of each HOBO and
+TidBiT sensor on the string, in the form "HOBO-xxxxxxxx" or
+"TidbiT-xxxxxxxx" (first column) and corresponding depth at which it was
+deployed in the form "2m" (second column).}
 
 \item{deployment_dates}{A dataframe with two columns. The first column holds
 the deployment date (a Date object, POSIXct object, or character string in
@@ -33,15 +32,7 @@ retrieval date to account for AST, e.g., in case the sensor was retrieved
 after 20:00 AST, which is 00:00 UTC the next day.) Default is /code{trim =
 TRUE}.}
 
-\item{DO_correction}{Logical value. If /code{TRUE}, dissolved oxygen will be
-  corrected for salinity (argument /code{Sal} must be specified).
-
-  If /code{FALSE}, no correction factor will be applied. If the sensor did
-  not record dissolved oxygen data, use the default /code{correct.DO =
-  FALSE}.}
-
-\item{Sal}{A single value of salinity (psu), used to calculate the salinity
-correction factor for dissolved oxygen.}
+\item{verbose}{Logical argument specifying whether to print all Warnings.}
 }
 \value{
 Returns a dataframe/tibble with the data compiled from each of the
@@ -50,7 +41,7 @@ Returns a dataframe/tibble with the data compiled from each of the
 \description{
 Can handle temperature and dissolved oxygen data.
 
-Need to decide if the DO data will be corrected for salinity!
+  Need to decide if the DO data will be corrected for salinity!
 
   Only works for csv files - will ignore .xls and .xlsx files without an
   error.

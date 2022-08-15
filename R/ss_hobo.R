@@ -22,7 +22,9 @@ ss_read_hobo_data <- function(path, file_name) {
 
   # read in data
   # start with row that includes the "Date" header
-  data.table::fread(path, skip = "Date", encoding =  "UTF-8")
+  # use UTF-8 coding for degree symbol
+  # return as data.frame (not data.table)
+  data.table::fread(path, skip = "Date", encoding =  "UTF-8", data.table = FALSE)
 
 }
 
@@ -33,7 +35,7 @@ ss_read_hobo_data <- function(path, file_name) {
 #'
 #' @description Can handle temperature and dissolved oxygen data.
 #'
-#' Need to decide if the DO data will be corrected for salinity!
+#'   Need to decide if the DO data will be corrected for salinity!
 #'
 #'   Only works for csv files - will ignore .xls and .xlsx files without an
 #'   error.
@@ -46,10 +48,10 @@ ss_read_hobo_data <- function(path, file_name) {
 #'
 #' @param path File path to the Hobo folder.
 #'
-#' @param sn_table UPDATE THIS A table with the serial number of each HOBO and TidBiT sensor
-#'   on the string, in the form "HOBO-xxxxxxxx" or "TidbiT-xxxxxxxx" (first
-#'   column) and corresponding depth at which it was deployed in the form "2m"
-#'   (second column).
+#' @param sn_table UPDATE THIS A table with the serial number of each HOBO and
+#'   TidBiT sensor on the string, in the form "HOBO-xxxxxxxx" or
+#'   "TidbiT-xxxxxxxx" (first column) and corresponding depth at which it was
+#'   deployed in the form "2m" (second column).
 #'
 #' @param deployment_dates A dataframe with two columns. The first column holds
 #'   the deployment date (a Date object, POSIXct object, or character string in
@@ -57,21 +59,13 @@ ss_read_hobo_data <- function(path, file_name) {
 #'   date (a Date object, POSIXct object, or character string in the order year,
 #'   month, day).
 #'
+#' @param verbose Logical argument specifying whether to print all Warnings.
+#'
 #' @param trim Logical value indicating whether to trim the data to the dates
 #'   specified in /code{deployment_dates}. (Note: four hours are added to the
 #'   retrieval date to account for AST, e.g., in case the sensor was retrieved
 #'   after 20:00 AST, which is 00:00 UTC the next day.) Default is /code{trim =
 #'   TRUE}.
-#'
-#' @param DO_correction Logical value. If /code{TRUE}, dissolved oxygen will be
-#'   corrected for salinity (argument /code{Sal} must be specified).
-#'
-#'   If /code{FALSE}, no correction factor will be applied. If the sensor did
-#'   not record dissolved oxygen data, use the default /code{correct.DO =
-#'   FALSE}.
-#'
-#' @param Sal A single value of salinity (psu), used to calculate the salinity
-#'   correction factor for dissolved oxygen.
 #'
 #' @return Returns a dataframe/tibble with the data compiled from each of the
 #'   HOBO and TidbiT sensors.
@@ -95,8 +89,7 @@ ss_compile_hobo_data <- function(path,
                                  sn_table,
                                  deployment_dates,
                                  trim = TRUE,
-                                 DO_correction = FALSE,
-                                 Sal = NULL) {
+                                 verbose = TRUE) {
 
   names(sn_table) <- c("sensor", "serial", "depth")
   sn_table <- sn_table %>%
@@ -138,7 +131,7 @@ ss_compile_hobo_data <- function(path,
 
   excel_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|xls")
 
-  if (length(excel_files) > 0) {
+  if (isTRUE(verbose) && length(excel_files) > 0) {
     warning(glue("Can't compile excel files.
     {length(excel_files)} excel files found in hobo folder.
     \nHINT: Please re-export in csv format."))
@@ -183,10 +176,6 @@ ss_compile_hobo_data <- function(path,
 
     # Select and add columns of interest ----------------------------------------------
 
-    # reorder this so not double re-naming the data
-    # put sensor info in after
-
-
     hobo_i <- hobo_i %>%
       select(contains("Date Time"), contains("DO conc"), contains("Temp")) %>%
       rename(timestamp_ = 1) %>%
@@ -199,54 +188,22 @@ ss_compile_hobo_data <- function(path,
     # use serial number to identify the variable and depth (from sn_table)
     sensor_info_i <- dplyr::filter(sn_table, serial == sn_i)
 
-    hobo_i2 <- hobo_i %>%
+    hobo_i <- hobo_i %>%
       mutate(
         deployment_range = paste(
           format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
         ),
-        sensor = sensor_info_i$sensor_serial,
+        sensor = as.character(sensor_info_i$sensor_serial),
         depth = sensor_info_i$depth
       ) %>%
       select(
         deployment_range,
-        timestamp_ = contains("timestamp"),
+        contains("timestamp"),
         sensor,
         depth,
         contains("dissolved_oxygen"),
         contains("temperature")
       )
-
-
-    # if (!("dissolved_oxygen" %in% new_col_names$variable)) {
-    #
-    #
-    #
-    # }
-
-
-    # # apply salinity correction factor to dissolved oxygen
-    # if(isTRUE(correct.DO) & "Dissolved Oxygen" %in% names(hobo.i)) {
-    #
-    #   if(is.null(Sal)){
-    #
-    #     stop("Can't calculate salinity correction factor.
-    #          /nHINT: Enter a value for the Sal argument or set correct.DO to FALSE")
-    #   }
-    #
-    #   hobo.i <- hobo.i %>%
-    #     DO_salinity_correction(Sal = Sal, method = method) %>%
-    #     mutate(
-    #       `Dissolved Oxygen` = as.numeric(`Dissolved Oxygen`),
-    #       `Dissolved Oxygen` = `Dissolved Oxygen` * F_s
-    #       ) %>%
-    #     select(-F_s, -Salinity)
-    #
-    #     # apply_salinity_correction(Sal = Sal) %>%
-    #     # dplyr::rename(`Dissolved Oxygen` = DO_corrected)
-    # }
-
-    # vars.to.select <- colnames(hobo.i)[-1]
-
 
     # Format data -------------------------------------------------------------
 
@@ -254,25 +211,25 @@ ss_compile_hobo_data <- function(path,
     # added four hours to end.date to account for AST
     # (e.g., in case the sensor was retrieved after 20:00 AST, which is 00:00 UTC **The next day**)
     if (trim == TRUE) {
-      hobo.i <- hobo.i %>%
-        filter(timestamp_ >= start_date, timestamp_ <= (end_date + hours(4)))
-    }
 
-    colnames(hobo_i)[2] <- new_col_names$col_name[1]
+      ind <- colnames(hobo_i)[which(str_detect(colnames(hobo_i), "timestamp"))]
+
+      hobo_i<- hobo_i %>%
+        filter(
+          .data[[ind[[1]]]] >= start_date,
+          .data[[ind[[1]]]] <= (end_date + hours(4))
+        )
+    }
 
     hobo_dat[[i]] <- hobo_i
   } # end loop over files
 
-
-
   hobo_out <- hobo_dat %>%
     map_df(rbind)
-
-
 
   # Return compiled data ----------------------------------------------------
 
   print("HOBO data compiled")
 
-  HOBO_dat
+  hobo_out
 }
