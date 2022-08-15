@@ -16,6 +16,7 @@ utils::globalVariables(
     "timestamp_",
     "HOBO_dat",
     "deployment_range",
+    ".data",
 
     # make_column_names
     "col_name"
