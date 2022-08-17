@@ -1,55 +1,55 @@
-# convert_timestamp_to_datetime() -----------------------------------------
-
-#' @importFrom janitor convert_to_datetime
+#' convert_timestamp_to_datetime()
+#'
+#' @param dat Data.frame with column \code{timestamp_} that has timestamps as
+#'   character values.
+#'
+#' @details Convert the timestamp_ column to a POSIXct object.
+#'
 #' @importFrom lubridate parse_date_time
 
-# function to convert the timestamp to a POSIXct object
-# if the date can be converted to class numeric, then it was stored as a number in Excel
-## and we have to use janitor::convert_to_datetime to convert to POSIXct.
-# Otherwise the date should be a character string that can be converted to POSIXct using
-## lubridate::parse_date_time()
+convert_timestamp_to_datetime <- function(dat) {
 
-convert_timestamp_to_datetime <- function(sensor.data) {
-  date_format <- sensor.data$timestamp_[1] # first datetime value; use to check the format
+  date_format <- dat$timestamp_[1] # first datetime value; use to check the format
 
-    #
-    parse.orders <- c(
-      "ymd IMS p", "Ymd IMS p",
-      "Ymd HM", "Ymd HMS",
-      "dmY HM", "dmY HMS",
-      "dmY IM p", "dmY IMS p"
-    )
+  parse_orders <- c(
+    "ymd IMS p", "Ymd IMS p",
+    "Ymd HM", "Ymd HMS",
+    "dmY HM", "dmY HMS",
+    "dmY IM p", "dmY IMS p"
+  )
 
-    if (!is.na(suppressWarnings(parse_date_time(date_format, orders = parse.orders)))) {
-      sensor.data <- sensor.data %>%
-        mutate(timestamp_ = lubridate::parse_date_time(timestamp_, orders = parse.orders))
-    } else {
+  check_date <- suppressWarnings(
+    parse_date_time(date_format, orders = parse_orders)
+  )
 
-      # Error message if the date format is incorrect
-      stop("Timestamp is not in a format recognized by the strings package.
-           See help files for more information.")
-    }
+  if (!is.na(check_date)) {
+    dat <- dat %>%
+      mutate(
+        timestamp_ = lubridate::parse_date_time(timestamp_, orders = parse_orders)
+      )
+  } else {
 
+    # Error message if the date format is incorrect
+    stop(paste0("Can't parse date in format ", date_format))
 
-  sensor.data
+  }
+
+  dat
 }
-
 
 
 #' Extract HOBO serial number from the data file
 #'
 #' @param hobo_colnames Column names of the HOBO file, as imported by
-#'   \code{ss_read_hobo_data}.
+#'   \code{ss_read_hobo_data()}.
 #'
-#' @return Returns a character string of the HOBO serial number.
+#' @return Returns the HOBO serial number.
 #'
 #' @importFrom glue glue
 #' @importFrom stringr str_detect str_remove str_split
-#'
-#' @export
-#'
 
 extract_hobo_sn <- function(hobo_colnames) {
+
   SN <- hobo_colnames[str_detect(hobo_colnames, pattern = "Temp")]
   SN <- str_split(SN, pattern = ", ")
 
@@ -62,12 +62,8 @@ extract_hobo_sn <- function(hobo_colnames) {
   if (LOGGER_SN == SENSOR_SN) {
     as.numeric(SENSOR_SN)
   } else {
-
-    # check this
     stop(
-      glue(
-        "In HOBO file LOGR S/N ({LOGGER_SN$LOGGER_SN}) does not match SEN S/N ({SENSOR_SN$SENSOR_SN})"
-      )
+      glue("HOBO file LOGR S/N ({LOGGER_SN}) does not match SEN S/N ({SENSOR_SN})")
     )
   }
 }
@@ -75,15 +71,16 @@ extract_hobo_sn <- function(hobo_colnames) {
 
 #' Extract units from column names of hobo data
 #'
-#' @param hobo_dat data as read in by \code{ss_read_hobo_data()}.
+#' @param hobo_dat Data as read in by \code{ss_read_hobo_data()}.
 #'
-#' @return placeholder
+#' @return Returns a tibble of \code{variable} and \code{units} found in
+#'   \code{hobo_dat}. Units are mg_per_L for dissolved oxygen and degree_C for
+#'   temperature.
 #' @importFrom dplyr %>% contains mutate select
 #' @importFrom stringr str_replace str_remove
 #' @importFrom tidyr separate
-#'
-#' @export
-#'
+
+
 ss_extract_hobo_units <- function(hobo_dat) {
 
   hobo_dat %>%
@@ -97,17 +94,7 @@ ss_extract_hobo_units <- function(hobo_dat) {
       units = str_remove(units, pattern = "\\+00:00"),
       units = str_replace(units, pattern = "mg/L", replacement = "mg_per_L"),
       units = str_replace(units, pattern = "\u00B0C", replacement = "degree_C")
-
-     #  units = str_replace(units, pattern = "\u0176", replacement = "degree_C")
-      # units = str_replace(units, pattern = "°C", replacement = "degree_C")
-      #units = str_replace(units, pattern = "A0194°C", replacement = "degree_C")
-      #units = str_replace(units, pattern = "A0194°C", replacement = "degree_C")
-      #units = str_replace(units, pattern = "A+0194°C", replacement = "degree_C")
-      #units = str_replace(units, pattern = "\\?°C", replacement = "degree_C")
-      #units = str_replace(units, pattern = "Â°C", replacement = "degree_C")
-      #units = str_replace(units, pattern = "[:alpha:]°C", replacement = "degree_C")
     )
-
 }
 
 
@@ -155,6 +142,26 @@ ss_make_column_names <- function(unit_table) {
 
 
 }
+
+#' @title Extracts the extension of a file name
+#' @details Extracts the file extension from a character string using //. as the
+#'  separator.
+#' @param file_name Character string of a file name. Must only include one ".",
+#'  which is used as the seprator.
+#'
+#' @importFrom tidyr separate
+
+extract_file_extension <- function(file_name){
+
+  extension <- file_name %>%
+    data.frame() %>%
+    separate(col = 1, into = c(NA, "EXT"), sep = "\\.")
+
+  extension$EXT
+}
+
+
+
 
 
 #' @importFrom tidyr separate
