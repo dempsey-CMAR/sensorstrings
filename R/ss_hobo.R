@@ -14,8 +14,11 @@
 #'
 #' @export
 
-
 ss_read_hobo_data <- function(path, file_name) {
+
+  ext <- extract_file_extension(file_name)
+
+  if(ext != "csv") stop(paste0("Cannot read file with extension: ", ext))
 
   # finish path
   path <- file.path(str_glue("{path}/{file_name}"))
@@ -137,7 +140,6 @@ ss_compile_hobo_data <- function(path,
     \nHINT: Please re-export in csv format."))
   }
 
-
   # loop over each HOBO file
   for (i in seq_along(dat_files)) {
 
@@ -149,7 +151,6 @@ ss_compile_hobo_data <- function(path,
     # combine these two functions
     hobo_units <- ss_extract_hobo_units(hobo_i)
     new_col_names <- ss_make_column_names(hobo_units)
-
 
     # sn and timezone checks --------------------------------------------------
 
@@ -173,6 +174,7 @@ ss_compile_hobo_data <- function(path,
       warning(glue("The timezone of file {file_name} is not UTC.\nTimezone: {tz_i$units}"))
     }
 
+   # browser()
 
     # Select and add columns of interest ----------------------------------------------
 

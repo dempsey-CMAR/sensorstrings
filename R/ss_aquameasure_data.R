@@ -24,6 +24,10 @@
 
 ss_read_aquameasure_data <- function(path, file_name) {
 
+  ext <- extract_file_extension(file_name)
+
+  if(ext != "csv") stop(paste0("Cannot read file with extension: ", ext))
+
   # finish path
   path <- file.path(str_glue("{path}/{file_name}"))
 
