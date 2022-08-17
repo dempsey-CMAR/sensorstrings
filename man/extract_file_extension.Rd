@@ -8,7 +8,7 @@ extract_file_extension(file_name)
 }
 \arguments{
 \item{file_name}{Character string of a file name. Must only include one ".",
-which is used as the seprator.}
+which is used as the separator.}
 }
 \description{
 Extracts the extension of a file name

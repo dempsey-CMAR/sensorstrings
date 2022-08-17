@@ -52,6 +52,10 @@ Can handle temperature and dissolved oxygen data.
   The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
   HM", "Ymd HMS", "dmY HM", or "dmY HMS".
 }
+\seealso{
+Other compile: 
+\code{\link{ss_compile_aquameasure_data}()}
+}
 \author{
 Danielle Dempsey
 }

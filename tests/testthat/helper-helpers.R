@@ -28,9 +28,25 @@ hobo_colnames_error <- c("Date Time, GMT+00:00",
                          "Temp, °C (LGR S/N: 10755220, SEN S/N: 123456)")
 
 
-# ss_extract_hobo_units ---------------------------------------------------
+# extract_hobo_units ---------------------------------------------------
+
 path1 <- system.file("testdata/hobo", package = "sensorstrings")
 
 hobo_units <- ss_read_hobo_data(path1, "20827226.csv") %>%
-  ss_extract_hobo_units()
+  extract_hobo_units()
+
+
+# make_column_names -------------------------------------------------------
+
+new_hobo_colnames <- make_column_names(hobo_units)
+
+
+
+
+
+
+
+
+
+
 

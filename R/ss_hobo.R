@@ -118,7 +118,6 @@ ss_compile_hobo_data <- function(path,
   # list files in the Hobo folder
   dat_files <- list.files(path, all.files = FALSE, pattern = "*csv")
 
-
   # check for surprises in dat_files -----------------------------------------------------
 
   if (length(dat_files) == 0) {
@@ -128,7 +127,7 @@ ss_compile_hobo_data <- function(path,
   }
 
   if (length(dat_files) != nrow(sn_table)) {
-    warning(glue("There are {length(dat_files)} csv files in {path};
+    stop(glue("There are {length(dat_files)} csv files in {path};
                  expected {nrow(sn_table)} files"))
   }
 
@@ -149,8 +148,8 @@ ss_compile_hobo_data <- function(path,
     hobo_i <- ss_read_hobo_data(path, file_name)
 
     # combine these two functions
-    hobo_units <- ss_extract_hobo_units(hobo_i)
-    new_col_names <- ss_make_column_names(hobo_units)
+    hobo_units <- extract_hobo_units(hobo_i)
+    new_col_names <- make_column_names(hobo_units)
 
     # sn and timezone checks --------------------------------------------------
 
@@ -159,7 +158,7 @@ ss_compile_hobo_data <- function(path,
     sn_i <- extract_hobo_sn(colnames(hobo_i))
 
     if (file_name != sn_i) {
-      warning(glue("The name of file {file_name} does not match the expected serial number ({sn_i})"))
+      stop(glue("The name of file {file_name} does not match the expected serial number ({sn_i})"))
     }
 
     # is this file in the sn_table?

@@ -80,8 +80,7 @@ extract_hobo_sn <- function(hobo_colnames) {
 #' @importFrom stringr str_replace str_remove
 #' @importFrom tidyr separate
 
-
-ss_extract_hobo_units <- function(hobo_dat) {
+extract_hobo_units <- function(hobo_dat) {
 
   hobo_dat %>%
     select(contains("Date"), contains("Temp"), contains("DO")) %>%
@@ -98,35 +97,55 @@ ss_extract_hobo_units <- function(hobo_dat) {
 }
 
 
+#' Extract the variables included in aquameasure file from the column names
+#'
+#' @param am_colnames Column names of aquameasure data file.
+#'
+#' @return Returns a vector of the variables included in the file.
+
+extract_aquameasure_vars <- function(am_colnames) {
+
+  ## check colnames of dat.i for "Temperature", "Dissolved Oxygen", and "Salinity"
+  temp <- ifelse("Temperature" %in% am_colnames, "Temperature", NA)
+  DO <- ifelse("Dissolved Oxygen" %in% am_colnames, "Dissolved Oxygen", NA)
+  sal <- ifelse("Salinity" %in% am_colnames, "Salinity", NA)
+
+  # create vector of the variables in this file by removing NA
+  vars <- c(temp, DO, sal)
+  vars[which(!is.na(vars))]
+}
 
 
-#' temporary title
+#' Glue variable name and units to create column names
 #'
-#' @param unit_table column variable and units
+#' @param unit_table Data.frame including columns \code{variable} and
+#'   \code{units}, as returned from \code{extract_hobo_units()}.
 #'
-#' @return dataframe with col names
+#' @return Data.frame with column names in the form \code{variable_units}.
 #'
 #' @importFrom dplyr %>% arrange mutate
 #' @importFrom stringr str_detect str_replace
 #' @importFrom glue glue
 #'
 #' @export
-#'
-ss_make_column_names <- function(unit_table) {
 
-  # try to find a better way to do this
-  # case_when???
+make_column_names <- function(unit_table) {
+
   new_names <- unit_table %>%
     mutate(
-      variable = str_replace(variable, pattern = "Date Time", replacement = "timestamp_"),
-      variable = str_replace(variable, pattern = "DO conc", replacement = "dissolved_oxygen_"),
-      variable = str_replace(variable, pattern = "Temp", replacement = "temperature_"),
+      variable = str_replace(
+        variable, pattern = "Date Time", replacement = "timestamp_"
+      ),
+      variable = str_replace(
+        variable, pattern = "DO conc", replacement = "dissolved_oxygen_"
+      ),
+      variable = str_replace(
+        variable, pattern = "Temp", replacement = "temperature_"
+      ),
       col_name = glue("{variable}{units}")
-    ) #%>%
-  # arrange(col_name)
-  #
+    )
 
-  # make ordered factor so rows will always be i the order
+  # make ordered factor so rows will always be in this order
   ## timestamp, dissolved oxygen, temperature
   ## this is important because the columns will be named in this order
   f_levels <- c(
@@ -139,15 +158,15 @@ ss_make_column_names <- function(unit_table) {
     mutate(col_name = ordered(col_name, levels = f_levels)) %>%
     arrange(col_name) %>%
     mutate(col_name = as.character(col_name))
-
-
 }
 
 #' @title Extracts the extension of a file name
+#'
 #' @details Extracts the file extension from a character string using //. as the
 #'  separator.
+#'
 #' @param file_name Character string of a file name. Must only include one ".",
-#'  which is used as the seprator.
+#'  which is used as the separator.
 #'
 #' @importFrom tidyr separate
 
@@ -161,9 +180,10 @@ extract_file_extension <- function(file_name){
 }
 
 
-
-
-
+#' Extract deployment dates
+#' @param deployment_dates Data.frame with start and end dates of the deployment
+#'   in the form yyyy-mm-dd. Two columns: \code{START} and \code{END}.
+#'
 #' @importFrom tidyr separate
 #' @importFrom lubridate as_datetime
 
