@@ -8,7 +8,6 @@
 #' @importFrom lubridate parse_date_time
 
 convert_timestamp_to_datetime <- function(dat) {
-
   date_format <- dat$timestamp_[1] # first datetime value; use to check the format
 
   parse_orders <- c(
@@ -31,11 +30,13 @@ convert_timestamp_to_datetime <- function(dat) {
 
     # Error message if the date format is incorrect
     stop(paste0("Can't parse date in format ", date_format))
-
   }
 
   dat
 }
+
+
+
 
 
 #' Extract HOBO serial number from the data file
@@ -49,7 +50,6 @@ convert_timestamp_to_datetime <- function(dat) {
 #' @importFrom stringr str_detect str_remove str_split
 
 extract_hobo_sn <- function(hobo_colnames) {
-
   SN <- hobo_colnames[str_detect(hobo_colnames, pattern = "Temp")]
   SN <- str_split(SN, pattern = ", ")
 
@@ -81,7 +81,6 @@ extract_hobo_sn <- function(hobo_colnames) {
 #' @importFrom tidyr separate
 
 extract_hobo_units <- function(hobo_dat) {
-
   hobo_dat %>%
     select(contains("Date"), contains("Temp"), contains("DO")) %>%
     colnames() %>%
@@ -116,6 +115,26 @@ extract_aquameasure_vars <- function(am_colnames) {
 }
 
 
+#' Extract the timezone of aquameasure timestamps
+#'
+#' @inheritParams extract_aquameasure_vars
+#'
+#' @return Returns a character string of the timezone indicated in the Timestamp
+#'   column.
+#'
+#' @importFrom stringr str_detect
+
+extract_aquameasure_tz <- function(am_colnames) {
+  tz_name <- am_colnames[which(str_detect(am_colnames, "stamp"))]
+
+  x <- str_split(tz_name, pattern = "\\(")
+
+  y <- str_split(x[[1]][2], "\\)")
+
+  tolower(y[[1]][1])
+}
+
+
 #' Glue variable name and units to create column names
 #'
 #' @param unit_table Data.frame including columns \code{variable} and
@@ -130,17 +149,19 @@ extract_aquameasure_vars <- function(am_colnames) {
 #' @export
 
 make_column_names <- function(unit_table) {
-
   new_names <- unit_table %>%
     mutate(
       variable = str_replace(
-        variable, pattern = "Date Time", replacement = "timestamp_"
+        variable,
+        pattern = "Date Time", replacement = "timestamp_"
       ),
       variable = str_replace(
-        variable, pattern = "DO conc", replacement = "dissolved_oxygen_"
+        variable,
+        pattern = "DO conc", replacement = "dissolved_oxygen_"
       ),
       variable = str_replace(
-        variable, pattern = "Temp", replacement = "temperature_"
+        variable,
+        pattern = "Temp", replacement = "temperature_"
       ),
       col_name = glue("{variable}{units}")
     )
@@ -160,24 +181,23 @@ make_column_names <- function(unit_table) {
     mutate(col_name = as.character(col_name))
 }
 
-#' @title Extracts the extension of a file name
-#'
-#' @details Extracts the file extension from a character string using //. as the
-#'  separator.
-#'
-#' @param file_name Character string of a file name. Must only include one ".",
-#'  which is used as the separator.
-#'
-#' @importFrom tidyr separate
+# Extracts the extension of a file name
+#
+# @details Extracts the file extension from a character string using //. as the
+#  separator.
+#
+# @param file_name Character string of a file name. Must only include one ".",
+#  which is used as the separator.
+#
+# @importFrom tidyr separate
 
-extract_file_extension <- function(file_name){
-
-  extension <- file_name %>%
-    data.frame() %>%
-    separate(col = 1, into = c(NA, "EXT"), sep = "\\.")
-
-  extension$EXT
-}
+# extract_file_extension <- function(file_name) {
+#   extension <- file_name %>%
+#     data.frame() %>%
+#     separate(col = 1, into = c(NA, "EXT"), sep = "\\.")
+#
+#   extension$EXT
+# }
 
 
 #' Extract deployment dates
@@ -198,4 +218,36 @@ extract_deployment_dates <- function(deployment_dates) {
 
   # return start and end datetimes
   data.frame(start = start_date, end = end_date)
+}
+
+
+
+
+#' Trim data to specified start and end dates.
+#'
+#' 4 hours adde to end_date to account for AST (e.g., in case the sensor was
+#' retrieved after 20:00 AST, which is 00:00 UTC **The next day**)
+#'
+#' @param dat Data.frame with column including the string "timestamp"
+#' @param start_date POSIXct/POSIXt value of the first good timestamp.
+#' @param end_date POSIXct/POSIXt value of the last good timestamp.
+#'
+#' @importFrom checkmate assert_posixct
+#' @importFrom lubridate hours
+#' @importFrom stringr str_detect
+#'
+#' @return Returns dat trimmed.
+#' @export
+
+trim_data <- function(dat, start_date, end_date) {
+  assert_posixct(start_date)
+  assert_posixct(end_date)
+
+  ind <- colnames(dat)[which(str_detect(colnames(dat), "timestamp"))]
+
+  dat %>%
+    filter(
+      .data[[ind[[1]]]] >= start_date,
+      .data[[ind[[1]]]] <= (end_date + hours(4))
+    )
 }
