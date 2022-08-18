@@ -225,7 +225,7 @@ ss_compile_hobo_data <- function(path,
 
   # Return compiled data ----------------------------------------------------
 
-  print("HOBO data compiled")
+  message("HOBO data compiled")
 
   hobo_out
 }

@@ -82,9 +82,9 @@ test_that("ss_compile_hobo_data() returns Errors and Warnings", {
     ss_compile_hobo_data(
       path2,
       sn_table = data.frame(
-        sensor = c("HOBO", "HOBO", "HOBO"),
-        serial = c(1234, 5678, 91011),
-        depth = c(1, 2, 3)
+        sensor = c("HOBO", "HOBO"),
+        serial = c(1234, 5678),
+        depth = c(1, 2)
       ),
       deployment_dates = deployment_dates,
       verbose = FALSE

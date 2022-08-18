@@ -167,7 +167,7 @@ ss_compile_aquameasure_data <- function(path,
     # check timezone
     date_tz <- extract_aquameasure_tz(am_colnames)
 
-    if (date_tz != "UTC") {
+    if (date_tz != "utc") {
       message(glue("Timestamp in file {file_name} is in timezone: {date_tz}."))
     }
 
@@ -209,7 +209,7 @@ ss_compile_aquameasure_data <- function(path,
         timestamp_,
         do_percent_saturation = contains("Dissolved Oxygen_Dissolved Oxygen"),
         temperature_degree_C = contains("Temperature_Temperature"),
-        salinity_ppt = contains("Salinity_Salinity")
+        salinity_psu = contains("Salinity_Salinity")
       ) %>%
       convert_timestamp_to_datetime()
 
@@ -230,7 +230,7 @@ ss_compile_aquameasure_data <- function(path,
         deployment_range = paste(
           format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
         ),
-        sensor = sensor_info_i$sensor_serial,
+        sensor = as.character(sensor_info_i$sensor_serial),
         depth = sensor_info_i$depth
       ) %>%
       select(
@@ -240,7 +240,7 @@ ss_compile_aquameasure_data <- function(path,
         depth,
         dissolved_oxygen_percent_saturation = contains("percent_sat"),
         temperature_degree_C,
-        salinity_ppt = contains("salinity")
+        salinity_psu = contains("salinity")
       )
 
     colnames(am_i)[which(str_detect(colnames(am_i), "timestamp"))] <- paste0("timestamp_", date_tz)
@@ -251,7 +251,7 @@ ss_compile_aquameasure_data <- function(path,
   am_out <- am_dat %>%
     map_df(rbind)
 
-  print("aquaMeasure data compiled")
+  message("aquaMeasure data compiled")
 
   am_out
 }
