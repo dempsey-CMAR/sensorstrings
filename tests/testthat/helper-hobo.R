@@ -16,9 +16,11 @@ hobo2 <- ss_read_hobo_data(path1, "20827226.csv") %>%
 
 path2 <- system.file("testdata", package = "sensorstrings")
 
-sn_table <- data.frame(sensor = c("HOBO", "HOBO"),
-                       serial = c(10755220, 20827226),
-                       depth = c(1, 2))
+sn_table <- data.frame(
+  sensor = c("HOBO", "HOBO"),
+  serial = c(10755220, 20827226),
+  depth = c(1, 2)
+)
 
 deployment_dates <- data.frame(START = "2019-05-30", END = "2019-10-19")
 

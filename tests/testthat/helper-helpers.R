@@ -21,11 +21,15 @@ ts_error <- data.frame(timestamp_ = "08-22-2019 12:55")
 
 # extract_hobo_sn ---------------------------------------------------------
 
-hobo_colnames <- c("Date Time, GMT+00:00",
-                   "Temp, °C (LGR S/N: 10755220, SEN S/N: 10755220)")
+hobo_colnames <- c(
+  "Date Time, GMT+00:00",
+  "Temp, °C (LGR S/N: 10755220, SEN S/N: 10755220)"
+)
 
-hobo_colnames_error <- c("Date Time, GMT+00:00",
-                         "Temp, °C (LGR S/N: 10755220, SEN S/N: 123456)")
+hobo_colnames_error <- c(
+  "Date Time, GMT+00:00",
+  "Temp, °C (LGR S/N: 10755220, SEN S/N: 123456)"
+)
 
 
 # extract_hobo_units ---------------------------------------------------
@@ -39,14 +43,3 @@ hobo_units <- ss_read_hobo_data(path1, "20827226.csv") %>%
 # make_column_names -------------------------------------------------------
 
 new_hobo_colnames <- make_column_names(hobo_units)
-
-
-
-
-
-
-
-
-
-
-
