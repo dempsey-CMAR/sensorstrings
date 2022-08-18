@@ -8,6 +8,8 @@ Description: More about what it does (maybe more than one line) Use four
     spaces when indenting paragraphs within the Description.
 License: GPL-3
 Imports: 
+    assertthat,
+    checkmate,
     data.table,
     dplyr,
     glue,
@@ -16,7 +18,8 @@ Imports:
     purrr,
     readxl,
     stringr,
-    tidyr
+    tidyr,
+    tidyselect
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
