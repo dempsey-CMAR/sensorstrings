@@ -9,16 +9,17 @@
 #'
 #' @author Danielle Dempsey
 #'
+#' @importFrom assertthat assert_that has_extension
 #' @importFrom data.table fread
 #' @importFrom stringr str_glue
 #'
 #' @export
 
 ss_read_hobo_data <- function(path, file_name) {
-
-  ext <- extract_file_extension(file_name)
-
-  if(ext != "csv") stop(paste0("Cannot read file with extension: ", ext))
+  assert_that(has_extension(file_name, "csv"))
+  # ext <- extract_file_extension(file_name)
+  #
+  # if (ext != "csv") stop(paste0("Cannot read file with extension: ", ext))
 
   # finish path
   path <- file.path(str_glue("{path}/{file_name}"))
@@ -27,8 +28,7 @@ ss_read_hobo_data <- function(path, file_name) {
   # start with row that includes the "Date" header
   # use UTF-8 coding for degree symbol
   # return as data.frame (not data.table)
-  data.table::fread(path, skip = "Date", encoding =  "UTF-8", data.table = FALSE)
-
+  data.table::fread(path, skip = "Date", encoding = "UTF-8", data.table = FALSE)
 }
 
 
@@ -93,7 +93,6 @@ ss_compile_hobo_data <- function(path,
                                  deployment_dates,
                                  trim = TRUE,
                                  verbose = TRUE) {
-
   names(sn_table) <- c("sensor", "serial", "depth")
   sn_table <- sn_table %>%
     mutate(sensor_serial = glue("{sensor}-{serial}"))
@@ -121,9 +120,7 @@ ss_compile_hobo_data <- function(path,
   # check for surprises in dat_files -----------------------------------------------------
 
   if (length(dat_files) == 0) {
-
     stop(glue("Can't find csv files in {path}"))
-
   }
 
   if (length(dat_files) != nrow(sn_table)) {
@@ -173,7 +170,7 @@ ss_compile_hobo_data <- function(path,
       warning(glue("The timezone of file {file_name} is not UTC.\nTimezone: {tz_i$units}"))
     }
 
-   # browser()
+    # browser()
 
     # Select and add columns of interest ----------------------------------------------
 
@@ -208,19 +205,17 @@ ss_compile_hobo_data <- function(path,
 
     # Format data -------------------------------------------------------------
 
-    # trim to the dates in deployment.range
-    # added four hours to end.date to account for AST
-    # (e.g., in case the sensor was retrieved after 20:00 AST, which is 00:00 UTC **The next day**)
-    if (trim == TRUE) {
+    # trim to the dates in deployment_dates
+    if (trim == TRUE) hobo_i <- trim_data(hobo_i, start_date, end_date)
 
-      ind <- colnames(hobo_i)[which(str_detect(colnames(hobo_i), "timestamp"))]
-
-      hobo_i<- hobo_i %>%
-        filter(
-          .data[[ind[[1]]]] >= start_date,
-          .data[[ind[[1]]]] <= (end_date + hours(4))
-        )
-    }
+    # ind <- colnames(hobo_i)[which(str_detect(colnames(hobo_i), "timestamp"))]
+    #
+    # hobo_i<- hobo_i %>%
+    #   filter(
+    #     .data[[ind[[1]]]] >= start_date,
+    #     .data[[ind[[1]]]] <= (end_date + hours(4))
+    #   )
+    # }
 
     hobo_dat[[i]] <- hobo_i
   } # end loop over files

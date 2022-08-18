@@ -5,7 +5,13 @@
 \title{Compiles temperature, dissolved oxygen, and/or salinity data from aquaMeasure
 sensors}
 \usage{
-ss_compile_aquameasure_data(path, sn_table, deployment_dates, trim = TRUE)
+ss_compile_aquameasure_data(
+  path,
+  sn_table,
+  deployment_dates,
+  trim = TRUE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{path}{File path to the Hobo folder.}
@@ -26,6 +32,8 @@ specified in /code{deployment_dates}. (Note: four hours are added to the
 retrieval date to account for AST, e.g., in case the sensor was retrieved
 after 20:00 AST, which is 00:00 UTC the next day.) Default is /code{trim =
 TRUE}.}
+
+\item{verbose}{Logical argument specifying whether to print all Warnings.}
 }
 \value{
 Returns a dataframe or exports a spreadsheet with the data compiled

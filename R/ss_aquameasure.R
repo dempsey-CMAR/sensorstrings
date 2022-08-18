@@ -12,46 +12,27 @@
 #'
 #' @author Danielle Dempsey
 #'
+#' @importFrom assertthat assert_that has_extension
 #' @importFrom data.table fread
-#' @importFrom dplyr %>% arrange as_tibble filter mutate n select
-#' @importFrom janitor convert_to_datetime
-#' @importFrom lubridate parse_date_time
-#' @importFrom readxl read_excel
 #' @importFrom stringr str_glue
 #'
 #' @export
 
 ss_read_aquameasure_data <- function(path, file_name) {
 
-  ext <- extract_file_extension(file_name)
-
-  if(ext != "csv") stop(paste0("Cannot read file with extension: ", ext))
+  assert_that(has_extension(file_name, "csv"))
+  # ext <- extract_file_extension(file_name)
+  #
+  # if (ext != "csv") stop(paste0("Cannot read file with extension: ", ext))
 
   # finish path
   path <- file.path(str_glue("{path}/{file_name}"))
 
-  data.table::fread(path, header = TRUE, data.table = FALSE, na.strings = "")
-
+  data.table::fread(
+    path,
+    header = TRUE, data.table = FALSE, na.strings = "" # might need to add ERR to na.strings
+  )
 }
-
-
-#
-##param force_POSIXct Logical argument indicating whether to convert the
-#  timestamp column to POSIXct. Timestamp messages "undefined" and "xs after
-# startup (time not set)" will be coerced to \code{NA} without a warning.
-# # Export -----------------------------------------------------
-#
-# if (isTRUE(force_POSIXct)) {
-#   dat <- dat %>%
-#     mutate(
-#       `Timestamp(UTC)` = suppressWarnings(
-#         parse_date_time(`Timestamp(UTC)`, orders = c("Ymd HM", "Ymd HMS"))
-#       )
-#     )
-# }
-# dat
-
-
 
 
 #' Compiles temperature, dissolved oxygen, and/or salinity data from aquaMeasure
@@ -98,7 +79,7 @@ ss_read_aquameasure_data <- function(path, file_name) {
 #' @family compile
 #' @author Danielle Dempsey
 #'
-#' @importFrom dplyr %>% mutate select slice
+#' @importFrom dplyr %>% if_else mutate select slice
 #' @importFrom glue glue
 #' @importFrom lubridate parse_date_time
 #' @importFrom stringr str_detect
@@ -108,9 +89,10 @@ ss_read_aquameasure_data <- function(path, file_name) {
 #' @export
 
 ss_compile_aquameasure_data <- function(path,
-                                     sn_table,
-                                     deployment_dates,
-                                     trim = TRUE){
+                                        sn_table,
+                                        deployment_dates,
+                                        trim = TRUE,
+                                        verbose = TRUE) {
 
   # make sure columns of serial.table are named correctly
   names(sn_table) <- c("sensor", "serial", "depth")
@@ -140,9 +122,7 @@ ss_compile_aquameasure_data <- function(path,
   # check for surprises in dat_files -----------------------------------------------------
 
   if (length(dat_files) == 0) {
-
     stop(glue("Can't find csv files in {path}"))
-
   }
 
   if (length(dat_files) != nrow(sn_table)) {
@@ -161,7 +141,7 @@ ss_compile_aquameasure_data <- function(path,
   # Import data -------------------------------------------------------------
 
   # loop over each aM file
-  for(i in seq_along(dat_files)) {
+  for (i in seq_along(dat_files)) {
 
     # check whether file is .csv or .xlsx
     file_name <- dat_files[i]
@@ -170,7 +150,7 @@ ss_compile_aquameasure_data <- function(path,
 
     am_colnames <- colnames(am_i)
 
-    # Extract metadata --------------------------------------------------------
+    # sn and timezone checks --------------------------------------------------
 
     # serial number
     sn_i <- am_i %>%
@@ -180,153 +160,98 @@ ss_compile_aquameasure_data <- function(path,
     sn_i <- sn_i$`serial number`
 
     # if the serial number doesn't match any of the entries in sn_table
-    if(!(sn_i %in% sn_table$serial)){
-
+    if (!(sn_i %in% sn_table$serial)) {
       stop(glue("Serial number {sn_i} does not match any serial numbers in sn_table"))
-
     }
 
-    vars <- extract_aquameasure_vars(am_colnames)
+    # check timezone
+    date_tz <- extract_aquameasure_tz(am_colnames)
+
+    if (date_tz != "UTC") {
+      message(glue("Timestamp in file {file_name} is in timezone: {date_tz}."))
+    }
+
+    # Clean and format data ---------------------------------------------------
+    if ("Temperature" %in% am_colnames && "Temp(Water)" %in% am_colnames) {
+      warning("There is a column named Temperature and a column named Temp(Water) in", file_name)
+    }
+
+    # Re-name the "Temp(Water)" column to "Temperature"
+    if (!("Temperature" %in% am_colnames) & "Temp(Water)" %in% am_colnames) {
+      am_i <- am_i %>% rename(Temperature = `Temp(Water)`)
+    }
+
+    # re-format and add other columns of interest --------------------------------------------------------
 
     # use serial number to identify the depth from sn_table
     sensor_info_i <- dplyr::filter(sn_table, serial == sn_i)
 
+    vars <- extract_aquameasure_vars(am_colnames)
 
-    am2 <- am_i %>%
+    am_i <- am_i %>%
       select(
-        contains("stamp"),
+        timestamp_ = contains("stamp"),
         `Record Type`,
         contains("Dissolved Oxygen"),
         contains("Temperature"),
         contains("Salinity")
       ) %>%
       filter(`Record Type` %in% c("Dissolved Oxygen", "Temperature", "Salinity")) %>%
-      pivot_wider(
-        id_cols = c("Timestamp(UTC)"),
+      tidyr::pivot_wider(
+        id_cols = "timestamp_",
         names_from = "Record Type", values_from = all_of(vars)
       ) %>%
+      filter(
+        !str_detect(timestamp_, "after"),
+        !str_detect(timestamp_, "undefined")
+      ) %>%
+      select(
+        timestamp_,
+        do_percent_saturation = contains("Dissolved Oxygen_Dissolved Oxygen"),
+        temperature_degree_C = contains("Temperature_Temperature"),
+        salinity_ppt = contains("Salinity_Salinity")
+      ) %>%
+      convert_timestamp_to_datetime()
+
+    if (trim == TRUE) am_i <- trim_data(am_i, start_date, end_date)
+
+    if ("do_percent_concentration" %in% am_colnames) {
+      am_i <- am_i %>%
+        mutate(
+          # do_percent_saturation = na_if(do_percent_saturation, "ERR"),
+          do_percent_saturation = if_else(
+            do_percent_saturation < 0, NA_real_, do_percent_saturation
+          )
+        )
+    }
+
+    am_i <- am_i %>%
       mutate(
         deployment_range = paste(
-          format(start.date, "%Y-%b-%d"), "to", format(end.date, "%Y-%b-%d")
+          format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
         ),
         sensor = sensor_info_i$sensor_serial,
         depth = sensor_info_i$depth
       ) %>%
       select(
         deployment_range,
-        timestamp_utc = contains("stamp"),
+        timestamp_,
         sensor,
         depth,
-        dissolved_oxygen_percent_saturation = contains("Dissolved Oxygen_Dissolved Oxygen"),
-        temperature_degree_C = contains("Temperature_Temperature"),
-        salinity_ppt = contains("Salinity_Salinity")
+        dissolved_oxygen_percent_saturation = contains("percent_sat"),
+        temperature_degree_C,
+        salinity_ppt = contains("salinity")
       )
 
+    colnames(am_i)[which(str_detect(colnames(am_i), "timestamp"))] <- paste0("timestamp_", date_tz)
 
-
-
-
-    # extract date column header (includes UTC offset)
-    # use pattern match for "stamp" to look for column named "timestamp"
-    date_ref.i <- names(am_i)[grep("stamp", names(am_i))]
-
-    # format deployment date range for metadata
-    deployment_ref <-
-
-    # Clean and format data ---------------------------------------------------
-    if("Temperature" %in% colnames(dat.i) & "Temp(Water)" %in% colnames(dat.i)){
-      warning("There is a column named Temperature and a column named Temp(Water) in sensor ",
-              sensor.i)
-    }
-
-    # Re-name the "Temp(Water)" column to "Temperature"
-    if(!("Temperature" %in% colnames(dat.i)) & "Temp(Water)" %in% colnames(dat.i)){
-      dat.i <- dat.i %>% rename(Temperature = `Temp(Water)`)
-    }
-
-    ## check colnames of dat.i for "Temperature", "Dissolved Oxygen", and "Salinity"
-    temp <- ifelse("Temperature" %in% colnames(dat.i), "Temperature", NA)
-    DO <- ifelse("Dissolved Oxygen" %in% colnames(dat.i), "Dissolved Oxygen", NA)
-    sal <- ifelse("Salinity" %in% colnames(dat.i), "Salinity", NA)
-
-    # create vector of the variables in this file by removing NA
-    vars.to.select <- c(temp, DO, sal)
-    vars.to.select <- vars.to.select[which(!is.na(vars.to.select))]
-
-
-    print(paste("found", vars.to.select, "in file", file.i), sep = " ")
-
-
-    # filter out DATES that sensor was not set up
-    # "undefined" or "(time not set)"
-    dat.i <- dat.i %>%
-      select(TIMESTAMP = `Timestamp(UTC)`, `Record Type`, all_of(vars.to.select)) %>%
-      mutate(DATE_VALUES = str_detect(TIMESTAMP, "(time not set)")) %>%
-      filter(TIMESTAMP != "undefined", DATE_VALUES == FALSE) %>%
-      select(-DATE_VALUES) %>%
-      convert_timestamp_to_datetime()  # convert the timestamp to a POSIXct object
-
-    # trim to the dates in deployment.range
-    # added four hours to end.date to account for AST
-    # (e.g., in case the sensor was retrieved after 20:00 AST, which is 00:00 UTC **The next day**)
-    if(trim == TRUE) {
-      dat.i <- dat.i %>%
-        filter(TIMESTAMP >= start.date, TIMESTAMP <= (end.date + hours(4)))
-    }
-
-    for(j in seq_along(vars.to.select)){
-
-      var.j <- vars.to.select[j]
-
-      aM.j <- dat.i %>%
-        select(TIMESTAMP, `Record Type`, all_of(var.j)) %>%
-        rename(PLACEHOLDER = 3) %>%
-        filter(`Record Type` == var.j)
-
-
-      if(nrow(aM.j) > 0) {
-
-        aM.j <- aM.j %>%
-          mutate(INDEX = as.character(c(1:n()))) %>%
-          mutate(PLACEHOLDER = na_if(PLACEHOLDER, "ERR"),
-                 PLACEHOLDER = round(as.numeric(PLACEHOLDER), digits = 3))
-
-        if(var.j == "Dissolved Oxygen") {
-          aM.j <- aM.j %>%
-            mutate(PLACEHOLDER = if_else(PLACEHOLDER < 0, NA_real_, PLACEHOLDER))
-        }
-
-        NA.j <- sum(is.na(aM.j$PLACEHOLDER))
-
-        if(NA.j > 1000) warning(paste(NA.j, "values in", file.i, "for variable", var.j, "are NA"))
-
-        aM.j <- aM.j %>%
-          transmute(INDEX,
-                    TIMESTAMP = as.character(TIMESTAMP),
-                    PLACEHOLDER = as.character(PLACEHOLDER)) %>%
-          add_metadata(row1 = deployment_ref,
-                       row2 = sensor.i,
-                       row3 = paste(var.j, depth.i, sep = "-"),
-                       row4 = c(date_ref.i, var.j))
-
-        # merge data on the INDEX row
-        aM_dat <- full_join(aM_dat, aM.j, by = "INDEX")
-      }  else message(paste("No", var.j, "observations found for", sensor.i))
-
-
-    } # end loop over variables
-
-
+    am_dat[[i]] <- am_i
   } # end loop over files
 
+  am_out <- am_dat %>%
+    map_df(rbind)
 
+  print("aquaMeasure data compiled")
 
-    print("aquaMeasure data compiled")
-
-    aM_dat
-
-
+  am_out
 }
-
-
-

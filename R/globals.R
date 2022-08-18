@@ -18,8 +18,17 @@ utils::globalVariables(
     "deployment_range",
     ".data",
 
+    # ss_compile_aquameasure_data
+    "Sensor",
+    "Temp(Water)",
+    "Record Type",
+    "do_percent_saturation",
+    "dissolved_oxygen_percent_saturation",
+    "temperature_degree_C",
+
+
+
     # make_column_names
     "col_name"
-
   )
 )
