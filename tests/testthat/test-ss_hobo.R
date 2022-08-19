@@ -19,7 +19,7 @@ test_that("ss_read_hobo_data() reads in all observations", {
 
 test_that("ss_read_hobo_data() report error for excel files", {
   expect_error(ss_read_hobo_data(path, "error.xls"))
-  expect_error(ss_read_hobo_data(path, "error.xls"))
+  expect_error(ss_read_hobo_data(path, "error.xlsx"))
 })
 
 

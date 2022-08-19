@@ -18,6 +18,9 @@ Returns a tibble of HOBO data, with the same columns as in the
 \description{
 Import data from HOBO and TidbiT sensors
 }
+\details{
+The Hobo data must be saved in csv format.
+}
 \author{
 Danielle Dempsey
 }

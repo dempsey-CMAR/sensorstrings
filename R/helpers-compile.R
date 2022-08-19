@@ -1,3 +1,6 @@
+
+# all compile foos --------------------------------------------------------
+
 #' convert_timestamp_to_datetime()
 #'
 #' @param dat Data.frame with column \code{timestamp_} that has timestamps as
@@ -36,8 +39,99 @@ convert_timestamp_to_datetime <- function(dat) {
 }
 
 
+#' Extract deployment dates
+#' @param deployment_dates Data.frame with start and end dates of the deployment
+#'   in the form yyyy-mm-dd. Two columns: \code{START} and \code{END}.
+#'
+#' @importFrom tidyr separate
+#' @importFrom lubridate as_datetime
+
+extract_deployment_dates <- function(deployment_dates) {
+
+  # name deployment.dates
+  names(deployment_dates) <- c("start_date", "end_date")
+
+  # paste date and time and convert to a datetime object
+  start_date <- as_datetime(paste(deployment_dates$start_date, "00:00:00"))
+  end_date <- as_datetime(paste(deployment_dates$end_date, "23:59:59"))
+
+  # return start and end datetimes
+  data.frame(start = start_date, end = end_date)
+}
 
 
+#' Trim data to specified start and end dates.
+#'
+#' 4 hours adde to end_date to account for AST (e.g., in case the sensor was
+#' retrieved after 20:00 AST, which is 00:00 UTC **The next day**)
+#'
+#' @param dat Data.frame with column including the string "timestamp"
+#' @param start_date POSIXct/POSIXt value of the first good timestamp.
+#' @param end_date POSIXct/POSIXt value of the last good timestamp.
+#'
+#' @importFrom checkmate assert_posixct
+#' @importFrom lubridate hours
+#' @importFrom stringr str_detect
+#'
+#' @return Returns dat trimmed.
+#' @export
+
+trim_data <- function(dat, start_date, end_date) {
+  assert_posixct(start_date)
+  assert_posixct(end_date)
+
+  ind <- colnames(dat)[which(str_detect(colnames(dat), "timestamp"))]
+
+  dat %>%
+    filter(
+      .data[[ind[[1]]]] >= start_date,
+      .data[[ind[[1]]]] <= (end_date + hours(4))
+    )
+}
+
+
+# aqumeasure --------------------------------------------------------------
+
+#' Extract the timezone of aquameasure timestamps
+#'
+#' @inheritParams extract_aquameasure_vars
+#'
+#' @return Returns a character string of the timezone indicated in the Timestamp
+#'   column.
+#'
+#' @importFrom stringr str_detect str_split
+
+extract_aquameasure_tz <- function(am_colnames) {
+  tz_name <- am_colnames[which(str_detect(am_colnames, "stamp"))]
+
+  x <- str_split(tz_name, pattern = "\\(")
+
+  y <- str_split(x[[1]][2], "\\)")
+
+  tolower(y[[1]][1])
+}
+
+
+#' Extract the variables included in aquameasure file from the column names
+#'
+#' @param am_colnames Column names of aquameasure data file.
+#'
+#' @return Returns a vector of the variables included in the file.
+
+extract_aquameasure_vars <- function(am_colnames) {
+
+  ## check colnames of dat.i for "Temperature", "Dissolved Oxygen", and "Salinity"
+  temp <- ifelse("Temperature" %in% am_colnames, "Temperature", NA)
+  DO <- ifelse("Dissolved Oxygen" %in% am_colnames, "Dissolved Oxygen", NA)
+  sal <- ifelse("Salinity" %in% am_colnames, "Salinity", NA)
+
+  # create vector of the variables in this file by removing NA
+  vars <- c(temp, DO, sal)
+  vars[which(!is.na(vars))]
+}
+
+
+# HOBO --------------------------------------------------------------------
 
 #' Extract HOBO serial number from the data file
 #'
@@ -95,46 +189,6 @@ extract_hobo_units <- function(hobo_dat) {
     )
 }
 
-
-#' Extract the variables included in aquameasure file from the column names
-#'
-#' @param am_colnames Column names of aquameasure data file.
-#'
-#' @return Returns a vector of the variables included in the file.
-
-extract_aquameasure_vars <- function(am_colnames) {
-
-  ## check colnames of dat.i for "Temperature", "Dissolved Oxygen", and "Salinity"
-  temp <- ifelse("Temperature" %in% am_colnames, "Temperature", NA)
-  DO <- ifelse("Dissolved Oxygen" %in% am_colnames, "Dissolved Oxygen", NA)
-  sal <- ifelse("Salinity" %in% am_colnames, "Salinity", NA)
-
-  # create vector of the variables in this file by removing NA
-  vars <- c(temp, DO, sal)
-  vars[which(!is.na(vars))]
-}
-
-
-#' Extract the timezone of aquameasure timestamps
-#'
-#' @inheritParams extract_aquameasure_vars
-#'
-#' @return Returns a character string of the timezone indicated in the Timestamp
-#'   column.
-#'
-#' @importFrom stringr str_detect
-
-extract_aquameasure_tz <- function(am_colnames) {
-  tz_name <- am_colnames[which(str_detect(am_colnames, "stamp"))]
-
-  x <- str_split(tz_name, pattern = "\\(")
-
-  y <- str_split(x[[1]][2], "\\)")
-
-  tolower(y[[1]][1])
-}
-
-
 #' Glue variable name and units to create column names
 #'
 #' @param unit_table Data.frame including columns \code{variable} and
@@ -181,73 +235,26 @@ make_column_names <- function(unit_table) {
     mutate(col_name = as.character(col_name))
 }
 
-# Extracts the extension of a file name
-#
-# @details Extracts the file extension from a character string using //. as the
-#  separator.
-#
-# @param file_name Character string of a file name. Must only include one ".",
-#  which is used as the separator.
-#
-# @importFrom tidyr separate
 
-# extract_file_extension <- function(file_name) {
-#   extension <- file_name %>%
-#     data.frame() %>%
-#     separate(col = 1, into = c(NA, "EXT"), sep = "\\.")
-#
-#   extension$EXT
-# }
+# vemco -------------------------------------------------------------------
 
-
-#' Extract deployment dates
-#' @param deployment_dates Data.frame with start and end dates of the deployment
-#'   in the form yyyy-mm-dd. Two columns: \code{START} and \code{END}.
+#' Extract the timezone of vemco timestamps
 #'
-#' @importFrom tidyr separate
-#' @importFrom lubridate as_datetime
+#' @param dat_colnames Column names of the Vemco file.
+#'
+#' @return Returns a character string of the timezone indicated in the Timestamp
+#'   column.
+#'
+#' @importFrom stringr str_detect str_split
 
-extract_deployment_dates <- function(deployment_dates) {
+extract_vemco_tz <- function(dat_colnames) {
+  tz_name <- dat_colnames[which(str_detect(dat_colnames, "Time"))]
 
-  # name deployment.dates
-  names(deployment_dates) <- c("start_date", "end_date")
+  x <- str_split(tz_name, pattern = " ")
 
-  # paste date and time and convert to a datetime object
-  start_date <- as_datetime(paste(deployment_dates$start_date, "00:00:00"))
-  end_date <- as_datetime(paste(deployment_dates$end_date, "23:59:59"))
-
-  # return start and end datetimes
-  data.frame(start = start_date, end = end_date)
+  tolower(gsub("[()]", "", x[[1]][4]))
 }
 
 
 
 
-#' Trim data to specified start and end dates.
-#'
-#' 4 hours adde to end_date to account for AST (e.g., in case the sensor was
-#' retrieved after 20:00 AST, which is 00:00 UTC **The next day**)
-#'
-#' @param dat Data.frame with column including the string "timestamp"
-#' @param start_date POSIXct/POSIXt value of the first good timestamp.
-#' @param end_date POSIXct/POSIXt value of the last good timestamp.
-#'
-#' @importFrom checkmate assert_posixct
-#' @importFrom lubridate hours
-#' @importFrom stringr str_detect
-#'
-#' @return Returns dat trimmed.
-#' @export
-
-trim_data <- function(dat, start_date, end_date) {
-  assert_posixct(start_date)
-  assert_posixct(end_date)
-
-  ind <- colnames(dat)[which(str_detect(colnames(dat), "timestamp"))]
-
-  dat %>%
-    filter(
-      .data[[ind[[1]]]] >= start_date,
-      .data[[ind[[1]]]] <= (end_date + hours(4))
-    )
-}

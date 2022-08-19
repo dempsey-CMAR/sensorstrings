@@ -7,7 +7,7 @@
 ss_read_aquameasure_data(path, file_name)
 }
 \arguments{
-\item{path}{File path to the aquaMeasure folder.}
+\item{path}{File path to the aquameasure folder.}
 
 \item{file_name}{Name of the file to import, including file extension.}
 }
@@ -19,8 +19,7 @@ Returns a data.frame of aquaMeasure data, with the same columns as in
 Import data from aquaMeasure sensors
 }
 \details{
-The aquaMeasure data must be saved in a folder named aquameasure in
-  .csv format.
+The aquaMeasure data must be saved in csv format.
 }
 \author{
 Danielle Dempsey

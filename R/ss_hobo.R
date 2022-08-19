@@ -1,4 +1,6 @@
-#' @title Import data from HOBO and TidbiT sensors
+#' Import data from HOBO and TidbiT sensors
+#'
+#' @details The Hobo data must be saved in csv format.
 #'
 #' @param path File path to the hobo file.
 #'
@@ -17,9 +19,6 @@
 
 ss_read_hobo_data <- function(path, file_name) {
   assert_that(has_extension(file_name, "csv"))
-  # ext <- extract_file_extension(file_name)
-  #
-  # if (ext != "csv") stop(paste0("Cannot read file with extension: ", ext))
 
   # finish path
   path <- file.path(str_glue("{path}/{file_name}"))
@@ -207,15 +206,6 @@ ss_compile_hobo_data <- function(path,
 
     # trim to the dates in deployment_dates
     if (trim == TRUE) hobo_i <- trim_data(hobo_i, start_date, end_date)
-
-    # ind <- colnames(hobo_i)[which(str_detect(colnames(hobo_i), "timestamp"))]
-    #
-    # hobo_i<- hobo_i %>%
-    #   filter(
-    #     .data[[ind[[1]]]] >= start_date,
-    #     .data[[ind[[1]]]] <= (end_date + hours(4))
-    #   )
-    # }
 
     hobo_dat[[i]] <- hobo_i
   } # end loop over files

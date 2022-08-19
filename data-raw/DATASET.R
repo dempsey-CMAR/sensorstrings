@@ -1,6 +1,6 @@
 # August 17, 2022
 
-# imports raw aquameasure data files
+# imports raw data data files
 # selects rows of interest
 # adds fake timestamps to match test hobo data
 # exports to test data folder
@@ -100,3 +100,34 @@ readr::write_csv(
   "C:/Users/Danielle Dempsey/Desktop/RProjects/Packages/sensorstrings/inst/testdata/aquameasure/aquaMeasure-680154.csv",
   na = ""
 )
+
+
+# Vemco -------------------------------------------------------------------
+
+path2 <- file.path("C:/Users/Danielle Dempsey/Desktop/RProjects/Packages/sensorstrings/data-raw/vemco")
+
+vem_raw <- ss_read_vemco_data(path2, file_name = "VR2AR-547109.csv")
+
+vem <- vem_raw %>%
+  slice(1:9, 104004:nrow(vem_raw)) %>%
+  mutate(
+    `Date and Time (UTC)` = if_else(
+      `Date and Time (UTC)` == "2019-05-30 18:04", "2019-05-29 11:00",
+      `Date and Time (UTC)`
+    )
+  )
+
+readr::write_csv(
+  vem,
+  "C:/Users/Danielle Dempsey/Desktop/RProjects/Packages/sensorstrings/inst/testdata/vemco/VR2AR-547109.csv",
+  na = ""
+)
+
+
+
+
+
+
+
+
+

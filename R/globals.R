@@ -26,7 +26,10 @@ utils::globalVariables(
     "dissolved_oxygen_percent_saturation",
     "temperature_degree_C",
 
-
+    # ss_compile_vemco_date
+    "Description",
+    "Units",
+    "Data",
 
     # make_column_names
     "col_name"

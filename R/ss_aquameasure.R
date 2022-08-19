@@ -1,11 +1,10 @@
 #' @title Import data from aquaMeasure sensors
 #'
-#' @details The aquaMeasure data must be saved in a folder named aquameasure in
-#'   .csv format.
+#' @details The aquaMeasure data must be saved in csv format.
 #'
-#' @param path File path to the aquaMeasure folder.
+#' @inheritParams ss_read_hobo_data
 #'
-#' @param file_name Name of the file to import, including file extension.
+#' @param path File path to the aquameasure folder.
 #'
 #' @return Returns a data.frame of aquaMeasure data, with the same columns as in
 #'   the original file.
@@ -21,9 +20,6 @@
 ss_read_aquameasure_data <- function(path, file_name) {
 
   assert_that(has_extension(file_name, "csv"))
-  # ext <- extract_file_extension(file_name)
-  #
-  # if (ext != "csv") stop(paste0("Cannot read file with extension: ", ext))
 
   # finish path
   path <- file.path(str_glue("{path}/{file_name}"))
@@ -188,6 +184,7 @@ ss_compile_aquameasure_data <- function(path,
 
     vars <- extract_aquameasure_vars(am_colnames)
 
+    # extract sensor depth
     am_i <- am_i %>%
       select(
         timestamp_ = contains("stamp"),
