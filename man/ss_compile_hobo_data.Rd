@@ -54,7 +54,8 @@ Can handle temperature and dissolved oxygen data.
 }
 \seealso{
 Other compile: 
-\code{\link{ss_compile_aquameasure_data}()}
+\code{\link{ss_compile_aquameasure_data}()},
+\code{\link{ss_compile_vemco_data}()}
 }
 \author{
 Danielle Dempsey

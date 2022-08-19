@@ -1,0 +1,203 @@
+#' @title Import data from Vemco sensors
+#'
+#' @details The Vemco data must be saved in csv format.
+#'
+#' @inheritParams ss_read_hobo_data
+#'
+#' @param path File path to the vemco folder.
+#'
+#' @return Returns a tibble of Vemco data, with the same columns as in the
+#'   original file.
+#'
+#' @author Danielle Dempsey
+#'
+#' @importFrom data.table fread
+#' @importFrom dplyr %>%  as_tibble
+#' @importFrom janitor convert_to_datetime
+#' @importFrom lubridate parse_date_time
+#' @importFrom readxl read_excel
+#' @importFrom stringr str_glue
+#'
+#' @export
+
+
+ss_read_vemco_data <- function(path, file_name) {
+  assert_that(has_extension(file_name, "csv"))
+
+  # finish path
+  path <- file.path(str_glue("{path}/{file_name}"))
+
+  data.table::fread(
+    path,
+    header = TRUE,
+    data.table = FALSE,
+    encoding = "UTF-8",
+    na.strings = "" # might need to add ERR to na.strings
+  )
+}
+
+
+#' Format temperature data from Vemco deployment
+#'
+#' @description This function formats data from a Vemco deployment so it can be
+#'   compiled with the HOBO and aquaMeasure data.
+#'
+#' @details The raw Vemco data must be saved in a folder named Vemco
+#'   (case-insensitive) in csv format.
+#'
+#'   All columns are read in as class character to ensure the timestamp is
+#'   parsed correctly. Timestamp must be saved in excel as a number or a
+#'   character in the order "ymd IMS p", "Ymd IMS p", "Ymd HM", "Ymd HMS", "dmY
+#'   HM", or "dmY HMS".
+#'
+#'   If there are "Temperature" entries in the Description column, these will be
+#'   extracted and compiled. If there are no "Temperature" entries, but there
+#'   are "Average temperature" entries, these will be extracted and compiled.
+#'   Otherwise, the function will stop with an error message.
+#'
+#' @inheritParams ss_compile_hobo_data
+#' @param path File path to the Vemco folder. This folder should have one csv
+#'   file that was extracted using Vue software. Other file types in the folder
+#'   will be ignored.
+#'
+#' @param depth Depth of sensor.
+#'
+#' @return Returns a dataframe with the formatted Vemco data in three columns:
+#'   the timestamp (in the format "Y-m-d H:M:S") and temperature value (degree
+#'   celsius, rounded to three decimal places), and sensor_depth.
+#' @family compile
+#' @author Danielle Dempsey
+#'
+#' @importFrom dplyr %>% case_when mutate select contains
+#' @export
+
+ss_compile_vemco_data <- function(path,
+                                  depth,
+                                  deployment_dates,
+                                  trim = TRUE,
+                                  verbose = TRUE){
+
+  # extract the deployment start and end dates from deployment_dates
+  dates <- extract_deployment_dates(deployment_dates)
+  start_date <- dates$start
+  end_date <- dates$end
+  dates_char <- paste(format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d"))
+
+  # List file to be compiled -----------------------------------------------
+
+  # name of hobo folder (case-insensitive)
+  folder <- list.files(path) %>%
+    str_extract(regex("vemco", ignore_case = T)) %>%
+    na.omit()
+
+  # path to hobo files
+  path <- glue("{path}/{folder}")
+
+  # list files in the Hobo folder
+  dat_files <- list.files(path, all.files = FALSE, pattern = "*csv")
+
+  # check for surprises in dat_files -----------------------------------------------------
+
+  if (length(dat_files) == 0) {
+    stop(glue("Can't find csv files in {path}"))
+  }
+
+  if (length(dat_files) > 1) {
+    stop(glue("There are {length(dat_files)} csv files in {path};
+                 expected 1 file"))
+  }
+
+  excel_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|xls")
+
+  if (isTRUE(verbose) && length(excel_files) > 0) {
+    warning(glue("Can't compile excel files.
+    {length(excel_files)} excel files found in hobo folder.
+    \nHINT: Please re-export in csv format."))
+  }
+
+
+  # Extract metadata --------------------------------------------------------
+
+  dat <- ss_read_vemco_data(path, dat_files)
+
+  dat_colnames <- colnames(dat)
+
+  # check timezone
+  date_tz <- extract_vemco_tz(dat_colnames)
+
+  if (date_tz != "utc") {
+    message(glue("Timestamp in file {file_name} is in timezone: {date_tz}."))
+  }
+
+  # sensor and serial number
+  sensor_serial <- unique(dat$Receiver)
+
+  # Format data -------------------------------------------------------------
+
+  if("Temperature" %in% unique(dat$Description)) {
+    temperature_var = "Temperature"
+  } else if("Average temperature" %in% unique(dat$Description)){
+    temperature_var = "Average temperature"
+  } else stop("Could not find Temperature or Average temperature in vemco_dat. Check file.")
+
+
+  if("Date and Time (UTC)" %in% dat_colnames & "Date/Time" %in% dat_colnames){
+    warning("There are two datetime columns in the Vemco data")
+  }
+
+  vars <- c("Seawater depth", "Temperature", "Average temperature")
+
+  # extract sensor depth
+  dat <- dat %>%
+    select(
+      timestamp_ = contains("Time"),
+      Description,
+      Data,
+      Units
+    ) %>%
+    filter(Description %in% vars) %>%
+    mutate(
+      Description = dplyr::case_when(
+        Description == "Seawater depth" ~ "sensor_depth_below_surface",
+        Description == "Temperature" ~ "temperature",
+        Description == "Average temperature" ~ "temperature"
+      ),
+      Units = if_else(Units == "\u00B0C", "degree_C", Units),
+      Description = paste(Description, Units, sep = "_")
+    ) %>%
+    tidyr::pivot_wider(
+      id_cols = "timestamp_",
+      names_from = "Description", values_from = Data
+    ) %>%
+    convert_timestamp_to_datetime()
+
+ # browser()
+
+  # trim to the dates in deployment_dates
+  if(trim == TRUE) dat <- trim_data(dat, start_date, end_date)
+
+  colnames(dat)[which(str_detect(colnames(dat), "timestamp"))] <- paste0("timestamp_", date_tz)
+
+  # add other useful columns and re-order ------------------------------------------------
+  dat <- dat %>%
+    mutate(
+      deployment_range = paste(
+        format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
+      ),
+      sensor = sensor_serial,
+      depth = depth
+    ) %>%
+    select(
+      deployment_range,
+      contains("timestamp"),
+      sensor,
+      depth,
+      contains("temperature"),
+      contains("sensor_depth")
+    )
+
+  message(paste("Vemco data compiled:", temperature_var))
+
+  dat
+
+}
