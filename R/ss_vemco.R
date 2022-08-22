@@ -56,15 +56,15 @@ ss_read_vemco_data <- function(path, file_name) {
 #'   Otherwise, the function will stop with an error message.
 #'
 #' @inheritParams ss_compile_hobo_data
+
 #' @param path File path to the Vemco folder. This folder should have one csv
 #'   file that was extracted using Vue software. Other file types in the folder
 #'   will be ignored.
 #'
-#' @param depth Depth of sensor.
-#'
 #' @return Returns a dataframe with the formatted Vemco data in three columns:
 #'   the timestamp (in the format "Y-m-d H:M:S") and temperature value (degree
-#'   celsius, rounded to three decimal places), and sensor_depth.
+#'   celsius), and sensor_depth.
+#'
 #' @family compile
 #' @author Danielle Dempsey
 #'
@@ -72,10 +72,15 @@ ss_read_vemco_data <- function(path, file_name) {
 #' @export
 
 ss_compile_vemco_data <- function(path,
-                                  depth,
+                                  sn_table,
                                   deployment_dates,
                                   trim = TRUE,
                                   verbose = TRUE){
+
+  # make sure columns of serial.table are named correctly
+  names(sn_table) <- c("sensor", "serial", "depth")
+  sn_table <- sn_table %>%
+    mutate(sensor_serial = glue("{sensor}-{serial}"))
 
   # extract the deployment start and end dates from deployment_dates
   dates <- extract_deployment_dates(deployment_dates)
@@ -129,8 +134,16 @@ ss_compile_vemco_data <- function(path,
     message(glue("Timestamp in file {file_name} is in timezone: {date_tz}."))
   }
 
-  # sensor and serial number
+   # sensor and serial number
   sensor_serial <- unique(dat$Receiver)
+
+
+#  browser()
+
+  if (sensor_serial != sn_table$sensor_serial) {
+    stop(glue("Serial number in sn_table ({sensor_serial}) does not match serial
+              number in file {dat_files} ({sn_table$sensor_serial})"))
+  }
 
   # Format data -------------------------------------------------------------
 
@@ -169,7 +182,8 @@ ss_compile_vemco_data <- function(path,
       id_cols = "timestamp_",
       names_from = "Description", values_from = Data
     ) %>%
-    convert_timestamp_to_datetime()
+    convert_timestamp_to_datetime() %>%
+    mutate(temperature_degree_C = as.numeric(temperature_degree_C))
 
  # browser()
 
@@ -185,7 +199,7 @@ ss_compile_vemco_data <- function(path,
         format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
       ),
       sensor = sensor_serial,
-      depth = depth
+      depth = sn_table$depth
     ) %>%
     select(
       deployment_range,

@@ -6,7 +6,7 @@
 \usage{
 ss_compile_vemco_data(
   path,
-  depth,
+  sn_table,
   deployment_dates,
   trim = TRUE,
   verbose = TRUE
@@ -17,7 +17,10 @@ ss_compile_vemco_data(
 file that was extracted using Vue software. Other file types in the folder
 will be ignored.}
 
-\item{depth}{Depth of sensor.}
+\item{sn_table}{UPDATE THIS A table with the serial number of each HOBO and
+TidBiT sensor on the string, in the form "HOBO-xxxxxxxx" or
+"TidbiT-xxxxxxxx" (first column) and corresponding depth at which it was
+deployed in the form "2m" (second column).}
 
 \item{deployment_dates}{A dataframe with two columns. The first column holds
 the deployment date (a Date object, POSIXct object, or character string in
@@ -36,7 +39,7 @@ TRUE}.}
 \value{
 Returns a dataframe with the formatted Vemco data in three columns:
   the timestamp (in the format "Y-m-d H:M:S") and temperature value (degree
-  celsius, rounded to three decimal places), and sensor_depth.
+  celsius), and sensor_depth.
 }
 \description{
 This function formats data from a Vemco deployment so it can be

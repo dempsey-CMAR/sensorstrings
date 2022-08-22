@@ -14,8 +14,21 @@ file_name <- "VR2AR-547109.csv"
 
 deployment_dates <- data.frame(START = "2019-05-30", END = "2019-10-19")
 
+sn_vem <- data.frame(
+  sensor = c("VR2AR"),
+  serial = c("547109"),
+  depth = c(5)
+)
 
-vem <- ss_compile_vemco_data(path, depth = 5, deployment_dates = deployment_dates)
+vem_all <- ss_compile_vemco_data(
+  path, sn_table = sn_vem, deployment_dates = deployment_dates,
+  trim = FALSE, verbose = FALSE
+)
+
+vem_trim <- ss_compile_vemco_data(
+  path,  sn_table = sn_vem, deployment_dates = deployment_dates,
+  trim = TRUE, verbose = FALSE
+)
 
 # am_all <- ss_compile_aquameasure_data(
 #   path2,
