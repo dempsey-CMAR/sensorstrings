@@ -90,49 +90,67 @@ ss_compile_aquameasure_data <- function(path,
                                         trim = TRUE,
                                         verbose = TRUE) {
 
-  # make sure columns of serial.table are named correctly
-  names(sn_table) <- c("sensor", "serial", "depth")
-  sn_table <- sn_table %>%
-    mutate(sensor_serial = glue("{sensor}-{serial}"))
+  # # make sure columns of serial.table are named correctly
+  # names(sn_table) <- c("sensor", "serial", "depth")
+  # sn_table <- sn_table %>%
+  #   filter(str_detect(sensor, regex("aquameasure", ignore_case = T))) %>%
+  #   mutate(sensor_serial = glue("{sensor}-{serial}"))
+  #
+  # # extract the deployment start and end dates from deployment_dates
+  # dates <- extract_deployment_dates(deployment_dates)
+  # start_date <- dates$start
+  # end_date <- dates$end
+  # dates_char <- paste(format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d"))
+  #
+  # # initialize dateframe for storing the output
+  # am_dat <- list(NULL)
+  #
+  # # name of aquameasure folder (case-insensitive)
+  # folder <- list.files(path) %>%
+  #   str_extract(regex("aquameasure", ignore_case = T)) %>%
+  #   na.omit()
+  #
+  # # path to hobo files
+  # path <- glue("{path}/{folder}")
+  #
+  # # list files in the Hobo folder
+  # dat_files <- list.files(path, all.files = FALSE, pattern = "*csv")
+  #
+  # # check for surprises in dat_files -----------------------------------------------------
+  #
+  # if (length(dat_files) == 0) {
+  #   stop(glue("Can't find csv files in {path}"))
+  # }
+  #
+  # if (length(dat_files) != nrow(sn_table)) {
+  #   stop(glue("There are {length(dat_files)} csv files in {path};
+  #                expected {nrow(sn_table)} files"))
+  # }
+  #
+  # excel_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|xls")
+  #
+  # if (isTRUE(verbose) && length(excel_files) > 0) {
+  #   warning(glue("Can't compile excel files.
+  #   {length(excel_files)} excel files found in hobo folder.
+  #   \nHINT: Please re-export in csv format."))
+  # }
 
-  # extract the deployment start and end dates from deployment_dates
-  dates <- extract_deployment_dates(deployment_dates)
-  start_date <- dates$start
-  end_date <- dates$end
-  dates_char <- paste(format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d"))
+
+
+  setup <- set_up_compile(path, sn_table, deployment_dates, "aquameasure", verbose = verbose)
+
+  path = setup$path
+
+  start_date <- setup$dates$start
+  end_date <- setup$dates$end
+
+  sn_table <- setup$sn_table
+
+  dat_files <- setup$dat_files
 
   # initialize dateframe for storing the output
   am_dat <- list(NULL)
 
-  # name of aquameasure folder (case-insensitive)
-  folder <- list.files(path) %>%
-    str_extract(regex("aquameasure", ignore_case = T)) %>%
-    na.omit()
-
-  # path to hobo files
-  path <- glue("{path}/{folder}")
-
-  # list files in the Hobo folder
-  dat_files <- list.files(path, all.files = FALSE, pattern = "*csv")
-
-  # check for surprises in dat_files -----------------------------------------------------
-
-  if (length(dat_files) == 0) {
-    stop(glue("Can't find csv files in {path}"))
-  }
-
-  if (length(dat_files) != nrow(sn_table)) {
-    stop(glue("There are {length(dat_files)} csv files in {path};
-                 expected {nrow(sn_table)} files"))
-  }
-
-  excel_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|xls")
-
-  if (isTRUE(verbose) && length(excel_files) > 0) {
-    warning(glue("Can't compile excel files.
-    {length(excel_files)} excel files found in hobo folder.
-    \nHINT: Please re-export in csv format."))
-  }
 
   # Import data -------------------------------------------------------------
 

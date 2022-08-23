@@ -1,6 +1,84 @@
 
 # all compile foos --------------------------------------------------------
 
+
+#' Temp
+#'
+#' @param path temp
+#' @param sn_table temp
+#' @param deployment_dates temp
+#' @param sensor_make temp
+#' @param verbose temp
+#'
+#' @return temp
+#'
+#' @importFrom dplyr %>% mutate select
+#' @importFrom glue glue
+#' @importFrom lubridate parse_date_time
+#' @importFrom stringr str_detect
+#'
+
+
+set_up_compile <- function(path, sn_table, deployment_dates, sensor_make, verbose = FALSE) {
+
+  # make sure columns of serial.table are named correctly
+  names(sn_table) <- c("sensor", "serial", "depth")
+  sn_table <- sn_table %>%
+    filter(str_detect(sensor, regex(sensor_make, ignore_case = TRUE))) %>%
+    mutate(sensor_serial = glue("{sensor}-{serial}"))
+
+  # extract the deployment start and end dates from deployment_dates
+  dates <- extract_deployment_dates(deployment_dates)
+  # start_date <- dates$start
+  # end_date <- dates$end
+
+  # name of aquameasure folder (case-insensitive)
+  if(sensor_make == "VR2AR") sensor_make <- "vemco"
+
+  folder <- list.files(path) %>%
+    str_extract(regex(sensor_make, ignore_case = TRUE)) %>%
+    na.omit()
+
+  # path to hobo files
+  path <- glue("{path}/{folder}")
+
+  # list files in the Hobo folder
+  dat_files <- list.files(path, all.files = FALSE, pattern = "*csv")
+
+  # check for surprises in dat_files -----------------------------------------------------
+
+  if (length(dat_files) == 0) {
+    stop(glue("Can't find csv files in {path}"))
+  }
+
+  if (sensor_make == "vemco" && length(dat_files) > 1) {
+    stop(glue("There are {length(dat_files)} csv files in {path};
+                 expected 1 file"))
+  }
+
+  if (length(dat_files) != nrow(sn_table)) {
+    stop(glue("There are {length(dat_files)} csv files in {path};
+                 expected {nrow(sn_table)} files"))
+  }
+
+
+  excel_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|xls")
+
+  if (isTRUE(verbose) && length(excel_files) > 0) {
+    warning(glue("Can't compile excel files.
+    {length(excel_files)} excel files found in hobo folder.
+    \nHINT: Please re-export in csv format."))
+  }
+
+  list(
+    path = path,
+    dates = dates,
+    dat_files = dat_files,
+    sn_table = sn_table
+  )
+
+}
+
 #' convert_timestamp_to_datetime()
 #'
 #' @param dat Data.frame with column \code{timestamp_} that has timestamps as
@@ -74,7 +152,6 @@ extract_deployment_dates <- function(deployment_dates) {
 #' @importFrom stringr str_detect
 #'
 #' @return Returns dat trimmed.
-#' @export
 
 trim_data <- function(dat, start_date, end_date) {
   assert_posixct(start_date)
@@ -199,8 +276,6 @@ extract_hobo_units <- function(hobo_dat) {
 #' @importFrom dplyr %>% arrange mutate
 #' @importFrom stringr str_detect str_replace
 #' @importFrom glue glue
-#'
-#' @export
 
 make_column_names <- function(unit_table) {
   new_names <- unit_table %>%

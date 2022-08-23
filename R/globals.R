@@ -31,6 +31,15 @@ utils::globalVariables(
     "Units",
     "Data",
 
+    # ss_read_log
+    "Logger_Model",
+    "Serial#",
+    "Sensor_Depth",
+    "numeric_depth",
+    "detect_hobo",
+    "detect_am",
+    "detect_vemco",
+
     # make_column_names
     "col_name"
   )
