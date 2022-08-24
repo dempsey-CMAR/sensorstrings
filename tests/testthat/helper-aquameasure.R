@@ -11,7 +11,7 @@ am1 <- ss_read_aquameasure_data(path, "aquaMeasure-670364.csv")
 path2 <- system.file("testdata", package = "sensorstrings")
 
 sn_am <- data.frame(
-  sensor = c("aquameasure", "aquameasure"),
+  sensor = c("aquaMeasure", "aquaMeasure"),
   serial = c(670364, 680154),
   depth = c(3, 4)
 )

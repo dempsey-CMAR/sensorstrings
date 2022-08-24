@@ -1,5 +1,4 @@
 
-
 # ss_read_hobo_data -------------------------------------------------------
 
 path1 <- system.file("testdata/hobo", package = "sensorstrings")
@@ -23,7 +22,6 @@ sn_table <- data.frame(
 )
 
 deployment_dates <- data.frame(START = "2019-05-30", END = "2019-10-19")
-
 
 hobo_all <- ss_compile_hobo_data(
   path2,

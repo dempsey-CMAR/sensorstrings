@@ -2,24 +2,37 @@
 % Please edit documentation in R/helpers-compile.R
 \name{set_up_compile}
 \alias{set_up_compile}
-\title{Temp}
+\title{Set up parameters, Errors, and Warnings for the \code{compile_**} functions}
 \usage{
-set_up_compile(path, sn_table, deployment_dates, sensor_make, verbose = FALSE)
+set_up_compile(path, sn_table, deployment_dates, sensor_make, verbose = TRUE)
 }
 \arguments{
-\item{path}{temp}
+\item{path}{File path to the folder with the aquameasure, hobo, or vemco
+folder.}
 
-\item{sn_table}{temp}
+\item{sn_table}{UPDATE THIS A table with the serial number of each HOBO and
+TidBiT sensor on the string, in the form "HOBO-xxxxxxxx" or
+"TidbiT-xxxxxxxx" (first column) and corresponding depth at which it was
+deployed in the form "2m" (second column).}
 
-\item{deployment_dates}{temp}
+\item{deployment_dates}{A dataframe with two columns. The first column holds
+the deployment date (a Date object, POSIXct object, or character string in
+the order year, month, day),  and the second column holds the retrieval
+date (a Date object, POSIXct object, or character string in the order year,
+month, day).}
 
-\item{sensor_make}{temp}
+\item{sensor_make}{Make of the sensor to be compiled. Should match the name
+of the folder where the raw data files are saved and be found in the
+\code{sensor} column in \code{sn_table}. Most common entries will be
+"aquameasure", "hobo", or "vemco".}
 
-\item{verbose}{temp}
+\item{verbose}{Logical argument specifying whether to print all Warnings.}
 }
 \value{
-temp
+Returns a list of parameters used in the \code{compile_**} functions.
+  Returns Errors and Warnings if the expected files are not found in
+  \code{folder}.
 }
 \description{
-Temp
+Set up parameters, Errors, and Warnings for the \code{compile_**} functions
 }

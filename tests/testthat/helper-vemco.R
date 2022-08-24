@@ -21,29 +21,16 @@ sn_vem <- data.frame(
 )
 
 vem_all <- ss_compile_vemco_data(
-  path, sn_table = sn_vem, deployment_dates = deployment_dates,
+  path,
+  sn_table = sn_vem,
+  deployment_dates = deployment_dates,
   trim = FALSE, verbose = FALSE
 )
 
 vem_trim <- ss_compile_vemco_data(
-  path,  sn_table = sn_vem, deployment_dates = deployment_dates,
+  path,
+  sn_table = sn_vem,
+  deployment_dates = deployment_dates,
   trim = TRUE, verbose = FALSE
 )
-
-# am_all <- ss_compile_aquameasure_data(
-#   path2,
-#   sn_table = sn_am,
-#   deployment_dates = deployment_dates,
-#   verbose = FALSE,
-#   trim = FALSE
-# )
-#
-# am_trim <- ss_compile_aquameasure_data(
-#   path2,
-#   sn_table = sn_am,
-#   deployment_dates = deployment_dates,
-#   verbose = FALSE,
-#   trim = TRUE
-# )
-#
 

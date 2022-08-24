@@ -38,24 +38,24 @@ test_that("ss_compile_vemco_data() reads in all observations", {
 })
 
 
-test_that("ss_compile_vemco_data() returns Errors and Warnings", {
-
-  # when excel files found in vemco folder
-  expect_warning(
-    ss_compile_vemco_data(
-      path, sn_table = sn_vem, deployment_dates = deployment_dates,
-      trim = FALSE, verbose = TRUE
-    )
-  )
-
-  # when serial number in data file does not match sn_table
-  expect_error(
-    ss_compile_vemco_data(
-      path,
-      sn_table = data.frame(sensor = "sens1", serial = 1234, depth = 5),
-      deployment_dates = deployment_dates,
-      verbose = FALSE
-    )
-  )
-
-})
+# test_that("ss_compile_vemco_data() returns Errors and Warnings", {
+#
+#   # when excel files found in vemco folder
+#   expect_warning(
+#     ss_compile_vemco_data(
+#       path, sn_table = sn_vem, deployment_dates = deployment_dates,
+#       trim = FALSE, verbose = TRUE
+#     )
+#   )
+#
+#   # when serial number in data file does not match sn_table
+#   expect_error(
+#     ss_compile_vemco_data(
+#       path,
+#       sn_table = data.frame(sensor = "sens1", serial = 1234, depth = 5),
+#       deployment_dates = deployment_dates,
+#       verbose = FALSE
+#     )
+#   )
+#
+# })

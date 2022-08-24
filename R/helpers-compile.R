@@ -1,25 +1,31 @@
 
 # all compile foos --------------------------------------------------------
 
-
-#' Temp
+#' Set up parameters, Errors, and Warnings for the \code{compile_**} functions
 #'
-#' @param path temp
-#' @param sn_table temp
-#' @param deployment_dates temp
-#' @param sensor_make temp
-#' @param verbose temp
+#' @inheritParams ss_compile_hobo_data
+#' @param path File path to the folder with the aquameasure, hobo, or vemco
+#'   folder.
 #'
-#' @return temp
+#' @param sensor_make Make of the sensor to be compiled. Should match the name
+#'   of the folder where the raw data files are saved and be found in the
+#'   \code{sensor} column in \code{sn_table}. Most common entries will be
+#'   "aquameasure", "hobo", or "vemco".
+#'
+#' @return Returns a list of parameters used in the \code{compile_**} functions.
+#'   Returns Errors and Warnings if the expected files are not found in
+#'   \code{folder}.
 #'
 #' @importFrom dplyr %>% mutate select
 #' @importFrom glue glue
 #' @importFrom lubridate parse_date_time
 #' @importFrom stringr str_detect
-#'
 
-
-set_up_compile <- function(path, sn_table, deployment_dates, sensor_make, verbose = FALSE) {
+set_up_compile <- function(path,
+                           sn_table,
+                           deployment_dates,
+                           sensor_make,
+                           verbose = TRUE) {
 
   # make sure columns of serial.table are named correctly
   names(sn_table) <- c("sensor", "serial", "depth")
@@ -29,10 +35,8 @@ set_up_compile <- function(path, sn_table, deployment_dates, sensor_make, verbos
 
   # extract the deployment start and end dates from deployment_dates
   dates <- extract_deployment_dates(deployment_dates)
-  # start_date <- dates$start
-  # end_date <- dates$end
 
-  # name of aquameasure folder (case-insensitive)
+  # name of folder (case-insensitive)
   if(sensor_make == "VR2AR") sensor_make <- "vemco"
 
   folder <- list.files(path) %>%
@@ -45,24 +49,19 @@ set_up_compile <- function(path, sn_table, deployment_dates, sensor_make, verbos
   # list files in the Hobo folder
   dat_files <- list.files(path, all.files = FALSE, pattern = "*csv")
 
+  # check for excel files
+  excel_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|xls")
+
   # check for surprises in dat_files -----------------------------------------------------
 
   if (length(dat_files) == 0) {
     stop(glue("Can't find csv files in {path}"))
   }
 
-  if (sensor_make == "vemco" && length(dat_files) > 1) {
-    stop(glue("There are {length(dat_files)} csv files in {path};
-                 expected 1 file"))
-  }
-
   if (length(dat_files) != nrow(sn_table)) {
-    stop(glue("There are {length(dat_files)} csv files in {path};
-                 expected {nrow(sn_table)} files"))
+    stop(glue("There are {length(dat_files)} csv files in {path}.
+              Expected {nrow(sn_table)} files"))
   }
-
-
-  excel_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|xls")
 
   if (isTRUE(verbose) && length(excel_files) > 0) {
     warning(glue("Can't compile excel files.
@@ -70,13 +69,18 @@ set_up_compile <- function(path, sn_table, deployment_dates, sensor_make, verbos
     \nHINT: Please re-export in csv format."))
   }
 
+  if (sensor_make == "vemco" && length(dat_files) > 1) {
+    stop(glue("There are {length(dat_files)} csv files in {path};
+                 expected 1 file"))
+  }
+
+# return info -------------------------------------------------------------
   list(
     path = path,
     dates = dates,
     dat_files = dat_files,
     sn_table = sn_table
   )
-
 }
 
 #' convert_timestamp_to_datetime()
