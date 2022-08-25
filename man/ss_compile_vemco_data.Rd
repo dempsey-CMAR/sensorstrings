@@ -62,6 +62,7 @@ The raw Vemco data must be saved in a folder named Vemco
 \seealso{
 Other compile: 
 \code{\link{ss_compile_aquameasure_data}()},
+\code{\link{ss_compile_deployment_data}()},
 \code{\link{ss_compile_hobo_data}()},
 \code{\link{ss_read_log}()}
 }

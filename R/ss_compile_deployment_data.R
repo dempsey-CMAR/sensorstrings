@@ -80,7 +80,7 @@ ss_compile_deployment_data <- function(path,
     }
 
     vemco <- ss_compile_vemco_data(
-      path.vemco = path,
+      path = path,
       sn_table = sn_vem,
       deployment_dates = deployment_dates,
       trim = trim)
@@ -89,7 +89,7 @@ ss_compile_deployment_data <- function(path,
   }
 
   depl_data %>%
-    ss_covert_depth_to_ordered_factor() %>%
+    ss_convert_depth_to_ordered_factor() %>%
     arrange(depth)
 
 

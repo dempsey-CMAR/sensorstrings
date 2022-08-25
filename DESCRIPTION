@@ -16,6 +16,7 @@ Imports:
     janitor,
     lubridate,
     purrr,
+    readr,
     readxl,
     stringr,
     tidyr,

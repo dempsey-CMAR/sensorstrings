@@ -73,6 +73,7 @@ The log must be saved in a folder called Log in .csv, .xlsx or .xls
 \seealso{
 Other compile: 
 \code{\link{ss_compile_aquameasure_data}()},
+\code{\link{ss_compile_deployment_data}()},
 \code{\link{ss_compile_hobo_data}()},
 \code{\link{ss_compile_vemco_data}()}
 }

@@ -45,13 +45,13 @@
 ss_convert_depth_to_ordered_factor <- function(dat){
 
   dat %>%
-    mutate(DEPTH = factor(DEPTH)) %>%
+    mutate(depth = factor(depth)) %>%
     # assign levels to the factor based on the numeric values of DEPTH
-    mutate(DEPTH = ordered(
-      DEPTH,
-      levels = as.numeric(levels(DEPTH))[order(as.numeric(levels(DEPTH)))])
+    mutate(depth = ordered(
+      depth,
+      levels = as.numeric(levels(depth))[order(as.numeric(levels(depth)))])
     ) %>%
-    arrange(DEPTH)
+    arrange(depth)
 }
 
 

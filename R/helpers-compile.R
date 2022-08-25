@@ -205,9 +205,11 @@ extract_aquameasure_vars <- function(am_colnames) {
   temp <- ifelse("Temperature" %in% am_colnames, "Temperature", NA)
   DO <- ifelse("Dissolved Oxygen" %in% am_colnames, "Dissolved Oxygen", NA)
   sal <- ifelse("Salinity" %in% am_colnames, "Salinity", NA)
+  sensor_depth <- ifelse("Device Depth" %in% am_colnames, "Device Depth", NA)
+
 
   # create vector of the variables in this file by removing NA
-  vars <- c(temp, DO, sal)
+  vars <- c(temp, DO, sal, sensor_depth)
   vars[which(!is.na(vars))]
 }
 
