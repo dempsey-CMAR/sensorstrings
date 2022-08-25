@@ -26,7 +26,8 @@ ss_read_aquameasure_data <- function(path, file_name) {
 
   data.table::fread(
     path,
-    header = TRUE, data.table = FALSE, na.strings = "" # might need to add ERR to na.strings
+    header = TRUE, data.table = FALSE, na.strings = "", # might need to add ERR to na.strings
+    fill = TRUE
   )
 }
 
@@ -115,7 +116,6 @@ ss_compile_aquameasure_data <- function(path,
   # loop over each aM file
   for (i in seq_along(dat_files)) {
 
-    # check whether file is .csv or .xlsx
     file_name <- dat_files[i]
 
     am_i <- ss_read_aquameasure_data(path, file_name)
@@ -167,9 +167,13 @@ ss_compile_aquameasure_data <- function(path,
         `Record Type`,
         contains("Dissolved Oxygen"),
         contains("Temperature"),
-        contains("Salinity")
+        contains("Salinity"),
+        contains("Depth")
       ) %>%
-      filter(`Record Type` %in% c("Dissolved Oxygen", "Temperature", "Salinity")) %>%
+      filter(
+        `Record Type` %in%
+          c("Dissolved Oxygen", "Temperature", "Salinity", "Device Depth")
+      ) %>%
       tidyr::pivot_wider(
         id_cols = "timestamp_",
         names_from = "Record Type", values_from = all_of(vars)
@@ -182,21 +186,23 @@ ss_compile_aquameasure_data <- function(path,
         timestamp_,
         do_percent_saturation = contains("Dissolved Oxygen_Dissolved Oxygen"),
         temperature_degree_C = contains("Temperature_Temperature"),
-        salinity_psu = contains("Salinity_Salinity")
+        salinity_psu = contains("Salinity_Salinity"),
+        sensor_depth_m = contains("Device Depth_Device Depth")
       ) %>%
       convert_timestamp_to_datetime()
 
     if (trim == TRUE) am_i <- trim_data(am_i, start_date, end_date)
 
-    if ("do_percent_concentration" %in% am_colnames) {
-      am_i <- am_i %>%
-        mutate(
-          # do_percent_saturation = na_if(do_percent_saturation, "ERR"),
-          do_percent_saturation = if_else(
-            do_percent_saturation < 0, NA_real_, do_percent_saturation
-          )
-        )
-    }
+    # move this to qaqcmar
+    # if ("do_percent_concentration" %in% am_colnames) {
+    #   am_i <- am_i %>%
+    #     mutate(
+    #       # do_percent_saturation = na_if(do_percent_saturation, "ERR"),
+    #       do_percent_saturation = if_else(
+    #         do_percent_saturation < 0, NA_real_, do_percent_saturation
+    #       )
+    #     )
+    #}
 
     am_i <- am_i %>%
       mutate(

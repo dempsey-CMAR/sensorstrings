@@ -101,6 +101,51 @@ readr::write_csv(
   na = ""
 )
 
+# sensor depth
+
+file_name3 <- "aquaMeasure-675008.csv"
+
+dates3 <- dates %>%
+  filter(
+    !str_detect(`Timestamp(UTC)`, "after"),
+    !str_detect(`Timestamp(UTC)`, "undefined")
+  ) %>%
+  mutate(
+    `Timestamp(UTC)` = as_datetime(`Timestamp(UTC)`),
+    `Timestamp(UTC)` = `Timestamp(UTC)` + lubridate::minutes(5)
+  ) %>%
+  rbind(dplyr::tibble(id = 20, `Timestamp(UTC)` = as_datetime("2019-10-21 07:00:00")))
+
+
+dates3 <- dates3 %>%
+  rbind(
+    dates3 %>%
+      mutate(`Timestamp(UTC)` = `Timestamp(UTC)` + lubridate::minutes(3))
+  ) %>%
+  arrange(`Timestamp(UTC)`) %>%
+  mutate(
+    id = dplyr::row_number(),
+    `Timestamp(UTC)` = as.character(`Timestamp(UTC)`)
+  )
+
+
+dat_raw3 <- ss_read_aquameasure_data(path, file_name = file_name3)
+
+dat_out3 <- dat_raw3 %>%
+  slice(19775:19854) %>%
+  dplyr::group_by(`Timestamp(UTC)`) %>%
+  mutate(id = dplyr::cur_group_id()) %>%
+  dplyr::ungroup() %>%
+  select(-`Timestamp(UTC)`) %>%
+  dplyr::left_join(dates3, by = "id") %>%
+  select(`Timestamp(UTC)`, everything(), -id)
+
+readr::write_csv(
+  dat_out3,
+  "C:/Users/Danielle Dempsey/Desktop/RProjects/Packages/sensorstrings/inst/testdata/aquameasure/aquaMeasure-675008.csv",
+  na = ""
+)
+
 
 # Vemco -------------------------------------------------------------------
 

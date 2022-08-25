@@ -34,8 +34,8 @@ test_that("ss_compile_aquameasure_data() returns correct classes", {
 })
 
 test_that("ss_compile_aquameasure_data() reads in all observations", {
-  expect_equal(nrow(am_all), 34)
-  expect_equal(nrow(am_trim), 28)
+  expect_equal(nrow(am_all), 64)
+  expect_equal(nrow(am_trim), 55)
 })
 
 
