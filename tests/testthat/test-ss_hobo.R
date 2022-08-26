@@ -30,7 +30,7 @@ test_that("ss_compile_hobo_data() returns correct classes", {
   expect_equal(class(hobo_trim$deployment_range), "character")
   expect_equal(class(hobo_trim$timestamp_utc), c("POSIXct", "POSIXt"))
   expect_equal(class(hobo_trim$sensor), "character")
-  expect_equal(class(hobo_trim$depth), "numeric")
+  expect_equal(class(hobo_trim$sensor_depth_at_low_tide_m), "numeric")
   expect_equal(class(hobo_trim$temperature_degree_C), "numeric")
   expect_equal(class(hobo_trim$dissolved_oxygen_mg_per_L), "numeric")
 })
@@ -39,7 +39,6 @@ test_that("ss_compile_hobo_data() returns correct classes", {
 test_that("ss_compile_hobo_data() reads in all observations", {
   expect_equal(nrow(hobo_all), 49)
   expect_equal(nrow(hobo_trim), 36)
-
 })
 
 test_that("ss_compile_hobo_data() returns error if file name does not match entries in sn_table",{
