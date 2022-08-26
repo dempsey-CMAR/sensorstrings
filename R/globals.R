@@ -25,6 +25,8 @@ utils::globalVariables(
     "do_percent_saturation",
     "dissolved_oxygen_percent_saturation",
     "temperature_degree_C",
+    "sensor_depth_at_low_tide_m",
+    "sensor_depth_measured_m",
 
     # ss_compile_vemco_date
     "Description",
@@ -41,6 +43,9 @@ utils::globalVariables(
     "detect_vemco",
 
     # make_column_names
-    "col_name"
+    "col_name",
+
+    # ss_convert_depth_to_ordered_factor
+    "depth"
   )
 )

@@ -110,9 +110,6 @@ ss_compile_vemco_data <- function(path,
    # sensor and serial number
   sensor_serial <- unique(dat$Receiver)
 
-
-#  browser()
-
   if (sensor_serial != sn_table$sensor_serial) {
     stop(glue("Serial number in sn_table ({sensor_serial}) does not match serial
               number in file {dat_files} ({sn_table$sensor_serial})"))
@@ -144,21 +141,24 @@ ss_compile_vemco_data <- function(path,
     filter(Description %in% vars) %>%
     mutate(
       Description = dplyr::case_when(
-        Description == "Seawater depth" ~ "sensor_depth_below_surface",
+        Description == "Seawater depth" ~ "sensor_depth_measured",
         Description == "Temperature" ~ "temperature",
         Description == "Average temperature" ~ "temperature"
       ),
       Units = if_else(Units == "\u00B0C", "degree_C", Units),
-      Description = paste(Description, Units, sep = "_")
+      Description = paste(Description, Units, sep = "_"),
+      Data = as.numeric(Data)
     ) %>%
     tidyr::pivot_wider(
       id_cols = "timestamp_",
       names_from = "Description", values_from = Data
     ) %>%
-    convert_timestamp_to_datetime() %>%
-    mutate(temperature_degree_C = as.numeric(temperature_degree_C))
+    convert_timestamp_to_datetime() #%>%
+    # mutate(
+    #   temperature_degree_C = as.numeric(temperature_degree_C),
+    #   sensor_depth_measured_m = as.numeric(sensor_depth_measured_m)
+    # )
 
- # browser()
 
   # trim to the dates in deployment_dates
   if(trim == TRUE) dat <- trim_data(dat, start_date, end_date)
@@ -172,15 +172,15 @@ ss_compile_vemco_data <- function(path,
         format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
       ),
       sensor = sensor_serial,
-      depth = sn_table$depth
+      sensor_depth_at_low_tide_m = sn_table$depth
     ) %>%
     select(
       deployment_range,
       contains("timestamp"),
       sensor,
-      depth,
+      sensor_depth_at_low_tide_m,
       contains("temperature"),
-      contains("sensor_depth")
+      contains("sensor_depth_measured")
     )
 
   message(paste("Vemco data compiled:", temperature_var))

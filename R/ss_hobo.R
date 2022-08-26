@@ -27,7 +27,9 @@ ss_read_hobo_data <- function(path, file_name) {
   # start with row that includes the "Date" header
   # use UTF-8 coding for degree symbol
   # return as data.frame (not data.table)
-  data.table::fread(path, skip = "Date", encoding = "UTF-8", data.table = FALSE)
+  data.table::fread(path,
+                    skip = "Date",
+                    encoding = "UTF-8", data.table = FALSE)
 }
 
 
@@ -169,13 +171,13 @@ ss_compile_hobo_data <- function(path,
           format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
         ),
         sensor = as.character(sensor_info_i$sensor_serial),
-        depth = sensor_info_i$depth
+        sensor_depth_at_low_tide_m = sensor_info_i$depth
       ) %>%
       select(
         deployment_range,
         contains("timestamp"),
         sensor,
-        depth,
+        sensor_depth_at_low_tide_m,
         contains("dissolved_oxygen"),
         contains("temperature")
       )

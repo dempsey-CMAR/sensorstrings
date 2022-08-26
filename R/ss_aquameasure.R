@@ -187,7 +187,7 @@ ss_compile_aquameasure_data <- function(path,
         do_percent_saturation = contains("Dissolved Oxygen_Dissolved Oxygen"),
         temperature_degree_C = contains("Temperature_Temperature"),
         salinity_psu = contains("Salinity_Salinity"),
-        sensor_depth_m = contains("Device Depth_Device Depth")
+        sensor_depth_measured_m = contains("Device Depth_Device Depth")
       ) %>%
       convert_timestamp_to_datetime()
 
@@ -210,13 +210,14 @@ ss_compile_aquameasure_data <- function(path,
           format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
         ),
         sensor = as.character(sensor_info_i$sensor_serial),
-        depth = sensor_info_i$depth
+        sensor_depth_at_low_tide_m = sensor_info_i$depth
       ) %>%
       select(
         deployment_range,
         timestamp_,
         sensor,
-        depth,
+        sensor_depth_at_low_tide_m,
+        sensor_depth_measured_m = contains("sensor_depth_measured"),
         dissolved_oxygen_percent_saturation = contains("percent_sat"),
         temperature_degree_C,
         salinity_psu = contains("salinity")
