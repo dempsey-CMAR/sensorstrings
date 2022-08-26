@@ -33,6 +33,8 @@ ss_compile_deployment_data <- function(path,
                                        trim = TRUE,
                                        verbose = TRUE){
 
+# read in log here
+  # add location columns
 
   depl_data <- data.frame(NULL)
 

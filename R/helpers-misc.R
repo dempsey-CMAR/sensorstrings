@@ -9,7 +9,6 @@
 #' @importFrom tidyr separate
 
 extract_file_extension <- function(file_name){
-
   extension <- file_name %>%
     data.frame() %>%
     separate(col = 1, into = c(NA, "EXT"), sep = "\\.")

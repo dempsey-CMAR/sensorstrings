@@ -85,8 +85,8 @@ vemco1 <- ss_read_vemco_data(path_vem, "VR2AR-547109.csv")
 # ss_compile_vemco_data ---------------------------------------------
 
 sn_vem <- data.frame(
-  sensor = c("VR2AR"),
-  serial = c("547109"),
+  sensor = "VR2AR",
+  serial = "547109",
   depth = 6
 )
 
