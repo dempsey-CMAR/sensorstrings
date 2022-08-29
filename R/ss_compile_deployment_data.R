@@ -103,8 +103,12 @@ ss_compile_deployment_data <- function(path,
       county, waterbody, station, lease, latitude, longitude,
       deployment_range, sensor,
       contains("timestamp"),
-      contains("low_tide"), contains("sensor_depth_measured"),
-      contains("dissolved_oxygen"), contains("temperature"), contains("salinity")
+      contains("low_tide"),
+      # variables in alphabetical order
+      contains("dissolved_oxygen"),
+      contains("salinity"),
+      contains("sensor_depth_measured"),
+      contains("temperature")
     )
 }
 

@@ -105,8 +105,6 @@ vem_trim <- ss_compile_vemco_data(
 
 # ALL deployment data -----------------------------------------------------
 
-#sn_table <- rbind(sn_am, sn_hobo, sn_vem)
-
 depl_all <- ss_compile_deployment_data(path, trim = FALSE)
 
 depl_trim <- ss_compile_deployment_data(path, trim = TRUE)
