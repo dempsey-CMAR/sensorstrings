@@ -54,6 +54,9 @@ utils::globalVariables(
     "col_name",
 
     # ss_convert_depth_to_ordered_factor
-    "depth"
+    "depth",
+
+    # ss_pivot
+    "value"
   )
 )
