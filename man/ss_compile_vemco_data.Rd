@@ -4,55 +4,38 @@
 \alias{ss_compile_vemco_data}
 \title{Format temperature data from Vemco deployment}
 \usage{
-ss_compile_vemco_data(
-  path,
-  sn_table,
-  deployment_dates,
-  trim = TRUE,
-  verbose = TRUE
-)
+ss_compile_vemco_data(path, sn_table, deployment_dates, trim = TRUE)
 }
 \arguments{
 \item{path}{File path to the Vemco folder. This folder should have one csv
 file that was extracted using Vue software. Other file types in the folder
 will be ignored.}
 
-\item{sn_table}{UPDATE THIS A table with the serial number of each HOBO and
-TidBiT sensor on the string, in the form "HOBO-xxxxxxxx" or
-"TidbiT-xxxxxxxx" (first column) and corresponding depth at which it was
-deployed in the form "2m" (second column).}
+\item{sn_table}{A data frame with three columns: \code{sensor}, code{serial},
+\code{depth}, as returned by \code{ss_read_log()}.}
 
 \item{deployment_dates}{A dataframe with two columns. The first column holds
 the deployment date (a Date object, POSIXct object, or character string in
-the order year, month, day),  and the second column holds the retrieval
-date (a Date object, POSIXct object, or character string in the order year,
+the order year, month, day), and the second column holds the retrieval date
+(a Date object, POSIXct object, or character string in the order year,
 month, day).}
 
 \item{trim}{Logical value indicating whether to trim the data to the dates
-specified in /code{deployment_dates}. (Note: four hours are added to the
+specified in \code{deployment_dates}. (Note: four hours are added to the
 retrieval date to account for AST, e.g., in case the sensor was retrieved
-after 20:00 AST, which is 00:00 UTC the next day.) Default is /code{trim =
+after 20:00 AST, which is 00:00 UTC the next day.) Default is \code{trim =
 TRUE}.}
-
-\item{verbose}{Logical argument specifying whether to print all Warnings.}
 }
 \value{
-Returns a dataframe with the formatted Vemco data in three columns:
-  the timestamp (in the format "Y-m-d H:M:S") and temperature value (degree
-  celsius), and sensor_depth.
+Returns a tibble with the data compiled from the file in path/vemco.
 }
 \description{
-This function formats data from a Vemco deployment so it can be
-  compiled with the HOBO and aquaMeasure data.
+Compiles and formats temperature and seawater depth data from
+  VR2AR sensors.
 }
 \details{
-The raw Vemco data must be saved in a folder named Vemco
-  (case-insensitive) in csv format.
-
-  All columns are read in as class character to ensure the timestamp is
-  parsed correctly. Timestamp must be saved in excel as a number or a
-  character in the order "ymd IMS p", "Ymd IMS p", "Ymd HM", "Ymd HMS", "dmY
-  HM", or "dmY HMS".
+The raw Vemco data must be saved in a folder named Vemco in csv
+  format. Folder name is not case-sensitive.
 
   If there are "Temperature" entries in the Description column, these will be
   extracted and compiled. If there are no "Temperature" entries, but there

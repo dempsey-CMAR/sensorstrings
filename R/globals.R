@@ -33,6 +33,14 @@ utils::globalVariables(
     "Units",
     "Data",
 
+    # ss_compile_deployment_data
+    "county",
+    "waterbody",
+    "station",
+    "lease",
+    "latitude",
+    "longitude",
+
     # ss_read_log
     "Logger_Model",
     "Serial#",

@@ -12,7 +12,7 @@ ss_read_vemco_data(path, file_name)
 \item{file_name}{Name of the file to import, including file extension.}
 }
 \value{
-Returns a tibble of Vemco data, with the same columns as in the
+Returns a data frame of Vemco data, with the same columns as in the
   original file.
 }
 \description{

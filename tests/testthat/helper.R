@@ -63,7 +63,6 @@ hobo_all <- ss_compile_hobo_data(
   path,
   sn_table = sn_hobo,
   deployment_dates = deployment_dates,
-  verbose = FALSE,
   trim = FALSE
 )
 
@@ -71,7 +70,6 @@ hobo_trim <- ss_compile_hobo_data(
   path,
   sn_table = sn_hobo,
   deployment_dates = deployment_dates,
-  verbose = FALSE
 )
 
 # Vemco -------------------------------------------------------------------
@@ -94,38 +92,24 @@ vem_all <- ss_compile_vemco_data(
   path,
   sn_table = sn_vem,
   deployment_dates = deployment_dates,
-  trim = FALSE, verbose = FALSE
+  trim = FALSE
 )
 
 vem_trim <- ss_compile_vemco_data(
   path,
   sn_table = sn_vem,
   deployment_dates = deployment_dates,
-  trim = TRUE, verbose = FALSE
+  trim = TRUE
 )
 
 
 # ALL deployment data -----------------------------------------------------
 
-sn_table <- rbind(sn_am, sn_hobo, sn_vem)
+#sn_table <- rbind(sn_am, sn_hobo, sn_vem)
 
-#rm(sn_am, sn_hobo, sn_vem)
-#trim <- TRUE
+depl_all <- ss_compile_deployment_data(path, trim = FALSE)
 
-depl_all <- ss_compile_deployment_data(
-  path = path,
-  sn_table = sn_table,
-  deployment_dates = deployment_dates,
-  trim = FALSE
-)
-
-depl_trim <- ss_compile_deployment_data(
-  path = path,
-  sn_table = sn_table,
-  deployment_dates = deployment_dates,
-  trim = TRUE
-)
-
+depl_trim <- ss_compile_deployment_data(path, trim = TRUE)
 
 # helpers-compile ---------------------------------------------------------
 

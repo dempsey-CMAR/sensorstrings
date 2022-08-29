@@ -58,14 +58,15 @@
 #'   corresponding \code{DEPTH} (depth of deployment in m).
 #' @family compile
 #' @author Danielle Dempsey
-#'
-#' @importFrom glue glue
-#' @importFrom tidyr separate
-#' @importFrom stringr str_replace str_detect
-#' @importFrom readxl read_excel
+
 #' @importFrom data.table fread
-#' @importFrom lubridate ymd
 #' @importFrom dplyr %>% contains filter mutate select
+#' @importFrom glue glue
+#' @importFrom googlesheets4 gs4_deauth read_sheet
+#' @importFrom lubridate ymd
+#' @importFrom readxl read_excel
+#' @importFrom stringr str_replace str_detect
+#' @importFrom tidyr separate
 #'
 #' @export
 
@@ -79,23 +80,19 @@ ss_read_log <- function(path){
 
   file_type <- extract_file_extension(dat_files)
 
-  # remove files that start with "~"
-  if(any(substring(dat_files, 1, 1) == "~")) {
-
-    message(paste("Note:", sum((substring(dat_files, 1, 1)== "~")),
-                "files on the path begin with ~ and were not imported.", sep = " "))
-    dat_files <- dat_files[-which(substring(dat_files, 1, 1)== "~")]
-
+  if (length(dat_files) > 1) {
+    stop("More than one file found in the Log folder")
   }
 
-  if (length(dat_files) > 1) stop("More than one file found in the Log folder")
-
   if (file_type == "xls" |  file_type == "xlsx") {
-    log <- read_excel(paste(path, dat_files, sep = "/"))
+    log <- read_excel(paste(path, dat_files, sep = "/"), na = c("", "n/a", "N/A"))
   }
 
   if (file_type == "csv") {
-    log <- fread(paste(path, dat_files, sep = "/"), data.table = FALSE)
+    log <- fread(
+      paste(path, dat_files, sep = "/"),
+      data.table = FALSE,
+      na.strings = c("", "n/a", "N/A"))
   }
 
 
@@ -107,7 +104,7 @@ ss_read_log <- function(path){
 
   # message if there is more than one Deployment or Retrieval date
   if(length(start) > 1 | length(end) > 1) {
-    message("Multiple Deployment or Retrieval dates in log")
+    warning("Multiple Deployment or Retrieval dates in log")
   }
 
   # Stop with ERROR if the dates are not in the proper format
@@ -138,7 +135,30 @@ ss_read_log <- function(path){
 
   if(long > 0) stop("Longitude must be a negative value")
 
+  # link to the "STRING TRACKING" google sheet -
+  googlesheets4::gs4_deauth()
+
+  link <- "https://docs.google.com/spreadsheets/d/1a3QvJsvwr4dd64g3jxgewRtfutIpsKjT2yrMEAoxA3I/edit#gid=828367890"
+
+  # read in the "Area Info" tab of the STRING TRACKING sheet
+  area_tracking <- googlesheets4::read_sheet(link, sheet = "Area Info")
+
+  # look up the Station name in the Area Info tab and return the county
+  county <- area_tracking[
+    which(area_tracking$Station == station & area_tracking$Waterbody == wb),
+    "County"]$County
+
+  if(length(county) > 1) {
+    stop("There is more than one station named << ", station, " >>
+         with waterbody <<", wb, " >> in the Area Info tab")
+  }
+  if(length(county) < 1) {
+    stop("There is no station named << ", station, " >>
+         with waterbody << ", wb, " >> in the Area Info tab")
+  }
+
   area_info <- data.frame(
+    county = county,
     waterbody = log$Deployment_Waterbody[1],
     latitude = log$Logger_Latitude[1],
     longitude = log$Logger_Longitude[1],
@@ -185,9 +205,6 @@ ss_read_log <- function(path){
     select(contains("detect")) %>%
     apply(1, sum)
 
-   # select(contains("detect")) %>%
-   # mutate(total = sum(c_across(contains("detect"))))
-    #mutate(total = rowSums(.))
 
   if (any(n_sensors == 0)) {
     extra_sensor <- sensors[which(n_sensors == 0), "sensor"]
@@ -202,7 +219,6 @@ ss_read_log <- function(path){
   if (nrow(filter(sensors, detect_hobo == TRUE)) == 0) {
     message("No Hobo sensors found in log")
   }
-
 
   if (nrow(filter(sensors, detect_am == TRUE)) == 0){
     message("No aquaMeasure sensors found in log")

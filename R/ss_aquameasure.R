@@ -4,9 +4,9 @@
 #'
 #' @inheritParams ss_read_hobo_data
 #'
-#' @param path File path to the aquameasure folder.
+#' @param path File path to the aquaMeasure file.
 #'
-#' @return Returns a data.frame of aquaMeasure data, with the same columns as in
+#' @return Returns a data frame of aquaMeasure data, with the same columns as in
 #'   the original file.
 #'
 #' @author Danielle Dempsey
@@ -32,51 +32,35 @@ ss_read_aquameasure_data <- function(path, file_name) {
 }
 
 
-#' Compiles temperature, dissolved oxygen, and/or salinity data from aquaMeasure
-#' sensors
-#' @description Compiles and formats data from aquaMeasure sensors.
+#' Compiles data from aquaMeasure sensors
+#'
+#' @description Compiles and formats temperature, dissolved oxygen, salinity,
+#'   andn/or device depth data from aquaMeasure sensors.
+#'
 #' @details The raw aquaMeasure data must be saved in a folder named aquaMeasure
-#'   in .csv or .xlsx format.
+#'   in csv format. Folder name is not case-sensitive.
 #'
 #'   Rows with \code{undefined} and \code{... (time not set)} values in the
 #'   \code{Timestamp(UTC)} column are filtered out.
+#'
+#'   The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
+#'   HM", "Ymd HMS", "dmY HM", or "dmY HMS".
+#'
+#'   MOVE THIS TO QAQCMAR???
 #'
 #'   Negative Dissolved Oxygen values are converted to \code{NA}.
 #'
 #'   "ERR" values are converted to \code{NA}.
 #'
-#'   A warning message is printed if there are more than 1000 \code{NA} values
-#'   for a given variable.
-#'
-#'   All columns in are imported as characters to ensure the timestamp is parsed
-#'   correctly. Timestamp must be saved in excel as a number or a character in
-#'   the order "ymd IMS p", "Ymd IMS p", "Ymd HM", "Ymd HMS", "dmY HM", or "dmY
-#'   HMS".
-#'
-#'   There still may be parsing errors because there are not entries in every
-#'   column. This should not affect the data compilation. To check, save the
-#'   spreadsheet with a new name new, delete the column causing the error
-#'   (likely the "Text" column), re-run the function, and verify that there is
-#'   no parsing error.
-#'
 #' @inheritParams ss_compile_hobo_data
 #'
-#' @return Returns a dataframe or exports a spreadsheet with the data compiled
-#'   from each of the aquaMeasure sensors. Columns alternate between timestamp
-#'   (UTC, in the format "Y-m-d H:M:S") and variable value (rounded to three
-#'   decimal places). Metadata at the top of each column indicates the
-#'   deployment and retrieval dates, the sensor serial number, the variable and
-#'   depth of the sensor, and the timezone of the timestamp.
+#' @return Returns a tibble with the data compiled from each of the aquaMeasure
+#'   files in path/aquameasure.
 #'
-#'   To include the metadata, all values were converted to class
-#'   \code{character}. To manipulate the data, the values must be converted to
-#'   the appropriate class (e.g., \code{POSIXct} for the timestamps and
-#'   \code{numeric} for variable values). This can be done using the function
-#'   \code{convert_to_tidydata()}.
 #' @family compile
 #' @author Danielle Dempsey
 #'
-#' @importFrom dplyr %>% if_else mutate select slice
+#' @importFrom dplyr %>% distinct if_else mutate select slice tibble
 #' @importFrom glue glue
 #' @importFrom lubridate parse_date_time
 #' @importFrom stringr str_detect
@@ -88,15 +72,13 @@ ss_read_aquameasure_data <- function(path, file_name) {
 ss_compile_aquameasure_data <- function(path,
                                         sn_table,
                                         deployment_dates,
-                                        trim = TRUE,
-                                        verbose = TRUE) {
+                                        trim = TRUE) {
   # set up & check for errors
   setup <- set_up_compile(
     path = path,
     sn_table = sn_table,
     deployment_dates = deployment_dates,
-    sensor_make = "aquameasure",
-    verbose = verbose
+    sensor_make = "aquameasure"
   )
 
   path = setup$path
@@ -126,18 +108,20 @@ ss_compile_aquameasure_data <- function(path,
 
     # serial number
     sn_i <- am_i %>%
-      slice(1) %>%
-      select(Sensor) %>%
+      distinct(Sensor) %>%
       separate(Sensor, into = c("sensor", "serial number"), sep = "-")
     sn_i <- sn_i$`serial number`
+
+    # check timezone
+    date_tz <- extract_aquameasure_tz(am_colnames)
+
+
+    if (length(sn_i) > 1) stop("Multiple serial numbers found in file ", file_name)
 
     # if the serial number doesn't match any of the entries in sn_table
     if (!(sn_i %in% sn_table$serial)) {
       stop(glue("Serial number {sn_i} does not match any serial numbers in sn_table"))
     }
-
-    # check timezone
-    date_tz <- extract_aquameasure_tz(am_colnames)
 
     if (date_tz != "utc") {
       message(glue("Timestamp in file {file_name} is in timezone: {date_tz}."))
@@ -233,5 +217,5 @@ ss_compile_aquameasure_data <- function(path,
 
   message("aquaMeasure data compiled")
 
-  am_out
+  tibble(am_out)
 }

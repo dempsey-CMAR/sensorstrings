@@ -4,29 +4,25 @@
 \alias{set_up_compile}
 \title{Set up parameters, Errors, and Warnings for the \code{compile_**} functions}
 \usage{
-set_up_compile(path, sn_table, deployment_dates, sensor_make, verbose = TRUE)
+set_up_compile(path, sn_table, deployment_dates, sensor_make)
 }
 \arguments{
 \item{path}{File path to the folder with the aquameasure, hobo, or vemco
 folder.}
 
-\item{sn_table}{UPDATE THIS A table with the serial number of each HOBO and
-TidBiT sensor on the string, in the form "HOBO-xxxxxxxx" or
-"TidbiT-xxxxxxxx" (first column) and corresponding depth at which it was
-deployed in the form "2m" (second column).}
+\item{sn_table}{A data frame with three columns: \code{sensor}, code{serial},
+\code{depth}, as returned by \code{ss_read_log()}.}
 
 \item{deployment_dates}{A dataframe with two columns. The first column holds
 the deployment date (a Date object, POSIXct object, or character string in
-the order year, month, day),  and the second column holds the retrieval
-date (a Date object, POSIXct object, or character string in the order year,
+the order year, month, day), and the second column holds the retrieval date
+(a Date object, POSIXct object, or character string in the order year,
 month, day).}
 
 \item{sensor_make}{Make of the sensor to be compiled. Should match the name
 of the folder where the raw data files are saved and be found in the
 \code{sensor} column in \code{sn_table}. Most common entries will be
 "aquameasure", "hobo", or "vemco".}
-
-\item{verbose}{Logical argument specifying whether to print all Warnings.}
 }
 \value{
 Returns a list of parameters used in the \code{compile_**} functions.

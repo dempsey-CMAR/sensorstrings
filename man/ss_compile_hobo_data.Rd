@@ -2,49 +2,40 @@
 % Please edit documentation in R/ss_hobo.R
 \name{ss_compile_hobo_data}
 \alias{ss_compile_hobo_data}
-\title{Compile and format data from HOBO and TidbiT sensors}
+\title{Compile and format data from Hobo and TidbiT sensors}
 \usage{
-ss_compile_hobo_data(
-  path,
-  sn_table,
-  deployment_dates,
-  trim = TRUE,
-  verbose = TRUE
-)
+ss_compile_hobo_data(path, sn_table, deployment_dates, trim = TRUE)
 }
 \arguments{
 \item{path}{File path to the Hobo folder.}
 
-\item{sn_table}{UPDATE THIS A table with the serial number of each HOBO and
-TidBiT sensor on the string, in the form "HOBO-xxxxxxxx" or
-"TidbiT-xxxxxxxx" (first column) and corresponding depth at which it was
-deployed in the form "2m" (second column).}
+\item{sn_table}{A data frame with three columns: \code{sensor}, code{serial},
+\code{depth}, as returned by \code{ss_read_log()}.}
 
 \item{deployment_dates}{A dataframe with two columns. The first column holds
 the deployment date (a Date object, POSIXct object, or character string in
-the order year, month, day),  and the second column holds the retrieval
-date (a Date object, POSIXct object, or character string in the order year,
+the order year, month, day), and the second column holds the retrieval date
+(a Date object, POSIXct object, or character string in the order year,
 month, day).}
 
 \item{trim}{Logical value indicating whether to trim the data to the dates
-specified in /code{deployment_dates}. (Note: four hours are added to the
+specified in \code{deployment_dates}. (Note: four hours are added to the
 retrieval date to account for AST, e.g., in case the sensor was retrieved
-after 20:00 AST, which is 00:00 UTC the next day.) Default is /code{trim =
+after 20:00 AST, which is 00:00 UTC the next day.) Default is \code{trim =
 TRUE}.}
-
-\item{verbose}{Logical argument specifying whether to print all Warnings.}
 }
 \value{
-Returns a dataframe/tibble with the data compiled from each of the
-  HOBO and TidbiT sensors.
+Returns a tibble with the data compiled from each of the HOBO and
+  TidbiT sensors in path/Hobo.
 }
 \description{
 Can handle temperature and dissolved oxygen data.
 
   Need to decide if the DO data will be corrected for salinity!
-
-  Only works for csv files - will ignore .xls and .xlsx files without an
-  error.
+}
+\details{
+The exported hobo data must be saved in a folder named Hobo in csv
+  format. Folder name is not case-sensitive.
 
   All of the csv files in the Hobo folder will be compiled. The name of each
   file must be the serial number of the sensor,

@@ -24,8 +24,7 @@
 set_up_compile <- function(path,
                            sn_table,
                            deployment_dates,
-                           sensor_make,
-                           verbose = TRUE) {
+                           sensor_make) {
 
   # make sure columns of serial.table are named correctly
   names(sn_table) <- c("sensor", "serial", "depth")
@@ -63,7 +62,7 @@ set_up_compile <- function(path,
               Expected {nrow(sn_table)} files"))
   }
 
-  if (isTRUE(verbose) && length(excel_files) > 0) {
+  if (length(excel_files) > 0) {
     warning(glue("Can't compile excel files.
     {length(excel_files)} excel files found in hobo folder.
     \nHINT: Please re-export in csv format."))

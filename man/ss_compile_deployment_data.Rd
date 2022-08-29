@@ -2,43 +2,24 @@
 % Please edit documentation in R/ss_compile_deployment_data.R
 \name{ss_compile_deployment_data}
 \alias{ss_compile_deployment_data}
-\title{Compiles HOBO, aquaMeasure, and Vemco data from a single deployment}
+\title{Compiles aquaMeasure, HOBO, and Vemco data from a single deployment}
 \usage{
-ss_compile_deployment_data(
-  path,
-  sn_table,
-  deployment_dates,
-  trim = TRUE,
-  verbose = TRUE
-)
+ss_compile_deployment_data(path, trim = TRUE)
 }
 \arguments{
-\item{path}{File path to the Hobo, aquaMeasure, and/or Vemco folders.}
-
-\item{sn_table}{UPDATE THIS A table with the serial number of each HOBO and
-TidBiT sensor on the string, in the form "HOBO-xxxxxxxx" or
-"TidbiT-xxxxxxxx" (first column) and corresponding depth at which it was
-deployed in the form "2m" (second column).}
-
-\item{deployment_dates}{A dataframe with two columns. The first column holds
-the deployment date (a Date object, POSIXct object, or character string in
-the order year, month, day),  and the second column holds the retrieval
-date (a Date object, POSIXct object, or character string in the order year,
-month, day).}
+\item{path}{File path to the Log, aquaMeasure, Hobo, and/or Vemco folders.}
 
 \item{trim}{Logical value indicating whether to trim the data to the dates
-specified in /code{deployment_dates}. (Note: four hours are added to the
+specified in \code{deployment_dates}. (Note: four hours are added to the
 retrieval date to account for AST, e.g., in case the sensor was retrieved
-after 20:00 AST, which is 00:00 UTC the next day.) Default is /code{trim =
+after 20:00 AST, which is 00:00 UTC the next day.) Default is \code{trim =
 TRUE}.}
-
-\item{verbose}{Logical argument specifying whether to print all Warnings.}
 }
 \value{
-Returns a data.frame of data from a single sensor string deployment.
+Returns a data frame of data from a single sensor string deployment.
 }
 \description{
-Compiles HOBO, aquaMeasure, and Vemco data from a single deployment
+Compiles aquaMeasure, HOBO, and Vemco data from a single deployment
 }
 \details{
 Calls \code{ss_compile_HOBO_data()},

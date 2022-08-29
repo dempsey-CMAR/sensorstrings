@@ -6,7 +6,7 @@ test_that("set_up_compile() returns Errors and Warnings", {
   # when no csv file in folder
   expect_error(
     set_up_compile(
-      path = system.file("testdata", package = "sensorstrings"),
+      path = path,
       sn_table = data.frame(sensor = "test1", serial = 123456, depth = 1),
       deployment_dates = data.frame(START = "2019-05-30", END = "2019-10-19"),
       sensor_make = "test1"
@@ -16,7 +16,7 @@ test_that("set_up_compile() returns Errors and Warnings", {
   # when xlsx file
   expect_error(
     set_up_compile(
-      path = system.file("testdata", package = "sensorstrings"),
+      path = path,
       sn_table = data.frame(sensor = "test1", serial = 123456, depth = 1),
       deployment_dates = data.frame(START = "2019-05-30", END = "2019-10-19"),
       sensor_make = "test2"
@@ -26,7 +26,7 @@ test_that("set_up_compile() returns Errors and Warnings", {
   # when xls file
   expect_error(
     set_up_compile(
-      path = system.file("testdata", package = "sensorstrings"),
+      path = path,
       sn_table = data.frame(sensor = "test1", serial = 123456, depth = 1),
       deployment_dates = data.frame(START = "2019-05-30", END = "2019-10-19"),
       sensor_make = "test3"
@@ -36,7 +36,7 @@ test_that("set_up_compile() returns Errors and Warnings", {
   # when two csv files in vemco folder
   expect_error(
     set_up_compile(
-      path = system.file("testdata/test4", package = "sensorstrings"),
+      path = paste0(path, "/test4"),
       sn_table = data.frame(sensor = "test1", serial = 123456, depth = 1),
       deployment_dates = data.frame(START = "2019-05-30", END = "2019-10-19"),
       sensor_make = "vemco"
@@ -47,7 +47,7 @@ test_that("set_up_compile() returns Errors and Warnings", {
   # when sn_table has fewer rows than the number of csv files
   expect_error(
     set_up_compile(
-      path = system.file("testdata", package = "sensorstrings"),
+      path = path,
       sn_table = data.frame(sensor = "test5", serial = 123456, depth = 1),
       deployment_dates = data.frame(START = "2019-05-30", END = "2019-10-19"),
       sensor_make = "test5"
@@ -57,7 +57,7 @@ test_that("set_up_compile() returns Errors and Warnings", {
   # when sn_table has more rows than the number of csv files
   expect_error(
     set_up_compile(
-      path = system.file("testdata", package = "sensorstrings"),
+      path = path,
       sn_table = data.frame(
         sensor = c("test5", "test5", "test5"),
         serial = c(123456, 234567, 345678),

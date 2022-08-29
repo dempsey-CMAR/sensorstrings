@@ -13,6 +13,7 @@ Imports:
     data.table,
     dplyr,
     glue,
+    googlesheets4,
     janitor,
     lubridate,
     purrr,

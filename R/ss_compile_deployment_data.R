@@ -1,4 +1,4 @@
-#' @title Compiles HOBO, aquaMeasure, and Vemco data from a single deployment
+#' @title Compiles aquaMeasure, HOBO, and Vemco data from a single deployment
 #'
 #' @details Calls \code{ss_compile_HOBO_data()},
 #'   \code{ss_compile_aquaMeasure_data()} and \code{ss_compile_vemco_data()} and
@@ -10,12 +10,10 @@
 #'   folders must be in the same folder.
 #'
 #' @inheritParams ss_compile_hobo_data
-#' @inheritParams ss_compile_aquameasure_data
-#' @inheritParams ss_compile_vemco_data
-
-#' @param path File path to the Hobo, aquaMeasure, and/or Vemco folders.
 #'
-#' @return Returns a data.frame of data from a single sensor string deployment.
+#' @param path File path to the Log, aquaMeasure, Hobo, and/or Vemco folders.
+#'
+#' @return Returns a data frame of data from a single sensor string deployment.
 #'
 #' @family compile
 #' @author Danielle Dempsey
@@ -28,13 +26,17 @@
 
 
 ss_compile_deployment_data <- function(path,
-                                       sn_table,
-                                       deployment_dates,
-                                       trim = TRUE,
-                                       verbose = TRUE){
+                                       trim = TRUE){
 
-# read in log here
-  # add location columns
+
+  # read in log and add location columns ----------------------------------------------------
+  depl_log <- ss_read_log(path)
+
+  deployment_dates <- depl_log$deployment_dates
+  sn_table <- depl_log$sn_table
+  area_info <- depl_log$area_info
+
+
 
   depl_data <- data.frame(NULL)
 
@@ -47,13 +49,11 @@ ss_compile_deployment_data <- function(path,
       path = path,
       sn_table = sn_am,
       deployment_dates = deployment_dates,
-      trim = trim,
-      verbose = verbose
+      trim = trim
     )
 
     depl_data <- bind_rows(depl_data, am)
   }
-
 
 
   # hobo --------------------------------------------------------------------
@@ -65,8 +65,7 @@ ss_compile_deployment_data <- function(path,
       path = path,
       sn_table = sn_hobo,
       deployment_dates = deployment_dates,
-      trim = trim,
-      verbose = verbose
+      trim = trim
     )
 
     depl_data <- bind_rows(depl_data, hobo)
@@ -82,22 +81,30 @@ ss_compile_deployment_data <- function(path,
       path = path,
       sn_table = sn_vem,
       deployment_dates = deployment_dates,
-      trim = trim,
-      verbose = verbose
-      )
+      trim = trim
+    )
 
     depl_data <- bind_rows(depl_data, vemco)
   }
 
+# add area info columns and export ----------------------------------------
   depl_data %>%
+    mutate(
+      county = area_info$county,
+      waterbody = area_info$waterbody,
+      latitude = area_info$latitude,
+      longitude = area_info$longitude,
+      station = area_info$station,
+      lease = as.character(area_info$lease)
+    ) %>%
     ss_convert_depth_to_ordered_factor() %>%
     arrange(sensor_depth_at_low_tide_m) %>%
     select(
+      county, waterbody, station, lease, latitude, longitude,
       deployment_range, sensor,
       contains("timestamp"),
       contains("low_tide"), contains("sensor_depth_measured"),
-      contains("dissolved_oxygen"), contains("temperature"), contains("salinity" )
+      contains("dissolved_oxygen"), contains("temperature"), contains("salinity")
     )
-
 }
 

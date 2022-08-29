@@ -6,7 +6,7 @@
 #'
 #' @param path File path to the vemco folder.
 #'
-#' @return Returns a tibble of Vemco data, with the same columns as in the
+#' @return Returns a data frame of Vemco data, with the same columns as in the
 #'   original file.
 #'
 #' @author Danielle Dempsey
@@ -32,23 +32,18 @@ ss_read_vemco_data <- function(path, file_name) {
     header = TRUE,
     data.table = FALSE,
     encoding = "UTF-8",
-    na.strings = "" # might need to add ERR to na.strings
+    na.strings = ""
   )
 }
 
 
 #' Format temperature data from Vemco deployment
 #'
-#' @description This function formats data from a Vemco deployment so it can be
-#'   compiled with the HOBO and aquaMeasure data.
+#' @description Compiles and formats temperature and seawater depth data from
+#'   VR2AR sensors.
 #'
-#' @details The raw Vemco data must be saved in a folder named Vemco
-#'   (case-insensitive) in csv format.
-#'
-#'   All columns are read in as class character to ensure the timestamp is
-#'   parsed correctly. Timestamp must be saved in excel as a number or a
-#'   character in the order "ymd IMS p", "Ymd IMS p", "Ymd HM", "Ymd HMS", "dmY
-#'   HM", or "dmY HMS".
+#' @details The raw Vemco data must be saved in a folder named Vemco in csv
+#'   format. Folder name is not case-sensitive.
 #'
 #'   If there are "Temperature" entries in the Description column, these will be
 #'   extracted and compiled. If there are no "Temperature" entries, but there
@@ -56,33 +51,29 @@ ss_read_vemco_data <- function(path, file_name) {
 #'   Otherwise, the function will stop with an error message.
 #'
 #' @inheritParams ss_compile_hobo_data
-
+#'
 #' @param path File path to the Vemco folder. This folder should have one csv
 #'   file that was extracted using Vue software. Other file types in the folder
 #'   will be ignored.
 #'
-#' @return Returns a dataframe with the formatted Vemco data in three columns:
-#'   the timestamp (in the format "Y-m-d H:M:S") and temperature value (degree
-#'   celsius), and sensor_depth.
+#' @return Returns a tibble with the data compiled from the file in path/vemco.
 #'
 #' @family compile
 #' @author Danielle Dempsey
 #'
-#' @importFrom dplyr %>% case_when mutate select contains
+#' @importFrom dplyr %>% case_when mutate select contains tibble
 #' @export
 
 ss_compile_vemco_data <- function(path,
                                   sn_table,
                                   deployment_dates,
-                                  trim = TRUE,
-                                  verbose = TRUE){
+                                  trim = TRUE){
   # set up & check for errors
   setup <- set_up_compile(
     path = path,
     sn_table = sn_table,
     deployment_dates = deployment_dates,
-    sensor_make = "VR2AR",
-    verbose = verbose
+    sensor_make = "VR2AR"
   )
 
   path = setup$path
@@ -95,7 +86,6 @@ ss_compile_vemco_data <- function(path,
   dat_files <- setup$dat_files
 
   # Extract metadata --------------------------------------------------------
-
   dat <- ss_read_vemco_data(path, dat_files)
 
   dat_colnames <- colnames(dat)
@@ -153,12 +143,7 @@ ss_compile_vemco_data <- function(path,
       id_cols = "timestamp_",
       names_from = "Description", values_from = Data
     ) %>%
-    convert_timestamp_to_datetime() #%>%
-    # mutate(
-    #   temperature_degree_C = as.numeric(temperature_degree_C),
-    #   sensor_depth_measured_m = as.numeric(sensor_depth_measured_m)
-    # )
-
+    convert_timestamp_to_datetime()
 
   # trim to the dates in deployment_dates
   if(trim == TRUE) dat <- trim_data(dat, start_date, end_date)
@@ -185,6 +170,6 @@ ss_compile_vemco_data <- function(path,
 
   message(paste("Vemco data compiled:", temperature_var))
 
-  dat
+  tibble(dat)
 
 }

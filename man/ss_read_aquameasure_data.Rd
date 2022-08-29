@@ -7,12 +7,12 @@
 ss_read_aquameasure_data(path, file_name)
 }
 \arguments{
-\item{path}{File path to the aquameasure folder.}
+\item{path}{File path to the aquaMeasure file.}
 
 \item{file_name}{Name of the file to import, including file extension.}
 }
 \value{
-Returns a data.frame of aquaMeasure data, with the same columns as in
+Returns a data frame of aquaMeasure data, with the same columns as in
   the original file.
 }
 \description{

@@ -45,14 +45,13 @@ test_that("ss_compile_hobo_data() returns error if file name does not match entr
 
   expect_error(
     ss_compile_hobo_data(
-      path2,
+      path,
       sn_table = data.frame(
         sensor = c("HOBO", "HOBO"),
         serial = c(1234, 5678),
         depth = c(1, 2)
       ),
-      deployment_dates = deployment_dates,
-      verbose = FALSE
+      deployment_dates = deployment_dates
     )
   )
 })

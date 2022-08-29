@@ -1,4 +1,4 @@
-#' Import data from HOBO and TidbiT sensors
+#' Import data from Hobo and TidbiT sensors
 #'
 #' @details The Hobo data must be saved in csv format.
 #'
@@ -6,7 +6,7 @@
 #'
 #' @param file_name Name of the file to import, including file extension.
 #'
-#' @return Returns a tibble of HOBO data, with the same columns as in the
+#' @return Returns a data frame of Hobo data, with the same columns as in the
 #'   original file.
 #'
 #' @author Danielle Dempsey
@@ -33,16 +33,14 @@ ss_read_hobo_data <- function(path, file_name) {
 }
 
 
-
-
-#' @title Compile and format data from HOBO and TidbiT sensors
+#' @title Compile and format data from Hobo and TidbiT sensors
 #'
 #' @description Can handle temperature and dissolved oxygen data.
 #'
 #'   Need to decide if the DO data will be corrected for salinity!
 #'
-#'   Only works for csv files - will ignore .xls and .xlsx files without an
-#'   error.
+#' @details The exported hobo data must be saved in a folder named Hobo in csv
+#'   format. Folder name is not case-sensitive.
 #'
 #'   All of the csv files in the Hobo folder will be compiled. The name of each
 #'   file must be the serial number of the sensor,
@@ -52,33 +50,29 @@ ss_read_hobo_data <- function(path, file_name) {
 #'
 #' @param path File path to the Hobo folder.
 #'
-#' @param sn_table UPDATE THIS A table with the serial number of each HOBO and
-#'   TidBiT sensor on the string, in the form "HOBO-xxxxxxxx" or
-#'   "TidbiT-xxxxxxxx" (first column) and corresponding depth at which it was
-#'   deployed in the form "2m" (second column).
+#' @param sn_table A data frame with three columns: \code{sensor}, code{serial},
+#'   \code{depth}, as returned by \code{ss_read_log()}.
 #'
 #' @param deployment_dates A dataframe with two columns. The first column holds
 #'   the deployment date (a Date object, POSIXct object, or character string in
-#'   the order year, month, day),  and the second column holds the retrieval
-#'   date (a Date object, POSIXct object, or character string in the order year,
+#'   the order year, month, day), and the second column holds the retrieval date
+#'   (a Date object, POSIXct object, or character string in the order year,
 #'   month, day).
 #'
-#' @param verbose Logical argument specifying whether to print all Warnings.
-#'
 #' @param trim Logical value indicating whether to trim the data to the dates
-#'   specified in /code{deployment_dates}. (Note: four hours are added to the
+#'   specified in \code{deployment_dates}. (Note: four hours are added to the
 #'   retrieval date to account for AST, e.g., in case the sensor was retrieved
-#'   after 20:00 AST, which is 00:00 UTC the next day.) Default is /code{trim =
+#'   after 20:00 AST, which is 00:00 UTC the next day.) Default is \code{trim =
 #'   TRUE}.
 #'
-#' @return Returns a dataframe/tibble with the data compiled from each of the
-#'   HOBO and TidbiT sensors.
+#' @return Returns a tibble with the data compiled from each of the HOBO and
+#'   TidbiT sensors in path/Hobo.
 #'
 #' @family compile
 #'
 #' @author Danielle Dempsey
 #'
-#' @importFrom dplyr %>% contains filter mutate rename select
+#' @importFrom dplyr %>% contains filter mutate rename select tibble
 #' @importFrom glue glue
 #' @importFrom lubridate hours
 #' @importFrom purrr map_df
@@ -87,20 +81,16 @@ ss_read_hobo_data <- function(path, file_name) {
 #'
 #' @export
 
-
-
 ss_compile_hobo_data <- function(path,
                                  sn_table,
                                  deployment_dates,
-                                 trim = TRUE,
-                                 verbose = TRUE) {
+                                 trim = TRUE) {
   # set up & check for errors
   setup <- set_up_compile(
     path = path,
     sn_table = sn_table,
     deployment_dates = deployment_dates,
-    sensor_make = "hobo",
-    verbose = verbose
+    sensor_make = "hobo"
   )
 
   path = setup$path
@@ -129,30 +119,26 @@ ss_compile_hobo_data <- function(path,
 
     # sn and timezone checks --------------------------------------------------
 
-    # is the file named correctly? Compare the file name to the serial number extracted from the file
     file_name <- str_remove(file_name, ".csv")
     sn_i <- extract_hobo_sn(colnames(hobo_i))
+
+    tz_i <- filter(hobo_units, str_detect(variable, pattern = "Date"))
 
     if (file_name != sn_i) {
       stop(glue("The name of file {file_name} does not match the expected serial number ({sn_i})"))
     }
 
-    # is this file in the sn_table?
+    # is this file in the sn_table
     if (!(file_name %in% sn_table$serial)) {
       stop(glue("The name of file {file_name} does not match any serial numbers in sn_table"))
     }
 
     # is the time zone set to GMT+00:00?
-    tz_i <- filter(hobo_units, str_detect(variable, pattern = "Date"))
-
     if (tz_i$units != "utc") {
       warning(glue("The timezone of file {file_name} is not UTC.\nTimezone: {tz_i$units}"))
     }
 
-    # browser()
-
     # Select and add columns of interest ----------------------------------------------
-
     hobo_i <- hobo_i %>%
       select(contains("Date Time"), contains("DO conc"), contains("Temp")) %>%
       rename(timestamp_ = 1) %>%
@@ -182,8 +168,6 @@ ss_compile_hobo_data <- function(path,
         contains("temperature")
       )
 
-    # Format data -------------------------------------------------------------
-
     # trim to the dates in deployment_dates
     if (trim == TRUE) hobo_i <- trim_data(hobo_i, start_date, end_date)
 
@@ -194,8 +178,7 @@ ss_compile_hobo_data <- function(path,
     map_df(rbind)
 
   # Return compiled data ----------------------------------------------------
-
   message("HOBO data compiled")
 
-  hobo_out
+  tibble(hobo_out)
 }
