@@ -30,6 +30,7 @@ ss_read_hobo_data <- function(path, file_name) {
   data.table::fread(path,
                     skip = "Date",
                     encoding = "UTF-8", data.table = FALSE)
+
 }
 
 
@@ -168,8 +169,13 @@ ss_compile_hobo_data <- function(path,
         contains("temperature")
       )
 
+    check_n_rows(hobo_i, file_name = file_name, trimmed = FALSE)
+
     # trim to the dates in deployment_dates
-    if (trim == TRUE) hobo_i <- trim_data(hobo_i, start_date, end_date)
+    if (isTRUE(trim)) hobo_i <- trim_data(hobo_i, start_date, end_date)
+
+    check_n_rows(hobo_i, file_name = file_name, trimmed = trim)
+
 
     hobo_dat[[i]] <- hobo_i
   } # end loop over files

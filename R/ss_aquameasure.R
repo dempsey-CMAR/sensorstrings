@@ -18,7 +18,6 @@
 #' @export
 
 ss_read_aquameasure_data <- function(path, file_name) {
-
   assert_that(has_extension(file_name, "csv"))
 
   # finish path
@@ -175,7 +174,13 @@ ss_compile_aquameasure_data <- function(path,
       ) %>%
       convert_timestamp_to_datetime()
 
-    if (trim == TRUE) am_i <- trim_data(am_i, start_date, end_date)
+
+    check_n_rows(am_i, file_name = file_name, trimmed = FALSE)
+
+    # trim to the dates in deployment_dates
+    if (isTRUE(trim)) am_i <- trim_data(am_i, start_date, end_date)
+
+    check_n_rows(am_i, file_name = file_name, trimmed = trim)
 
     # move this to qaqcmar
     # if ("do_percent_concentration" %in% am_colnames) {
@@ -215,7 +220,7 @@ ss_compile_aquameasure_data <- function(path,
   am_out <- am_dat %>%
     map_df(rbind)
 
-  message("aquaMeasure data compiled")
+  #message("aquaMeasure data compiled")
 
   tibble(am_out)
 }

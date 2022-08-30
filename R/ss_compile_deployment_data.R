@@ -1,8 +1,8 @@
 #' @title Compiles aquaMeasure, HOBO, and Vemco data from a single deployment
 #'
-#' @details Calls \code{ss_compile_HOBO_data()},
-#'   \code{ss_compile_aquaMeasure_data()} and \code{ss_compile_vemco_data()} and
-#'   returns the results in a single data.frame.
+#' @details Calls \code{ss_compile_hobo_data()},
+#'   \code{ss_compile_aquameasure_data()} and \code{ss_compile_vemco_data()} and
+#'   returns the results in a single data frame.
 #'
 #'   HOBO data must be in a folder named Hobo, aquaMeasure data must be in a
 #'   folder named aquaMeasure, and Vemco data must be in a folder name Vemco
@@ -25,9 +25,7 @@
 #' @export
 
 
-ss_compile_deployment_data <- function(path,
-                                       trim = TRUE){
-
+ss_compile_deployment_data <- function(path, trim = TRUE) {
 
   # read in log and add location columns ----------------------------------------------------
   depl_log <- ss_read_log(path)
@@ -35,8 +33,6 @@ ss_compile_deployment_data <- function(path,
   deployment_dates <- depl_log$deployment_dates
   sn_table <- depl_log$sn_table
   area_info <- depl_log$area_info
-
-
 
   depl_data <- data.frame(NULL)
 
@@ -105,7 +101,8 @@ ss_compile_deployment_data <- function(path,
       contains("timestamp"),
       contains("low_tide"),
       # variables in alphabetical order
-      contains("dissolved_oxygen"),
+      contains("dissolved_oxygen_mg"),
+      contains("dissolved_oxygen_percent"),
       contains("salinity"),
       contains("sensor_depth_measured"),
       contains("temperature")

@@ -56,3 +56,13 @@ test_that("ss_compile_hobo_data() returns error if file name does not match entr
   )
 })
 
+test_that("ss_compile_hobo_data() returns Error if trimming removes all rows", {
+  expect_error(
+    ss_compile_hobo_data(
+      path = path,
+      deployment_dates = data.frame(START = "2020-05-30", END = "2020-10-19"),
+      sn_table = sn_hobo
+    )
+  )
+})
+

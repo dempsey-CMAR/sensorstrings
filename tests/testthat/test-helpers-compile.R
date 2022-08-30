@@ -1,8 +1,6 @@
 
 # set_up_compile ----------------------------------------------------------
-
 test_that("set_up_compile() returns Errors and Warnings", {
-
   # when no csv file in folder
   expect_error(
     set_up_compile(
@@ -37,15 +35,14 @@ test_that("set_up_compile() returns Errors and Warnings", {
   expect_error(
     set_up_compile(
       path = paste0(path, "/test4"),
-      sn_table = data.frame(sensor = "test1", serial = 123456, depth = 1),
+      sn_table = data.frame(sensor = "vemco", serial = 123456, depth = 1),
       deployment_dates = data.frame(START = "2019-05-30", END = "2019-10-19"),
       sensor_make = "vemco"
     )
   )
 
-
   # when sn_table has fewer rows than the number of csv files
-  expect_error(
+  expect_warning(
     set_up_compile(
       path = path,
       sn_table = data.frame(sensor = "test5", serial = 123456, depth = 1),
@@ -55,7 +52,7 @@ test_that("set_up_compile() returns Errors and Warnings", {
   )
 
   # when sn_table has more rows than the number of csv files
-  expect_error(
+  expect_warning(
     set_up_compile(
       path = path,
       sn_table = data.frame(
@@ -66,6 +63,19 @@ test_that("set_up_compile() returns Errors and Warnings", {
       deployment_dates = data.frame(START = "2019-05-30", END = "2019-10-19"),
       sensor_make = "test5"
     )
+  )
+})
+
+
+# check_n_rows() ------------------------------------------------------------
+
+# could use snapshot test here
+test_that("check_n_rows() returns an Error", {
+  expect_error(
+    check_n_rows(dat = data.frame(), file_name = "fake-file", trimmed = FALSE)
+  )
+  expect_error(
+    check_n_rows(dat = data.frame(), file_name = "fake-file", trimmed = TRUE)
   )
 })
 

@@ -38,13 +38,20 @@ test_that("ss_compile_vemco_data() reads in all observations", {
   expect_equal(nrow(vem_trim), 15)
 })
 
-
-test_that("ss_compile_vemco_data() returns Error", {
+test_that("ss_compile_vemco_data() returns Error and Warnings", {
   expect_error(
     ss_compile_vemco_data(
       path = path,
       deployment_dates = deployment_dates,
       sn_table = data.frame(sensor ="VR2AR", serial = "123456", depth = 6)
+    )
+  )
+
+  expect_error(
+    ss_compile_vemco_data(
+      path = path,
+      deployment_dates = data.frame(START = "2020-05-30", END = "2020-10-19"),
+      sn_table = sn_vem
     )
   )
 })

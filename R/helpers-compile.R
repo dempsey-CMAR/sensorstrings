@@ -51,14 +51,19 @@ set_up_compile <- function(path,
   # check for excel files
   excel_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|xls")
 
-  # check for surprises in dat_files -----------------------------------------------------
+  # check for surprises in dat_files
 
   if (length(dat_files) == 0) {
     stop(glue("Can't find csv files in {path}"))
   }
 
+  if (sensor_make == "vemco" && length(dat_files) > 1) {
+    stop(glue("There are {length(dat_files)} csv files in {path};
+                 expected 1 file"))
+  }
+
   if (length(dat_files) != nrow(sn_table)) {
-    stop(glue("There are {length(dat_files)} csv files in {path}.
+    warning(glue("There are {length(dat_files)} csv files in {path}.
               Expected {nrow(sn_table)} files"))
   }
 
@@ -68,12 +73,7 @@ set_up_compile <- function(path,
     \nHINT: Please re-export in csv format."))
   }
 
-  if (sensor_make == "vemco" && length(dat_files) > 1) {
-    stop(glue("There are {length(dat_files)} csv files in {path};
-                 expected 1 file"))
-  }
-
-# return info -------------------------------------------------------------
+# return info
   list(
     path = path,
     dates = dates,
@@ -81,6 +81,31 @@ set_up_compile <- function(path,
     sn_table = sn_table
   )
 }
+
+
+#' Check number of rows of data file
+#'
+#' @param dat Data frame
+#'
+#' @param file_name Name of file to check.
+#'
+#' @param trimmed Logical value indicating if \code{dat} has been trimmed.
+#'
+#' @return Returns a Warning if there no rows in \code{dat}.
+
+check_n_rows <- function(dat, file_name, trimmed = TRUE) {
+
+  if(nrow(dat) == 0) {
+    if(isFALSE(trimmed)) {
+      stop("Before trimming, there are 0 rows of data in file ", file_name)
+    }
+
+    if(isTRUE(trimmed)) {
+      stop("After trimming, there are 0 rows of data in file ", file_name)
+    }
+  }
+}
+
 
 #' convert_timestamp_to_datetime()
 #'

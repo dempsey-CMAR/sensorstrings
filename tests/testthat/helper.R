@@ -157,3 +157,16 @@ hobo_units <- ss_read_hobo_data(
 
 new_hobo_colnames <- make_column_names(hobo_units)
 
+
+# ss_pivot ----------------------------------------------------------------
+
+dat_long <- ss_pivot_longer(depl_trim)
+dat_wide <- ss_pivot_wider(dat_long)
+
+
+
+
+
+
+
+
