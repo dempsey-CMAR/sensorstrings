@@ -20,7 +20,7 @@
 #'
 #' @importFrom lubridate parse_date_time
 #' @importFrom readr read_csv write_csv
-#' @importFrom dplyr %>% arrange bind_rows contains select
+#' @importFrom dplyr %>% arrange bind_rows contains select tibble
 #'
 #' @export
 
@@ -34,7 +34,7 @@ ss_compile_deployment_data <- function(path, trim = TRUE) {
   sn_table <- depl_log$sn_table
   area_info <- depl_log$area_info
 
-  depl_data <- data.frame(NULL)
+  depl_data <- tibble(NULL)
 
   # aquameasure -------------------------------------------------------------
   sn_am <- sn_table %>%

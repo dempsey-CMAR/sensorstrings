@@ -22,9 +22,9 @@ Returns a data frame of data from a single sensor string deployment.
 Compiles aquaMeasure, HOBO, and Vemco data from a single deployment
 }
 \details{
-Calls \code{ss_compile_HOBO_data()},
-  \code{ss_compile_aquaMeasure_data()} and \code{ss_compile_vemco_data()} and
-  returns the results in a single data.frame.
+Calls \code{ss_compile_hobo_data()},
+  \code{ss_compile_aquameasure_data()} and \code{ss_compile_vemco_data()} and
+  returns the results in a single data frame.
 
   HOBO data must be in a folder named Hobo, aquaMeasure data must be in a
   folder named aquaMeasure, and Vemco data must be in a folder name Vemco
