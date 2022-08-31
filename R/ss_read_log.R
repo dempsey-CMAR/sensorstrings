@@ -73,8 +73,11 @@
 ss_read_log <- function(path){
 
 # Read in log -----------------------------------------------------------
+  folder <- list.files(path) %>%
+    str_extract(regex("log", ignore_case = TRUE)) %>%
+    na.omit()
 
-  path <- glue("{path}/Log")
+  path <- glue("{path}/{folder}")
 
   dat_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|*xls|*csv")
 
