@@ -1,0 +1,2 @@
+File included here so that folder test 1 2022-08-31 is not deleted during RCMD check.
+This file is needed so that testthat "ss_set_up_folders() returns expected Errors" passes
