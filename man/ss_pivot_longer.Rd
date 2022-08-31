@@ -2,7 +2,7 @@
 % Please edit documentation in R/ss_pivot.R
 \name{ss_pivot_longer}
 \alias{ss_pivot_longer}
-\title{Pivot sensor data from long to wide format}
+\title{Pivot sensor string data from long to wide format}
 \usage{
 ss_pivot_longer(dat_wide)
 }
@@ -17,5 +17,5 @@ Returns \code{dat} in long format. Variables (e.g., temperature,
   \code{value}.
 }
 \description{
-Pivot sensor data from long to wide format
+Pivot sensor string data from long to wide format
 }

@@ -15,7 +15,7 @@
 
 ss_pivot_longer <- function(dat_wide) {
 
-dat_wide %>%
+  dat_wide %>%
     pivot_longer(
       cols = c(
         contains("temperature"),
@@ -26,17 +26,17 @@ dat_wide %>%
       names_to = "variable",
       values_to = "value",
       values_drop_na = TRUE
-    ) %>%
-    arrange(sensor_depth_at_low_tide_m, variable)
+    ) #%>%
+  #arrange(sensor_depth_at_low_tide_m, variable) # comment out so depl_trim = dat_wide in the test
 }
 
 
 #' Pivot sensor string data from wide to long format
 #'
 #' @param dat_long Data frame of sensor string data, as returned by
-#'   \code{ss_pivot_lnger()}.
+#'   \code{ss_pivot_longer()}.
 #'
-#' @return Returns dat_long in wide format, with a separate column for each
+#' @return Returns \code{dat_long} in wide format, with a separate column for each
 #'   \code{variable}.
 #'
 #' @importFrom dplyr %>% contains relocate

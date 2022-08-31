@@ -2,16 +2,18 @@
 % Please edit documentation in R/ss_pivot.R
 \name{ss_pivot_wider}
 \alias{ss_pivot_wider}
-\title{Title}
+\title{Pivot sensor string data from wide to long format}
 \usage{
 ss_pivot_wider(dat_long)
 }
 \arguments{
-\item{dat_long}{temp}
+\item{dat_long}{Data frame of sensor string data, as returned by
+\code{ss_pivot_longer()}.}
 }
 \value{
-temp
+Returns \code{dat_long} in wide format, with a separate column for each
+  \code{variable}.
 }
 \description{
-Title
+Pivot sensor string data from wide to long format
 }

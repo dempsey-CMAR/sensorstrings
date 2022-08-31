@@ -162,9 +162,7 @@ new_hobo_colnames <- make_column_names(hobo_units)
 
 dat_long <- ss_pivot_longer(depl_trim)
 dat_wide <- ss_pivot_wider(dat_long)
-
-
-
+dat_long2 <- ss_pivot_longer(dat_wide)
 
 
 
