@@ -57,6 +57,9 @@ utils::globalVariables(
     "depth",
 
     # ss_pivot
-    "value"
+    "value",
+
+    # ss_downloade_data
+    "name"
   )
 )
