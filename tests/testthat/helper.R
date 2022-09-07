@@ -152,7 +152,6 @@ hobo_units <- ss_read_hobo_data(
 ) %>%
   extract_hobo_units()
 
-
 # make_column_names -------------------------------------------------------
 
 new_hobo_colnames <- make_column_names(hobo_units)

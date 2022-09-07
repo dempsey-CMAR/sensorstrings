@@ -11,7 +11,11 @@ test_that("ss_set_up_folders() returns expected Errors", {
 test_that("ss_set_up_folders() creates expected folders", {
 
   expect_message(
-    ss_set_up_folders(path = path, station = "station name", depl_date = "2022-08-31")
+    ss_set_up_folders(
+      path = path,
+      station = "station name",
+      depl_date = "2022-08-31",
+      sensor_folders = TRUE)
   )
 
   expect_true(

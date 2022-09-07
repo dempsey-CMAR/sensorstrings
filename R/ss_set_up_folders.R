@@ -20,6 +20,10 @@
 #'
 #' @param depl_date Deployment start date.
 #'
+#' @param sensor_folders Logical argument indicating whether to create the
+#'   aquameasure, hobo, log, and vemco folders in the deployment folder. These
+#'   folder may also be created using \code{ss_download_data()}.
+#'
 #' @return Creates the folder structure for storing raw sensor string data from
 #'   a single deployment.
 #'
@@ -28,7 +32,9 @@
 #'
 #' @export
 
-ss_set_up_folders <- function(path = NULL, station, depl_date) {
+ss_set_up_folders <- function(
+  path = NULL, station, depl_date, sensor_folders = FALSE
+) {
 
   # if(is.null(path)) {
   #   path <- file.path("Y:/Coastal Monitoring Program/Data_Strings")
@@ -68,9 +74,11 @@ ss_set_up_folders <- function(path = NULL, station, depl_date) {
 
   dir.create(path)
 
-  dir.create(paste0(path, "/log"))
-  dir.create(paste0(path, "/aquameasure"))
-  dir.create(paste0(path, "/hobo"))
-  dir.create(paste0(path, "/vemco"))
+  if(isTRUE(sensor_folders)) {
+    dir.create(paste0(path, "/log"))
+    dir.create(paste0(path, "/aquameasure"))
+    dir.create(paste0(path, "/hobo"))
+    dir.create(paste0(path, "/vemco"))
+  }
 }
 
