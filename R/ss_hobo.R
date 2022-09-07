@@ -27,9 +27,11 @@ ss_read_hobo_data <- function(path, file_name) {
   # start with row that includes the "Date" header
   # use UTF-8 coding for degree symbol
   # return as data.frame (not data.table)
-  data.table::fread(path,
-                    skip = "Date",
-                    encoding = "UTF-8", data.table = FALSE)
+  data.table::fread(
+    path,
+    skip = "Date",
+    encoding = "UTF-8", data.table = FALSE
+  )
 
 }
 
