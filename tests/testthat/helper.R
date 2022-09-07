@@ -52,25 +52,25 @@ hobo2 <- ss_read_hobo_data(path_hobo, "20827226.csv") %>%
   dplyr::rename(temperature = 4)
 #
 # # ss_compile_hobo_data ----------------------------------------------------
-#
-# sn_hobo <- data.frame(
-#   sensor = c("HOBO", "hobo"),
-#   serial = c(10755220, 20827226),
-#   depth = c(4, 5)
-# )
-#
-# hobo_all <- ss_compile_hobo_data(
-#   path,
-#   sn_table = sn_hobo,
-#   deployment_dates = deployment_dates,
-#   trim = FALSE
-# )
-#
-# hobo_trim <- ss_compile_hobo_data(
-#   path,
-#   sn_table = sn_hobo,
-#   deployment_dates = deployment_dates,
-# )
+
+sn_hobo <- data.frame(
+  sensor = c("HOBO", "hobo"),
+  serial = c(10755220, 20827226),
+  depth = c(4, 5)
+)
+
+hobo_all <- ss_compile_hobo_data(
+  path,
+  sn_table = sn_hobo,
+  deployment_dates = deployment_dates,
+  trim = FALSE
+)
+
+hobo_trim <- ss_compile_hobo_data(
+  path,
+  sn_table = sn_hobo,
+  deployment_dates = deployment_dates,
+)
 
 # Vemco -------------------------------------------------------------------
 
@@ -133,28 +133,28 @@ ts_error <- data.frame(timestamp_ = "08-22-2019 12:55")
 
 # extract_hobo_sn ---------------------------------------------------------
 
-# hobo_colnames <- c(
-#   "Date Time, GMT+00:00",
-#   "Temp, °C (LGR S/N: 10755220, SEN S/N: 10755220)"
-# )
-#
-# hobo_colnames_error <- c(
-#   "Date Time, GMT+00:00",
-#   "Temp, °C (LGR S/N: 10755220, SEN S/N: 123456)"
-# )
+hobo_colnames <- c(
+  "Date Time, GMT+00:00",
+  "Temp, °C (LGR S/N: 10755220, SEN S/N: 10755220)"
+)
+
+hobo_colnames_error <- c(
+  "Date Time, GMT+00:00",
+  "Temp, °C (LGR S/N: 10755220, SEN S/N: 123456)"
+)
 
 
 # extract_hobo_units ---------------------------------------------------
 
-# hobo_units <- ss_read_hobo_data(
-#   path = system.file("testdata/hobo", package = "sensorstrings"),
-#   file_name = "20827226.csv"
-# ) %>%
-#   extract_hobo_units()
+hobo_units <- ss_read_hobo_data(
+  path = system.file("testdata/hobo", package = "sensorstrings"),
+  file_name = "20827226.csv"
+) %>%
+  extract_hobo_units()
 
 # make_column_names -------------------------------------------------------
 
-# new_hobo_colnames <- make_column_names(hobo_units)
+new_hobo_colnames <- make_column_names(hobo_units)
 
 
 # ss_pivot ----------------------------------------------------------------
