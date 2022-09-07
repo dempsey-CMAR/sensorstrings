@@ -147,7 +147,7 @@ hobo_colnames_error <- c(
 # extract_hobo_units ---------------------------------------------------
 
 hobo_units <- ss_read_hobo_data(
-  path = system.file("testdata/hobo", package = "sensorstrings"),
+  path = system.file("testdata/Hobo", package = "sensorstrings"),
   file_name = "20827226.csv"
 ) %>%
   extract_hobo_units()
