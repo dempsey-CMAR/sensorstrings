@@ -220,7 +220,7 @@ ss_compile_aquameasure_data <- function(path,
   am_out <- am_dat %>%
     map_df(rbind)
 
-  #message("aquaMeasure data compiled")
+  message("aquaMeasure data compiled")
 
   tibble(am_out)
 }

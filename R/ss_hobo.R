@@ -114,7 +114,9 @@ ss_compile_hobo_data <- function(path,
     # Import Data -------------------------------------------------------------
     file_name <- dat_files[i]
 
-    hobo_i <- ss_read_hobo_data(path, file_name)
+    hobo_i <- ss_read_hobo_data(path, file_name) %>%
+      na.omit() # to remove the rows with no value in the Temp column
+    # e.g. the rows at the end of the file that say "Logged"
 
     # combine these two functions
     hobo_units <- extract_hobo_units(hobo_i)

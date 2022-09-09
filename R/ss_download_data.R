@@ -1,13 +1,3 @@
-
-# how will this function work with ss_set_up_folders() ?
-# run ss_set_up folders from here??
-# then don't make folders that will be empty
-# should there be separate sub-functions for each folder type?
-# or just loop over the folders found in the deployment file and purrr over the files?
-# how to test this function?
-# might need to set working directory for each file downloaded...
-# what about other folders in the Google drive? Maybe print a message if found
-
 #' Download deployment data from Google drive to the shared Perennia drive
 #'
 #' @param path File path to the deployment folder (as created by
@@ -35,9 +25,12 @@
 #
 # path <- "C:/Users/Danielle Dempsey/Desktop/Data_Strings"
 
+# station <- "sensorstrings package"
+# depl_date <- "2022-09-07"
+
 ss_download_data <- function(path, station, depl_date) {
 
-  # create aquameasure, hobo, log, and vemco folders in path/station/station_depl-date
+  # create the station and deployment folders
   ss_set_up_folders(path, station, depl_date)
 
   # set path to the new deployment folder
@@ -66,9 +59,9 @@ ss_download_data <- function(path, station, depl_date) {
       )
 
     # create local folder to store data
-    if(!(data_folder$name %in% list.files(path))) {
+    #if(!(data_folder$name %in% list.files(path))) {
       dir.create(paste(path, tolower(data_folder$name), sep = "/"))
-    }
+#    }
 
     # download the data
     walk2(

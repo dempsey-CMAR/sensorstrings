@@ -37,7 +37,7 @@ test_that("ss_compile_hobo_data() returns correct classes", {
 
 
 test_that("ss_compile_hobo_data() reads in all observations", {
-  expect_equal(nrow(hobo_all), 49)
+  expect_equal(nrow(hobo_all), 42)
   expect_equal(nrow(hobo_trim), 36)
 })
 

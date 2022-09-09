@@ -159,11 +159,11 @@ new_hobo_colnames <- make_column_names(hobo_units)
 
 # ss_pivot ----------------------------------------------------------------
 
-dat_long <- ss_pivot_longer(depl_trim)
-dat_wide <- ss_pivot_wider(dat_long)
-dat_long2 <- ss_pivot_longer(dat_wide)
+long_all <- ss_pivot_longer(depl_all)
+wide_all <- ss_pivot_wider(long_all)
+long_all2 <- ss_pivot_longer(wide_all)
 
-
-
-
+long_trim <- ss_pivot_longer(depl_trim)
+wide_trim <- ss_pivot_wider(long_trim)
+long_trim2 <- ss_pivot_longer(depl_trim)
 
