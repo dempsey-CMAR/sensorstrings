@@ -1,0 +1,115 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-"
+  #out.width = "100%"
+)
+
+library(badger)
+library(dplyr)
+library(glue)
+library(kableExtra)
+library(usethis)
+
+repo <- "dempsey-cmar/sensorstrings"
+```
+
+# sensorstrings
+
+
+```{r, echo=FALSE, out.width="25%", fig.align='center'}
+
+knitr::include_graphics("man/figures/hex_sensorstrings.png")
+
+```
+
+
+<!-- badges: start -->
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) `r badge_devel(repo, "blue")` `r badge_codefactor(repo)` `r badge_github_actions(repo)`
+
+<!-- badges: end -->
+
+**This package replaces the [strings](https://github.com/Centre-for-Marine-Applied-Research/strings) package.** 
+
+New features:
+
+- Cleaner code 
+- More straightforward workflow 
+  - don't need to export intermediate "raw" and "trim" files
+  - few arguments to specify in templates
+- Additional functions (e.g., `ss_download_data()`)
+- More helpful `Error` and `Warning` messages
+
+
+Compile, format, and visualize Water Quality (temperature, dissolved oxygen, salinity) data measured by different sensors. 
+
+## Installation
+
+You can install the development version of `sensorstrings` from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("dempsey-CMAR/sensorstrings")
+```
+
+## Background
+
+The Centre for Marine Applied Research ([CMAR](https://cmar.ca/)) coordinates an extensive [Coastal Monitoring Program](https://cmar.ca/coastal-monitoring-program/) to measure [Essential Ocean Variables](https://www.goosocean.org/index.php?option=com_content&view=article&id=14&Itemid=114) from around the coast of Nova Scotia, Canada. There are three main branches of the program: _Water Quality_, _Currents_, and _Waves_. Processed data for each branch can be viewed and downloaded from several sources, as outlined in the [CMAR Report & Data Access Cheat Sheet](https://github.com/Centre-for-Marine-Applied-Research/strings/blob/master/man/figures/README-access-cheatsheet.pdf) (download for clickable links).
+
+The `strings` package is used to compile, format, and visualize data from the _Water Quality_ branch of the Coastal Monitoring Program. 
+
+_Water Quality_ data (temperature, dissolved oxygen, and salinity) is collected using “sensor strings”. Each sensor string is attached to the seafloor by an anchor and suspended by a sub-surface buoy, with autonomous sensors attached at various depths (Figure 1). A string typically includes three sensor models: Hobo, aquaMeasure, and VR2AR (Table 1). Strings are deployed at a station for several months and data are measured every 1 minute to 1 hour, depending on the sensor.
+
+```{r, echo=FALSE, out.width="65%"}
+
+knitr::include_graphics("man/figures/figure1.png")
+
+```
+
+Figure 1: Typical sensor string configuration (not to scale).
+
+<br>
+<br>
+
+After retrieval, data from each sensor is exported to a separate csv file using manufacturer-specific software. Each type of sensor generates a data file with unique columns and header fields, which poses a significant challenge for compiling all data from a deployment into a single format for analysis.
+
+The `strings` package was originally built to address this challenge, and now offers functions to compile, format, convert units, and visualize sensor string data.
+
+`strings` was developed specifically to streamline CMAR’s workflow, but is flexible enough that other users can apply it to process data from the accepted sensors (Table 1). Refer to the vignettes for more detail.
+
+```{r, echo=FALSE,caption= "Sensor Models included"}
+
+tibble(
+  SENSORS = c(
+    "HOBO Pro V2", "HOBO DO",
+    "aquaMeasure DOT", "aquaMeasure SAL",
+    "VR2AR"
+  ),
+  urls = c(
+    "https://www.onsetcomp.com/datasheet/U22-001",
+    "https://www.onsetcomp.com/datasheet/U26-001",
+    "https://www.innovasea.com/wp-content/uploads/2021/07/Innovasea-Aquaculture-Intelligence-Spec-Sheet-062221.pdf",
+    "https://www.innovasea.com/wp-content/uploads/2021/07/Innovasea-Aquaculture-Intelligence-Spec-Sheet-062221.pdf",
+    "https://www.innovasea.com/wp-content/uploads/2021/06/Innovasea-Fish-Tracking-vr2ar-data-sheet-0621.pdf"
+  ),
+  
+  `Variable(s) Measured` = c(
+    "Temperature", "Temperature, Dissolved Oxygen", 
+    "Temperature, Dissolved Oxygen", "Temperature, Salinity", 
+    "Temperature" )
+) %>% 
+  mutate(Sensor = glue::glue("[{SENSORS}]({urls})")) %>% 
+  select(Sensor, `Variable(s) Measured`) %>% 
+  kable(align = "ll", format = "pipe")
+
+```
+
+For more information on _Water Quality_ data collection and processing, visit the [CMAR Water Quality Data Collection & Processing Cheat Sheet](man/figures/README-workflow-cheatsheet.pdf) (download for clickable links).
