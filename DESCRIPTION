@@ -1,11 +1,14 @@
 Type: Package
 Package: sensorstrings
-Title: What the Package Does (Title Case)
+Title: Compile, Format, and Visualize Sensor String Data
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line) Use four
-    spaces when indenting paragraphs within the Description.
+Authors@R:  person("Danielle", "Dempsey", , "ddempsey@perennia.ca", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Maintainer: Danielle Dempsey <ddempsey@perennia.ca>
+Description: Facilitates wrangling and analysis of Water Quality data collected as part
+    of the Centre for Marine Applied Research's Coastal Monitoring
+    Program. (Compatiable sensors: HOBO Pro V2, TidbiT MX2303, TidbiT
+    MX2203, aquaMeasure DOT, aquaMeasure SAL, aquaMeasure SST, VR2AR.)
 License: GPL-3
 Imports: 
     assertthat,
