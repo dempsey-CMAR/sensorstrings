@@ -75,7 +75,8 @@ ss_read_hobo_data <- function(path, file_name) {
 #'
 #' @author Danielle Dempsey
 #'
-#' @importFrom dplyr %>% contains filter mutate rename select tibble
+#' @importFrom dplyr %>% across contains everything filter mutate rename select
+#'   tibble
 #' @importFrom glue glue
 #' @importFrom lubridate hours
 #' @importFrom purrr map_df
@@ -114,9 +115,8 @@ ss_compile_hobo_data <- function(path,
     # Import Data -------------------------------------------------------------
     file_name <- dat_files[i]
 
-    hobo_i <- ss_read_hobo_data(path, file_name) %>%
-      na.omit() # to remove the rows with no value in the Temp column
-    # e.g. the rows at the end of the file that say "Logged"
+    hobo_i <- ss_read_hobo_data(path, file_name)  %>%
+      filter(across(everything(), ~ !grepl("Logged", .)))
 
     # combine these two functions
     hobo_units <- extract_hobo_units(hobo_i)
