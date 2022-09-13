@@ -95,31 +95,38 @@ ss_read_log <- function(path){
     log <- fread(
       paste(path, dat_files, sep = "/"),
       data.table = FALSE,
-      na.strings = c("", "n/a", "N/A"))
+      na.strings = c("", "n/a", "N/A")
+    )
   }
 
 
   # deployment dates ------------------------------------------------------------
 
   # deployment dates
-  start  <- unique(log$Deployment)
-  end <- unique(log$Retrieval)
+  depl_start  <- unique(log$Deployment)
+  depl_end <- unique(log$Retrieval)
 
   # message if there is more than one Deployment or Retrieval date
-  if(length(start) > 1 | length(end) > 1) {
-    warning("Multiple Deployment or Retrieval dates in log")
+  if (length(depl_start) > 1) {
+    warning("Multiple Deployment dates in log")
+  }
+
+  if (length(depl_end) > 1) {
+    warning("Multiple Retrieval dates in log")
   }
 
   # Stop with ERROR if the dates are not in the proper format
-  if(is.na(suppressWarnings(lubridate::ymd(log$Deployment[1]))) |
-     is.na(suppressWarnings(lubridate::ymd(log$Retrieval[1])))) {
-    stop("Deployment and Retrieval dates must be in the order year, month, day")
+  if (is.na(suppressWarnings(lubridate::ymd(depl_start[1])))) {
+    stop("Deployment date must be in the order year, month, day")
+  }
+  if (is.na(suppressWarnings(lubridate::ymd(depl_end[1])))) {
+    stop("Retrieval date must be in the order year, month, day")
   }
 
   # deployment info to export
   deployment_dates <- data.frame(
-    start_date = lubridate::ymd(log$Deployment[1]),
-    end_date = lubridate::ymd(log$Retrieval[1])
+    start_date = lubridate::ymd(depl_start),
+    end_date = lubridate::ymd(depl_end)
   )
 
 # area info ---------------------------------------------------------------
