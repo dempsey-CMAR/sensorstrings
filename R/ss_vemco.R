@@ -175,10 +175,11 @@ ss_compile_vemco_data <- function(path,
   dat2 <- dat1 %>%
     select(
       deployment_range,
+      timestamp_utc,
       # contains("timestamp"),
       sensor,
       sensor_depth_at_low_tide_m,
-      temperature_degree_C
+      #temperature_degree_C
       # dplyr::contains("temperature"),
       # dplyr::contains("sensor_depth_measured")
     )
