@@ -106,7 +106,7 @@ vem_trim <- ss_compile_vemco_data(
 path_vem2 <- system.file("testdata/test7", package = "sensorstrings")
 
 vem_trim2 <- ss_compile_vemco_data(
-  path,
+  path_vem2,
   sn_table = sn_vem,
   deployment_dates = deployment_dates,
   trim = TRUE

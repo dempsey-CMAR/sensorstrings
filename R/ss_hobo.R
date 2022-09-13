@@ -75,7 +75,7 @@ ss_read_hobo_data <- function(path, file_name) {
 #'
 #' @author Danielle Dempsey
 #'
-#' @importFrom dplyr %>% across contains everything filter mutate rename select
+#' @importFrom dplyr %>% contains everything filter if_all mutate rename select
 #'   tibble
 #' @importFrom glue glue
 #' @importFrom lubridate hours
@@ -115,8 +115,13 @@ ss_compile_hobo_data <- function(path,
     # Import Data -------------------------------------------------------------
     file_name <- dat_files[i]
 
+  #  browser()
+
     hobo_i <- ss_read_hobo_data(path, file_name)  %>%
-      filter(across(everything(), ~ !grepl("Logged", .)))
+      # to avoid deprecation Warning from GitHub Actions check
+      filter(if_all(everything(),  ~ !grepl("Logged", .)))
+      #filter(across(everything(), ~ !grepl("Logged", .)))    # this works but across() is deprecated for filter()
+     # filter(if_any(everything(),  ~ !grepl("Logged", .)))   # this doesn't work
 
     # combine these two functions
     hobo_units <- extract_hobo_units(hobo_i)
