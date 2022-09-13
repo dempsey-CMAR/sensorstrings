@@ -1,5 +1,7 @@
 ---
 output: github_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -46,6 +48,8 @@ New features:
   - don't need to export intermediate "raw" and "trim" files
   - few arguments to specify in templates
 - Additional functions (e.g., `ss_download_data()`)
+- Variable names consistent with [Climate Forecast](https://cfconventions.org/) conventions
+- Formal tests
 - More helpful `Error` and `Warning` messages
 
 
@@ -64,16 +68,15 @@ devtools::install_github("dempsey-CMAR/sensorstrings")
 
 The Centre for Marine Applied Research ([CMAR](https://cmar.ca/)) coordinates an extensive [Coastal Monitoring Program](https://cmar.ca/coastal-monitoring-program/) to measure [Essential Ocean Variables](https://www.goosocean.org/index.php?option=com_content&view=article&id=14&Itemid=114) from around the coast of Nova Scotia, Canada. There are three main branches of the program: _Water Quality_, _Currents_, and _Waves_. Processed data for each branch can be viewed and downloaded from several sources, as outlined in the [CMAR Report & Data Access Cheat Sheet](https://github.com/Centre-for-Marine-Applied-Research/strings/blob/master/man/figures/README-access-cheatsheet.pdf) (download for clickable links).
 
-The `strings` package is used to compile, format, and visualize data from the _Water Quality_ branch of the Coastal Monitoring Program. 
+The `sensorstrings` package is the backbone of the data pipeline for the _Water Quality_ branch of the Coastal Monitoring Program. It is used to organize, compile, format, and visualize data _Water Quality_ data. 
 
 _Water Quality_ data (temperature, dissolved oxygen, and salinity) is collected using “sensor strings”. Each sensor string is attached to the seafloor by an anchor and suspended by a sub-surface buoy, with autonomous sensors attached at various depths (Figure 1). A string typically includes three sensor models: Hobo, aquaMeasure, and VR2AR (Table 1). Strings are deployed at a station for several months and data are measured every 1 minute to 1 hour, depending on the sensor.
 
-```{r, echo=FALSE, out.width="65%"}
+```{r, echo=FALSE, out.width="55%", fig.align="center"}
 
 knitr::include_graphics("man/figures/figure1.png")
 
 ```
-
 Figure 1: Typical sensor string configuration (not to scale).
 
 <br>
@@ -81,9 +84,9 @@ Figure 1: Typical sensor string configuration (not to scale).
 
 After retrieval, data from each sensor is exported to a separate csv file using manufacturer-specific software. Each type of sensor generates a data file with unique columns and header fields, which poses a significant challenge for compiling all data from a deployment into a single format for analysis.
 
-The `strings` package was originally built to address this challenge, and now offers functions to compile, format, convert units, and visualize sensor string data.
+The `sensorstrings` package offers functions to compile, format, convert units, and visualize sensor string data.
 
-`strings` was developed specifically to streamline CMAR’s workflow, but is flexible enough that other users can apply it to process data from the accepted sensors (Table 1). Refer to the vignettes for more detail.
+`sensorstrings` was developed specifically to streamline CMAR’s workflow, but is flexible enough that other users can apply it to process data from the accepted sensors (Table 1). **Vignettes to come**
 
 ```{r, echo=FALSE,caption= "Sensor Models included"}
 
@@ -113,3 +116,111 @@ tibble(
 ```
 
 For more information on _Water Quality_ data collection and processing, visit the [CMAR Water Quality Data Collection & Processing Cheat Sheet](man/figures/README-workflow-cheatsheet.pdf) (download for clickable links).
+
+
+## Example
+
+```{r example}
+library(sensorstrings)
+```
+
+Consider a string deployed from May 31, 2019 to October 19, 2019 with three sensors:
+
+```{r, echo=FALSE}
+
+tibble(
+  "Sensor" = c("HOBO Pro V2", "aquaMeasure DOT", "VR2AR"),
+  "Serial #" = c("10755220", "670364", "547109"),
+  "Depth" = c("2", "5", "15")
+) %>% 
+kable(align = "lcc")
+
+```
+
+### Raw data files
+
+The data from each sensor is saved separate csv file, each with manufacturer-specific columns.
+
+Import raw data files:
+
+```{r}
+
+path <- system.file("extdata", package = "sensorstrings")
+
+aquameasure_raw <- ss_read_aquameasure_data(
+  path = paste0(path, "/aquameasure"), 
+  file_name = "aquameasure-670364.csv"
+)
+
+hobo_raw <- ss_read_hobo_data(
+  path = paste0(path, "/hobo"), 
+  file_name = "10755220.csv"
+)
+
+vemco_raw <- ss_read_vemco_data(
+  path = paste0(path, "/vemco"), 
+  file_name = "vemco-547109.csv"
+)
+
+```
+
+Examine the first rows of each raw data file:
+
+#### AquaMeasure data
+```{r}
+head(aquameasure_raw)
+```
+
+#### Hobo data
+
+```{r}
+head(hobo_raw)
+```
+
+#### Vemco data
+
+```{r}
+head(vemco_raw)
+```
+
+
+Data from each sensor is exported in a slightly different layout, making it difficult to work with and analyze all of the data from a single deployment.
+
+### Compile and format with `sensorstrings`
+
+The deployment log includes the deployment and retrieval dates, information on where the string was deployed, and the depth of each sensor.
+```{r}
+log <- ss_read_log(path)
+```
+
+```{r}
+log$deployment_dates
+```
+
+```{r}
+log$area_info
+```
+
+```{r}
+log$sn_table
+```
+
+The `ss_compile_deployment_data()` function reads in the log and the data for each sensor and exports a single data frame.
+```{r}
+dat <- ss_compile_deployment_data(path)
+
+kable(dat[1:10, ])
+```
+
+
+### Plot
+
+
+
+
+
+
+
+
+
+
