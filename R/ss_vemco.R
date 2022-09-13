@@ -142,8 +142,8 @@ ss_compile_vemco_data <- function(path,
         Description == "Average temperature" ~ "temperature"
       ),
       Units = if_else(
-        Units == "\u00B0C", #|           # if csv is saved with ANSI encoding
-          #Units == "\u00C2\u00B0C",     # if csv is saved with UTF-8 encoding
+        Units == "\u00B0C" |           # if csv is saved with ANSI encoding
+          Units == "\u00C2\u00B0C",     # if csv is saved with UTF-8 encoding
         "degree_C", Units
         ),
       Description = paste(Description, Units, sep = "_"),
