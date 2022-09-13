@@ -151,7 +151,7 @@ readr::write_csv(
 
 path2 <- file.path("C:/Users/Danielle Dempsey/Desktop/RProjects/Packages/sensorstrings/data-raw/vemco")
 
-vem_raw <- ss_read_vemco_data(path2, file_name = "VR2AR-547109.csv")
+vem_raw <- ss_read_vemco_data(path2, file_name = "vemco-547109.csv")
 
 vem <- vem_raw %>%
   slice(1:9, 104004:nrow(vem_raw)) %>%
@@ -162,12 +162,22 @@ vem <- vem_raw %>%
     )
   )
 
+data.table::fwrite(vem , file = "inst/testdata/vemco/vemco-547109.csv")
+
+
+
+# readr::write_csv(
+#   vem,
+#   "C:/Users/Danielle Dempsey/Desktop/RProjects/Packages/sensorstrings/inst/testdata/vemco/VR2AR-547109.csv",
+#   na = ""
+# )
+
+
 readr::write_csv(
   vem,
-  "C:/Users/Danielle Dempsey/Desktop/RProjects/Packages/sensorstrings/inst/testdata/vemco/VR2AR-547109.csv",
+  "C:/Users/Danielle Dempsey/Desktop/VR2AR-547109.csv",
   na = ""
 )
-
 
 
 
