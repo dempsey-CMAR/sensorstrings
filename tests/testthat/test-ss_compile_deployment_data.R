@@ -13,7 +13,7 @@ test_that("ss_compile_deployment_data() returns correct classes", {
 })
 
 
-test_that("ss_compile_deployment_data() reads in all observations", {
-  expect_equal(nrow(depl_all), sum(nrow(am_all), nrow(hobo_all), nrow(vem_all)))
-  expect_equal(nrow(depl_trim), sum(nrow(am_trim), nrow(hobo_trim), nrow(vem_trim)))
-})
+# test_that("ss_compile_deployment_data() reads in all observations", {
+#   expect_equal(nrow(depl_all), sum(nrow(am_all), nrow(hobo_all), nrow(vem_all)))
+#   expect_equal(nrow(depl_trim), sum(nrow(am_trim), nrow(hobo_trim), nrow(vem_trim)))
+# })
