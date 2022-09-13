@@ -80,6 +80,8 @@ ss_compile_deployment_data <- function(path, trim = TRUE) {
       trim = trim
     )
 
+   # browser()
+
     depl_data <- bind_rows(depl_data, vemco)
   }
 
