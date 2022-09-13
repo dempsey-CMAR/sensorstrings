@@ -42,6 +42,10 @@ set_up_compile <- function(path,
     str_extract(regex(sensor_make, ignore_case = TRUE)) %>%
     na.omit()
 
+  if(length(folder) == 0) {
+    stop("There is no folder named << ", sensor_make, " >> in path << ", path, " >>" )
+  }
+
   # path to hobo files
   path <- glue("{path}/{folder}")
 
