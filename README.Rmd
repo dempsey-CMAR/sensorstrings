@@ -139,7 +139,7 @@ kable(align = "lcc")
 
 ### Raw data files
 
-The data from each sensor is saved separate csv file, each with manufacturer-specific columns.
+The data from each sensor is saved in separate csv file, each with manufacturer-specific columns.
 
 Import raw data files:
 
@@ -188,6 +188,10 @@ Data from each sensor is exported in a slightly different layout, making it diff
 
 ### Compile and format with `sensorstrings`
 
+The `ss_compile_deployment_data()` function makes it easy to compile these files into a single data frame, with additional information added from the deployment log.
+
+#### Deployment Log
+
 The deployment log includes the deployment and retrieval dates, information on where the string was deployed, and the depth of each sensor.
 ```{r}
 log <- ss_read_log(path)
@@ -205,7 +209,9 @@ log$area_info
 log$sn_table
 ```
 
-The `ss_compile_deployment_data()` function reads in the log and the data for each sensor and exports a single data frame.
+#### Compile Data
+
+`ss_compile_deployment_data()` reads in the log and the data for each sensor and exports a single data frame.
 ```{r}
 dat <- ss_compile_deployment_data(path)
 

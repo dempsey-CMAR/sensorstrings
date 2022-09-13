@@ -164,7 +164,7 @@ VR2AR
 
 ### Raw data files
 
-The data from each sensor is saved separate csv file, each with
+The data from each sensor is saved in separate csv file, each with
 manufacturer-specific columns.
 
 Import raw data files:
@@ -263,6 +263,12 @@ deployment.
 
 ### Compile and format with `sensorstrings`
 
+The `ss_compile_deployment_data()` function makes it easy to compile
+these files into a single data frame, with additional information added
+from the deployment log.
+
+#### Deployment Log
+
 The deployment log includes the deployment and retrieval dates,
 information on where the string was deployed, and the depth of each
 sensor.
@@ -295,8 +301,10 @@ log$sn_table
 #> 3 VR2AR             547109    15
 ```
 
-The `ss_compile_deployment_data()` function reads in the log and the
-data for each sensor and exports a single data frame.
+#### Compile Data
+
+`ss_compile_deployment_data()` reads in the log and the data for each
+sensor and exports a single data frame.
 
 ``` r
 dat <- ss_compile_deployment_data(path)
