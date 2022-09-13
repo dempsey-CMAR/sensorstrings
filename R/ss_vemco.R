@@ -152,14 +152,16 @@ ss_compile_vemco_data <- function(path,
 
   check_n_rows(dat, file_name = dat_files, trimmed = FALSE)
 
-  # # trim to the dates in deployment_dates
-  # if (isTRUE(trim)) dat <- trim_data(dat, start_date, end_date)
-  #
-  # check_n_rows(dat, file_name = dat_files, trimmed = trim)
-  #
-  #
-  # colnames(dat)[which(str_detect(colnames(dat), "timestamp"))] <- paste0("timestamp_", date_tz)
-  #
+  # trim to the dates in deployment_dates
+  if (isTRUE(trim)) dat <- trim_data(dat, start_date, end_date)
+
+  check_n_rows(dat, file_name = dat_files, trimmed = trim)
+
+
+  colnames(dat)[which(str_detect(colnames(dat), "timestamp"))] <- paste0("timestamp_", date_tz)
+
+ # browser()
+
   # # add other useful columns and re-order ------------------------------------------------
   # dat <- dat %>%
   #   mutate(
