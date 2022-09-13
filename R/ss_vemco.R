@@ -88,12 +88,6 @@ ss_compile_vemco_data <- function(path,
   # Extract metadata --------------------------------------------------------
   dat <- ss_read_vemco_data(path, dat_files)
 
-  # units <- unique(dat$Units)
-  #
-  # str_detect(units, "\u00C2")
-  #
-  # str_match(units,"\u00C2\u00B0C")
-
   dat_colnames <- colnames(dat)
 
   # check timezone
@@ -158,31 +152,31 @@ ss_compile_vemco_data <- function(path,
 
   check_n_rows(dat, file_name = dat_files, trimmed = FALSE)
 
-  # trim to the dates in deployment_dates
-  if (isTRUE(trim)) dat <- trim_data(dat, start_date, end_date)
-
-  check_n_rows(dat, file_name = dat_files, trimmed = trim)
-
-
-  colnames(dat)[which(str_detect(colnames(dat), "timestamp"))] <- paste0("timestamp_", date_tz)
-
-  # add other useful columns and re-order ------------------------------------------------
-  dat <- dat %>%
-    mutate(
-      deployment_range = paste(
-        format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
-      ),
-      sensor = sensor_serial,
-      sensor_depth_at_low_tide_m = sn_table$depth
-    ) %>%
-    select(
-      deployment_range,
-      contains("timestamp"),
-      sensor,
-      sensor_depth_at_low_tide_m,
-      contains("temperature"),
-      contains("sensor_depth_measured")
-    )
+  # # trim to the dates in deployment_dates
+  # if (isTRUE(trim)) dat <- trim_data(dat, start_date, end_date)
+  #
+  # check_n_rows(dat, file_name = dat_files, trimmed = trim)
+  #
+  #
+  # colnames(dat)[which(str_detect(colnames(dat), "timestamp"))] <- paste0("timestamp_", date_tz)
+  #
+  # # add other useful columns and re-order ------------------------------------------------
+  # dat <- dat %>%
+  #   mutate(
+  #     deployment_range = paste(
+  #       format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
+  #     ),
+  #     sensor = sensor_serial,
+  #     sensor_depth_at_low_tide_m = sn_table$depth
+  #   ) %>%
+  #   select(
+  #     deployment_range,
+  #     contains("timestamp"),
+  #     sensor,
+  #     sensor_depth_at_low_tide_m,
+  #     contains("temperature"),
+  #     contains("sensor_depth_measured")
+  #   )
 
   message(paste("Vemco data compiled:", temperature_var))
 
