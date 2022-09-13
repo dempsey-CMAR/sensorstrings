@@ -76,9 +76,9 @@ hobo_trim <- ss_compile_hobo_data(
 
 # ss_read_vemco_data ------------------------------------------------
 
-# path_vem1 <- system.file("testdata/vemco", package = "sensorstrings")
-#
-# vemco1 <- ss_read_vemco_data(path_vem1, "vemco-547109.csv")
+path_vem1 <- system.file("testdata/vemco", package = "sensorstrings")
+
+vemco1 <- ss_read_vemco_data(path_vem1, "vemco-547109.csv")
 
 # ss_compile_vemco_data ---------------------------------------------
 
