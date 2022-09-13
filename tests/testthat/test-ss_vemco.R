@@ -36,6 +36,12 @@ test_that("ss_compile_vemco_data() returns correct classes", {
 test_that("ss_compile_vemco_data() reads in all observations", {
   expect_equal(nrow(vem_all), 16)
   expect_equal(nrow(vem_trim), 15)
+  expect_equal(nrow(vem_trim2), 15)
+})
+
+test_that("ss_compile_vemco_data() fixes degree symbol for UTF-8 and ANSI encoding", {
+  expect_true("temperature_degree_C" %in% colnames(vem_trim))
+  expect_true("temperature_degree_C" %in% colnames(vem_trim2))
 })
 
 test_that("ss_compile_vemco_data() returns Error and Warnings", {

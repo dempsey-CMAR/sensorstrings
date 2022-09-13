@@ -31,7 +31,7 @@ ss_read_vemco_data <- function(path, file_name) {
     path,
     header = TRUE,
     data.table = FALSE,
-    encoding = "UTF-8",
+    #encoding = "UTF-8",
     na.strings = ""
   )
 }
@@ -88,9 +88,13 @@ ss_compile_vemco_data <- function(path,
   # Extract metadata --------------------------------------------------------
   dat <- ss_read_vemco_data(path, dat_files)
 
-  dat_colnames <- colnames(dat)
+  # units <- unique(dat$Units)
+  #
+  # str_detect(units, "\u00C2")
+  #
+  # str_match(units,"\u00C2\u00B0C")
 
-  #browser()
+  dat_colnames <- colnames(dat)
 
   # check timezone
   date_tz <- extract_vemco_tz(dat_colnames)
@@ -137,7 +141,11 @@ ss_compile_vemco_data <- function(path,
         Description == "Temperature" ~ "temperature",
         Description == "Average temperature" ~ "temperature"
       ),
-      Units = if_else(Units == "\u00B0C", "degree_C", Units),
+      Units = if_else(
+        Units == "\u00B0C" |           # if csv is saved with ANSI encoding
+          Units == "\u00C2\u00B0C",     # if csv is saved with UTF-8 encoding
+        "degree_C", Units
+        ),
       Description = paste(Description, Units, sep = "_"),
       Data = as.numeric(Data)
     ) %>%

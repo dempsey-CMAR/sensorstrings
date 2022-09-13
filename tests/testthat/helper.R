@@ -76,9 +76,9 @@ hobo_trim <- ss_compile_hobo_data(
 
 # ss_read_vemco_data ------------------------------------------------
 
-path_vem <- system.file("testdata/vemco", package = "sensorstrings")
+path_vem1 <- system.file("testdata/vemco", package = "sensorstrings")
 
-vemco1 <- ss_read_vemco_data(path_vem, "VR2AR-547109.csv")
+vemco1 <- ss_read_vemco_data(path_vem1, "vemco-547109.csv")
 
 # ss_compile_vemco_data ---------------------------------------------
 
@@ -102,6 +102,15 @@ vem_trim <- ss_compile_vemco_data(
   trim = TRUE
 )
 
+# make sure UTF-8 encoding works too
+path_vem2 <- system.file("testdata/test7", package = "sensorstrings")
+
+vem_trim2 <- ss_compile_vemco_data(
+  path,
+  sn_table = sn_vem,
+  deployment_dates = deployment_dates,
+  trim = TRUE
+)
 
 # ALL deployment data -----------------------------------------------------
 
