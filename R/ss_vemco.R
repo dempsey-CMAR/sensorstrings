@@ -178,7 +178,7 @@ ss_compile_vemco_data <- function(path,
       #timestamp_utc,
       contains("timestamp"),
       sensor,
-      sensor_depth_at_low_tide_m,
+      sensor_depth_at_low_tide_m
       #temperature_degree_C
       # dplyr::contains("temperature"),
       # dplyr::contains("sensor_depth_measured")
