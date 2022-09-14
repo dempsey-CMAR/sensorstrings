@@ -31,6 +31,7 @@ ss_read_vemco_data <- function(path, file_name) {
     path,
     header = TRUE,
     data.table = FALSE,
+    encoding = "Latin-1",
    # encoding = "UTF-8",
     na.strings = ""
   )
