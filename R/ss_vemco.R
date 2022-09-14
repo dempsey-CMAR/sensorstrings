@@ -31,7 +31,7 @@ ss_read_vemco_data <- function(path, file_name) {
     path,
     header = TRUE,
     data.table = FALSE,
-    #encoding = "UTF-8",
+    encoding = "UTF-8",
     na.strings = ""
   )
 }
@@ -61,7 +61,7 @@ ss_read_vemco_data <- function(path, file_name) {
 #' @family compile
 #' @author Danielle Dempsey
 #'
-#' @importFrom dplyr %>% case_when mutate select contains tibble
+#' @importFrom dplyr %>% case_when contains mutate select tibble
 #' @export
 
 ss_compile_vemco_data <- function(path,
