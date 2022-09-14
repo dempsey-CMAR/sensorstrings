@@ -101,7 +101,7 @@ vem_all <- ss_compile_vemco_data(
 #   deployment_dates = deployment_dates,
 #   trim = TRUE
 # )
-
+#
 # # make sure UTF-8 encoding works too
 # path_vem2 <- system.file("testdata/test7", package = "sensorstrings")
 #

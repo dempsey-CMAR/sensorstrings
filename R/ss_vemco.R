@@ -31,7 +31,7 @@ ss_read_vemco_data <- function(path, file_name) {
     path,
     header = TRUE,
     data.table = FALSE,
-    encoding = "UTF-8",
+   # encoding = "UTF-8",
     na.strings = ""
   )
 }
@@ -178,10 +178,10 @@ ss_compile_vemco_data <- function(path,
       #timestamp_utc,
       dplyr::contains("timestamp"),
       sensor,
-      sensor_depth_at_low_tide_m
+      sensor_depth_at_low_tide_m,
       #temperature_degree_C
-      # dplyr::contains("temperature"),
-      # dplyr::contains("sensor_depth_measured")
+      dplyr::contains("temperature"),
+      dplyr::contains("sensor_depth_measured")
     )
 
   message(paste("Vemco data compiled:", temperature_var))
