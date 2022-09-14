@@ -95,28 +95,28 @@ vem_all <- ss_compile_vemco_data(
   trim = FALSE
 )
 
-# vem_trim <- ss_compile_vemco_data(
-#   path,
-#   sn_table = sn_vem,
-#   deployment_dates = deployment_dates,
-#   trim = TRUE
-# )
-#
-# # make sure UTF-8 encoding works too
-# path_vem2 <- system.file("testdata/test7", package = "sensorstrings")
-#
-# vem_trim2 <- ss_compile_vemco_data(
-#   path_vem2,
-#   sn_table = sn_vem,
-#   deployment_dates = deployment_dates,
-#   trim = TRUE
-# )
+vem_trim <- ss_compile_vemco_data(
+  path,
+  sn_table = sn_vem,
+  deployment_dates = deployment_dates,
+  trim = TRUE
+)
+
+# make sure UTF-8 encoding works too
+path_vem2 <- system.file("testdata/test7", package = "sensorstrings")
+
+vem_trim2 <- ss_compile_vemco_data(
+  path_vem2,
+  sn_table = sn_vem,
+  deployment_dates = deployment_dates,
+  trim = TRUE
+)
 
 # ALL deployment data -----------------------------------------------------
 
-# depl_all <- ss_compile_deployment_data(path, trim = FALSE)
-#
-# depl_trim <- ss_compile_deployment_data(path, trim = TRUE)
+depl_all <- ss_compile_deployment_data(path, trim = FALSE)
+
+depl_trim <- ss_compile_deployment_data(path, trim = TRUE)
 
 # helpers-compile ---------------------------------------------------------
 
@@ -168,11 +168,11 @@ new_hobo_colnames <- make_column_names(hobo_units)
 
 # ss_pivot ----------------------------------------------------------------
 
-# long_all <- ss_pivot_longer(depl_all)
-# wide_all <- ss_pivot_wider(long_all)
-# long_all2 <- ss_pivot_longer(wide_all)
-#
-# long_trim <- ss_pivot_longer(depl_trim)
-# wide_trim <- ss_pivot_wider(long_trim)
-# long_trim2 <- ss_pivot_longer(depl_trim)
+long_all <- ss_pivot_longer(depl_all)
+wide_all <- ss_pivot_wider(long_all)
+long_all2 <- ss_pivot_longer(wide_all)
+
+long_trim <- ss_pivot_longer(depl_trim)
+wide_trim <- ss_pivot_wider(long_trim)
+long_trim2 <- ss_pivot_longer(depl_trim)
 
