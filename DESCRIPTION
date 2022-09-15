@@ -2,7 +2,7 @@ Type: Package
 Package: sensorstrings
 Title: Compile, Format, and Visualize Sensor String Data
 Version: 0.1.0
-Authors@R: person("Danielle", "Dempsey", "ddempsey@perennia.ca", role = c("aut", "cre"),
+Authors@R: person("Danielle", "Dempsey", , "ddempsey@perennia.ca", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Maintainer: Danielle Dempsey <ddempsey@perennia.ca>
 Description: Facilitates wrangling and analysis of Water Quality data collected as part
