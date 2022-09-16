@@ -37,6 +37,9 @@
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/extract_vemco_tz.html</loc>
   </url>
   <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/get_colour_palette.html</loc>
+  </url>
+  <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/index.html</loc>
   </url>
   <url>
@@ -68,6 +71,9 @@
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_pivot_wider.html</loc>
+  </url>
+  <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_plot_variables_at_depth.html</loc>
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_read_aquameasure_data.html</loc>
