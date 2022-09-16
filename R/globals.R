@@ -59,7 +59,11 @@ utils::globalVariables(
     # ss_pivot
     "value",
 
-    # ss_downloade_data
-    "name"
+    # ss_download_data
+    "name",
+
+    # ss_plot_variables_at_depth
+    "Date"
+
   )
 )

@@ -282,7 +282,7 @@ log <- ss_read_log(path)
 ``` r
 log$deployment_dates
 #>   start_date   end_date
-#> 1 2019-05-30 2019-10-19
+#> 1 2019-05-31 2019-10-19
 ```
 
 ``` r
@@ -382,48 +382,7 @@ NA
 -62.72608
 </td>
 <td style="text-align:left;">
-2019-May-30 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-HOBO Pro V2-10755220
-</td>
-<td style="text-align:left;">
-2019-05-30 21:00:00
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-6.661
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-30 to 2019-Oct-19
+2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
 HOBO Pro V2-10755220
@@ -464,7 +423,7 @@ NA
 -62.72608
 </td>
 <td style="text-align:left;">
-2019-May-30 to 2019-Oct-19
+2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
 HOBO Pro V2-10755220
@@ -505,7 +464,7 @@ NA
 -62.72608
 </td>
 <td style="text-align:left;">
-2019-May-30 to 2019-Oct-19
+2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
 HOBO Pro V2-10755220
@@ -546,7 +505,7 @@ NA
 -62.72608
 </td>
 <td style="text-align:left;">
-2019-May-30 to 2019-Oct-19
+2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
 HOBO Pro V2-10755220
@@ -587,7 +546,7 @@ NA
 -62.72608
 </td>
 <td style="text-align:left;">
-2019-May-30 to 2019-Oct-19
+2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
 HOBO Pro V2-10755220
@@ -628,7 +587,7 @@ NA
 -62.72608
 </td>
 <td style="text-align:left;">
-2019-May-30 to 2019-Oct-19
+2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
 HOBO Pro V2-10755220
@@ -669,7 +628,7 @@ NA
 -62.72608
 </td>
 <td style="text-align:left;">
-2019-May-30 to 2019-Oct-19
+2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
 HOBO Pro V2-10755220
@@ -710,7 +669,7 @@ NA
 -62.72608
 </td>
 <td style="text-align:left;">
-2019-May-30 to 2019-Oct-19
+2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
 HOBO Pro V2-10755220
@@ -751,7 +710,7 @@ NA
 -62.72608
 </td>
 <td style="text-align:left;">
-2019-May-30 to 2019-Oct-19
+2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
 HOBO Pro V2-10755220
@@ -772,7 +731,54 @@ NA
 6.661
 </td>
 </tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-31 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+HOBO Pro V2-10755220
+</td>
+<td style="text-align:left;">
+2019-06-01 13:00:00
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+7.242
+</td>
+</tr>
 </tbody>
 </table>
 
 ### Plot
+
+``` r
+ss_plot_variables_at_depth(dat)
+```
+
+<img src="man/figures/README-fig1-1.png" width="100%" />

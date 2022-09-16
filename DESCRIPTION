@@ -15,6 +15,7 @@ Imports:
     checkmate,
     data.table,
     dplyr,
+    ggplot2,
     glue,
     googledrive,
     googlesheets4,
@@ -25,7 +26,8 @@ Imports:
     readxl,
     stringr,
     tidyr,
-    tidyselect
+    tidyselect,
+    viridis
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

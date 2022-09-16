@@ -221,6 +221,9 @@ kable(dat[1:10, ])
 
 ### Plot
 
+```{r fig1, out.width='100%', dpi=600}
+ss_plot_variables_at_depth(dat)
+```
 
 
 
