@@ -63,8 +63,7 @@ ss_set_up_folders <- function(
   new_folder <- paste(station, depl_date_out, sep = "_")
 
   if (any(str_detect(depl_folders, new_folder))) {
-    warning("Deployment folder << ", new_folder, " >> already exists in << ", path, " >>")
-    break
+    stop("Deployment folder << ", new_folder, " >> already exists in << ", path, " >>")
   }
 
   path <- paste0(path, "/", new_folder)
