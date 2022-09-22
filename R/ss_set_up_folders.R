@@ -36,10 +36,6 @@ ss_set_up_folders <- function(
   path = NULL, station, depl_date, sensor_folders = FALSE
 ) {
 
-  # if(is.null(path)) {
-  #   path <- file.path("Y:/Coastal Monitoring Program/Data_Strings")
-  # }
-
   parse_orders <- c("Ymd", "ymd","dmY", "dmy", "mdY", "mdy")
 
   # will give an error if depl_date is not in the correct order
@@ -67,7 +63,8 @@ ss_set_up_folders <- function(
   new_folder <- paste(station, depl_date_out, sep = "_")
 
   if (any(str_detect(depl_folders, new_folder))) {
-    stop("Deployment folder << ", new_folder, " >> already exists in << ", path, " >>")
+    warning("Deployment folder << ", new_folder, " >> already exists in << ", path, " >>")
+    break
   }
 
   path <- paste0(path, "/", new_folder)
