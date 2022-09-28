@@ -198,14 +198,14 @@ ss_compile_aquameasure_data <- function(path,
         deployment_range = paste(
           format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
         ),
-        sensor = as.character(sensor_info_i$sensor),
+        sensor_type = as.character(sensor_info_i$sensor),
         sensor_serial_number = sensor_info_i$serial_number,
         sensor_depth_at_low_tide_m = sensor_info_i$depth
       ) %>%
       select(
         deployment_range,
         timestamp_,
-        sensor,
+        sensor_type,
         sensor_serial_number,
         sensor_depth_at_low_tide_m,
         sensor_depth_measured_m = contains("sensor_depth_measured"),

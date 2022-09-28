@@ -2,7 +2,8 @@
 
 test_that("ss_compile_deployment_data() returns correct classes", {
   expect_equal(class(depl_all$deployment_range), "character")
-  expect_equal(class(depl_all$sensor), "character")
+  expect_equal(class(depl_all$sensor_type), "character")
+  expect_equal(class(depl_all$sensor_serial_number), "numeric")
   expect_equal(class(depl_all$timestamp_utc), c("POSIXct", "POSIXt"))
   expect_equal(class(depl_all$sensor_depth_at_low_tide_m), c("ordered", "factor"))
   expect_equal(class(depl_all$sensor_depth_measured_m), "numeric")

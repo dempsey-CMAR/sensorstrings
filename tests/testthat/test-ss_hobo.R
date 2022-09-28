@@ -29,7 +29,7 @@ test_that("ss_read_hobo_data() report error for excel files", {
 test_that("ss_compile_hobo_data() returns correct classes", {
   expect_equal(class(hobo_trim$deployment_range), "character")
   expect_equal(class(hobo_trim$timestamp_utc), c("POSIXct", "POSIXt"))
-  expect_equal(class(hobo_trim$sensor), "character")
+  expect_equal(class(hobo_trim$sensor_type), "character")
   expect_equal(class(hobo_trim$sensor_serial_number), "numeric")
   expect_equal(class(hobo_trim$sensor_depth_at_low_tide_m), "numeric")
   expect_equal(class(hobo_trim$temperature_degree_C), "numeric")

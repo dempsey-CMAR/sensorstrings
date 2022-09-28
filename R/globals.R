@@ -12,7 +12,7 @@ utils::globalVariables(
     "variable",
     "sensor_serial_number",
     "serial_number",
-    "sensor",
+    "sensor_type",
     "depth",
     "timestamp_",
     "HOBO_dat",

@@ -99,7 +99,7 @@ ss_compile_deployment_data <- function(path, trim = TRUE) {
     arrange(sensor_depth_at_low_tide_m) %>%
     select(
       county, waterbody, station, lease, latitude, longitude,
-      deployment_range, sensor,
+      deployment_range, sensor_type, sensor_serial_number,
       contains("timestamp"),
       contains("low_tide"),
       # variables in alphabetical order

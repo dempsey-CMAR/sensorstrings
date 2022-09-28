@@ -168,14 +168,14 @@ ss_compile_vemco_data <- function(path,
       deployment_range = paste(
         format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
       ),
-      sensor = sn_table$sensor,
+      sensor_type = sn_table$sensor,
       sensor_serial_number = as.numeric(sn_table$serial_number),
       sensor_depth_at_low_tide_m = sn_table$depth
     ) %>%
     select(
       deployment_range,
       contains("timestamp"),
-      sensor,
+      sensor_type,
       sensor_serial_number,
       sensor_depth_at_low_tide_m,
       contains("temperature"),
