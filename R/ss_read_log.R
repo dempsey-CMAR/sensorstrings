@@ -198,7 +198,9 @@ ss_read_log <- function(path){
 # serial number table -----------------------------------------------------
 
   sn_table <- log %>%
-    select(sensor = Logger_Model, serial = `Serial#`, depth = Sensor_Depth)
+    select(sensor = Logger_Model,
+           serial_number = `Serial#`,
+           depth = Sensor_Depth)
 
   sensors <- sn_table %>%
     mutate(

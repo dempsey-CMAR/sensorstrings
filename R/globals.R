@@ -10,7 +10,8 @@ utils::globalVariables(
   c(
     # ss_compile_hobo_data
     "variable",
-    "serial",
+    "sensor_serial_number",
+    "serial_number",
     "sensor",
     "depth",
     "timestamp_",

@@ -72,7 +72,8 @@ ss_plot_variables_at_depth <- function(dat,
         variable == "temperature_degree_C" ~ "Temperature \n(\u00B0C)",
         TRUE ~ variable
       )
-    )
+    ) %>%
+    ss_convert_depth_to_ordered_factor()
 
   ggplot(dat, aes(Date, value, colour = sensor_depth_at_low_tide_m)) +
     geom_point(size = 0.25) +
@@ -123,12 +124,12 @@ get_colour_palette <- function(dat){
     nrow()
 
   if(n_depth > 6){
-    color_palette <- viridis(n_depth, option = "D", direction = -1)
+    colour_palette <- viridis(n_depth, option = "D", direction = -1)
   } else{
-    color_palette <- viridis(6, option = "D", direction = -1)
+    colour_palette <- viridis(6, option = "D", direction = -1)
   }
 
-  color_palette
+  colour_palette
 
 }
 

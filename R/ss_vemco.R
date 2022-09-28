@@ -98,7 +98,7 @@ ss_compile_vemco_data <- function(path,
   }
 
    # sensor and serial number
-  sensor_serial <- unique(dat$Receiver)
+  sensor_serial <- tolower(unique(dat$Receiver))
 
   if (sensor_serial != sn_table$sensor_serial) {
     stop(glue("Serial number in sn_table ({sensor_serial}) does not match serial
@@ -168,16 +168,16 @@ ss_compile_vemco_data <- function(path,
       deployment_range = paste(
         format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
       ),
-      sensor = sensor_serial,
+      sensor = sn_table$sensor,
+      sensor_serial_number = as.numeric(sn_table$serial_number),
       sensor_depth_at_low_tide_m = sn_table$depth
     ) %>%
     select(
       deployment_range,
-      #timestamp_utc,
       contains("timestamp"),
       sensor,
+      sensor_serial_number,
       sensor_depth_at_low_tide_m,
-      #temperature_degree_C
       contains("temperature"),
       contains("sensor_depth_measured")
     )

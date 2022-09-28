@@ -118,7 +118,7 @@ ss_compile_aquameasure_data <- function(path,
     if (length(sn_i) > 1) stop("Multiple serial numbers found in file ", file_name)
 
     # if the serial number doesn't match any of the entries in sn_table
-    if (!(sn_i %in% sn_table$serial)) {
+    if (!(sn_i %in% sn_table$serial_number)) {
       stop(glue("Serial number {sn_i} does not match any serial numbers in sn_table"))
     }
 
@@ -139,7 +139,7 @@ ss_compile_aquameasure_data <- function(path,
     # re-format and add other columns of interest --------------------------------------------------------
 
     # use serial number to identify the depth from sn_table
-    sensor_info_i <- dplyr::filter(sn_table, serial == sn_i)
+    sensor_info_i <- dplyr::filter(sn_table, serial_number == sn_i)
 
     vars <- extract_aquameasure_vars(am_colnames)
 
@@ -198,13 +198,15 @@ ss_compile_aquameasure_data <- function(path,
         deployment_range = paste(
           format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
         ),
-        sensor = as.character(sensor_info_i$sensor_serial),
+        sensor = as.character(sensor_info_i$sensor),
+        sensor_serial_number = sensor_info_i$serial_number,
         sensor_depth_at_low_tide_m = sensor_info_i$depth
       ) %>%
       select(
         deployment_range,
         timestamp_,
         sensor,
+        sensor_serial_number,
         sensor_depth_at_low_tide_m,
         sensor_depth_measured_m = contains("sensor_depth_measured"),
         dissolved_oxygen_percent_saturation = contains("percent_sat"),

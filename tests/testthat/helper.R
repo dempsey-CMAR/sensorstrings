@@ -18,7 +18,7 @@ am1 <- ss_read_aquameasure_data(path_am, "aquaMeasure-670364.csv")
 
 sn_am <- data.frame(
   sensor = rep("aquaMeasure", 3),
-  serial = c(670364, 680154, 675008),
+  serial_number = c(670364, 680154, 675008),
   depth = c(1, 2, 3)
 )
 
@@ -84,7 +84,7 @@ vemco1 <- ss_read_vemco_data(path_vem1, "vemco-547109.csv")
 
 sn_vem <- data.frame(
   sensor = "VR2AR",
-  serial = "547109",
+  serial_number = "547109",
   depth = 6
 )
 

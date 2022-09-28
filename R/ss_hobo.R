@@ -139,7 +139,7 @@ ss_compile_hobo_data <- function(path,
     }
 
     # is this file in the sn_table
-    if (!(file_name %in% sn_table$serial)) {
+    if (!(file_name %in% sn_table$serial_number)) {
       stop(glue("The name of file {file_name} does not match any serial numbers in sn_table"))
     }
 
@@ -159,20 +159,22 @@ ss_compile_hobo_data <- function(path,
     # add other useful columns and re-order ------------------------------------------------
 
     # use serial number to identify the variable and depth (from sn_table)
-    sensor_info_i <- dplyr::filter(sn_table, serial == sn_i)
+    sensor_info_i <- dplyr::filter(sn_table, serial_number == sn_i)
 
     hobo_i <- hobo_i %>%
       mutate(
         deployment_range = paste(
           format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
         ),
-        sensor = as.character(sensor_info_i$sensor_serial),
+        sensor = as.character(sensor_info_i$sensor),
+        sensor_serial_number = sensor_info_i$serial_number,
         sensor_depth_at_low_tide_m = sensor_info_i$depth
       ) %>%
       select(
         deployment_range,
         contains("timestamp"),
         sensor,
+        sensor_serial_number,
         sensor_depth_at_low_tide_m,
         contains("dissolved_oxygen"),
         contains("temperature")

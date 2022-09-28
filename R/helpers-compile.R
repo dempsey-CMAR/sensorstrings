@@ -27,10 +27,14 @@ set_up_compile <- function(path,
                            sensor_make) {
 
   # make sure columns of serial.table are named correctly
-  names(sn_table) <- c("sensor", "serial", "depth")
+  names(sn_table) <- c("sensor", "serial_number", "depth")
   sn_table <- sn_table %>%
     filter(str_detect(sensor, regex(sensor_make, ignore_case = TRUE))) %>%
-    mutate(sensor_serial = glue("{sensor}-{serial}"))
+    mutate(
+      sensor = tolower(sensor_make),
+      sensor_serial = glue("{sensor}-{serial_number}")
+    )
+   # mutate(sensor_serial = glue("{sensor}-{serial}"))
 
   # extract the deployment start and end dates from deployment_dates
   dates <- extract_deployment_dates(deployment_dates)

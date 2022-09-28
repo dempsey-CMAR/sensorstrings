@@ -25,12 +25,13 @@ test_that("ss_read_vemco_data() report error for excel files", {
 # ss_compile_vemco_data ---------------------------------------------------
 
 test_that("ss_compile_vemco_data() returns correct classes", {
-expect_equal(class(vem_all$deployment_range), "character")
-expect_equal(class(vem_all$timestamp_utc), c("POSIXct", "POSIXt"))
-expect_equal(class(vem_all$sensor), "character")
-expect_equal(class(vem_all$sensor_depth_at_low_tide_m), "numeric")
-expect_equal(class(vem_all$sensor_depth_measured_m), "numeric")
-expect_equal(class(vem_all$temperature_degree_C), "numeric")
+  expect_equal(class(vem_all$deployment_range), "character")
+  expect_equal(class(vem_all$timestamp_utc), c("POSIXct", "POSIXt"))
+  expect_equal(class(vem_all$sensor), "character")
+  expect_equal(class(vem_all$sensor_serial_number), "numeric")
+  expect_equal(class(vem_all$sensor_depth_at_low_tide_m), "numeric")
+  expect_equal(class(vem_all$sensor_depth_measured_m), "numeric")
+  expect_equal(class(vem_all$temperature_degree_C), "numeric")
 })
 
 test_that("ss_compile_vemco_data() reads in all observations", {
