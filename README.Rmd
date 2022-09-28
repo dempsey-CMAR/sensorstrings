@@ -62,7 +62,7 @@ You can install the development version of `sensorstrings` from [GitHub](https:/
 ``` r
 # install.packages("devtools")
 devtools::install_github("dempsey-CMAR/sensorstrings")
-```
+``` 
 
 ## Background
 

@@ -294,11 +294,11 @@ log$area_info
 ``` r
 log$sn_table
 #> # A tibble: 3 x 3
-#>   sensor            serial depth
-#>   <chr>              <dbl> <dbl>
-#> 1 HOBO Pro V2     10755220     2
-#> 2 aquaMeasure DOT   670364     5
-#> 3 VR2AR             547109    15
+#>   sensor          serial_number depth
+#>   <chr>                   <dbl> <dbl>
+#> 1 HOBO Pro V2          10755220     2
+#> 2 aquaMeasure DOT        670364     5
+#> 3 VR2AR                  547109    15
 ```
 
 #### Compile Data
@@ -342,7 +342,10 @@ longitude
 deployment_range
 </th>
 <th style="text-align:left;">
-sensor
+sensor_type
+</th>
+<th style="text-align:right;">
+sensor_serial_number
 </th>
 <th style="text-align:left;">
 timestamp_utc
@@ -385,7 +388,10 @@ NA
 2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
-HOBO Pro V2-10755220
+hobo
+</td>
+<td style="text-align:right;">
+10755220
 </td>
 <td style="text-align:left;">
 2019-05-31 01:00:00
@@ -426,7 +432,10 @@ NA
 2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
-HOBO Pro V2-10755220
+hobo
+</td>
+<td style="text-align:right;">
+10755220
 </td>
 <td style="text-align:left;">
 2019-05-31 05:00:00
@@ -467,7 +476,10 @@ NA
 2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
-HOBO Pro V2-10755220
+hobo
+</td>
+<td style="text-align:right;">
+10755220
 </td>
 <td style="text-align:left;">
 2019-05-31 09:00:00
@@ -508,7 +520,10 @@ NA
 2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
-HOBO Pro V2-10755220
+hobo
+</td>
+<td style="text-align:right;">
+10755220
 </td>
 <td style="text-align:left;">
 2019-05-31 13:00:00
@@ -549,7 +564,10 @@ NA
 2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
-HOBO Pro V2-10755220
+hobo
+</td>
+<td style="text-align:right;">
+10755220
 </td>
 <td style="text-align:left;">
 2019-05-31 17:00:00
@@ -590,7 +608,10 @@ NA
 2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
-HOBO Pro V2-10755220
+hobo
+</td>
+<td style="text-align:right;">
+10755220
 </td>
 <td style="text-align:left;">
 2019-05-31 21:00:00
@@ -631,7 +652,10 @@ NA
 2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
-HOBO Pro V2-10755220
+hobo
+</td>
+<td style="text-align:right;">
+10755220
 </td>
 <td style="text-align:left;">
 2019-06-01 01:00:00
@@ -672,7 +696,10 @@ NA
 2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
-HOBO Pro V2-10755220
+hobo
+</td>
+<td style="text-align:right;">
+10755220
 </td>
 <td style="text-align:left;">
 2019-06-01 05:00:00
@@ -713,7 +740,10 @@ NA
 2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
-HOBO Pro V2-10755220
+hobo
+</td>
+<td style="text-align:right;">
+10755220
 </td>
 <td style="text-align:left;">
 2019-06-01 09:00:00
@@ -754,7 +784,10 @@ NA
 2019-May-31 to 2019-Oct-19
 </td>
 <td style="text-align:left;">
-HOBO Pro V2-10755220
+hobo
+</td>
+<td style="text-align:right;">
+10755220
 </td>
 <td style="text-align:left;">
 2019-06-01 13:00:00
