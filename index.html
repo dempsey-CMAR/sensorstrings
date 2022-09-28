@@ -271,11 +271,11 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">log</span><span class="op">$</span><span class="va">sn_table</span></span>
 <span><span class="co">#&gt; # A tibble: 3 x 3</span></span>
-<span><span class="co">#&gt;   sensor            serial depth</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;              &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 HOBO Pro V2     10755220     2</span></span>
-<span><span class="co">#&gt; 2 aquaMeasure DOT   670364     5</span></span>
-<span><span class="co">#&gt; 3 VR2AR             547109    15</span></span></code></pre></div>
+<span><span class="co">#&gt;   sensor          serial_number depth</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                   &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 HOBO Pro V2          10755220     2</span></span>
+<span><span class="co">#&gt; 2 aquaMeasure DOT        670364     5</span></span>
+<span><span class="co">#&gt; 3 VR2AR                  547109    15</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="compile-data">Compile Data<a class="anchor" aria-label="anchor" href="#compile-data"></a>
@@ -299,7 +299,8 @@
 <th style="text-align:right;">latitude</th>
 <th style="text-align:right;">longitude</th>
 <th style="text-align:left;">deployment_range</th>
-<th style="text-align:left;">sensor</th>
+<th style="text-align:left;">sensor_type</th>
+<th style="text-align:right;">sensor_serial_number</th>
 <th style="text-align:left;">timestamp_utc</th>
 <th style="text-align:left;">sensor_depth_at_low_tide_m</th>
 <th style="text-align:right;">dissolved_oxygen_percent_saturation</th>
@@ -315,7 +316,8 @@
 <td style="text-align:right;">44.77241</td>
 <td style="text-align:right;">-62.72608</td>
 <td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">HOBO Pro V2-10755220</td>
+<td style="text-align:left;">hobo</td>
+<td style="text-align:right;">10755220</td>
 <td style="text-align:left;">2019-05-31 01:00:00</td>
 <td style="text-align:left;">2</td>
 <td style="text-align:right;">NA</td>
@@ -330,7 +332,8 @@
 <td style="text-align:right;">44.77241</td>
 <td style="text-align:right;">-62.72608</td>
 <td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">HOBO Pro V2-10755220</td>
+<td style="text-align:left;">hobo</td>
+<td style="text-align:right;">10755220</td>
 <td style="text-align:left;">2019-05-31 05:00:00</td>
 <td style="text-align:left;">2</td>
 <td style="text-align:right;">NA</td>
@@ -345,7 +348,8 @@
 <td style="text-align:right;">44.77241</td>
 <td style="text-align:right;">-62.72608</td>
 <td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">HOBO Pro V2-10755220</td>
+<td style="text-align:left;">hobo</td>
+<td style="text-align:right;">10755220</td>
 <td style="text-align:left;">2019-05-31 09:00:00</td>
 <td style="text-align:left;">2</td>
 <td style="text-align:right;">NA</td>
@@ -360,7 +364,8 @@
 <td style="text-align:right;">44.77241</td>
 <td style="text-align:right;">-62.72608</td>
 <td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">HOBO Pro V2-10755220</td>
+<td style="text-align:left;">hobo</td>
+<td style="text-align:right;">10755220</td>
 <td style="text-align:left;">2019-05-31 13:00:00</td>
 <td style="text-align:left;">2</td>
 <td style="text-align:right;">NA</td>
@@ -375,7 +380,8 @@
 <td style="text-align:right;">44.77241</td>
 <td style="text-align:right;">-62.72608</td>
 <td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">HOBO Pro V2-10755220</td>
+<td style="text-align:left;">hobo</td>
+<td style="text-align:right;">10755220</td>
 <td style="text-align:left;">2019-05-31 17:00:00</td>
 <td style="text-align:left;">2</td>
 <td style="text-align:right;">NA</td>
@@ -390,7 +396,8 @@
 <td style="text-align:right;">44.77241</td>
 <td style="text-align:right;">-62.72608</td>
 <td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">HOBO Pro V2-10755220</td>
+<td style="text-align:left;">hobo</td>
+<td style="text-align:right;">10755220</td>
 <td style="text-align:left;">2019-05-31 21:00:00</td>
 <td style="text-align:left;">2</td>
 <td style="text-align:right;">NA</td>
@@ -405,7 +412,8 @@
 <td style="text-align:right;">44.77241</td>
 <td style="text-align:right;">-62.72608</td>
 <td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">HOBO Pro V2-10755220</td>
+<td style="text-align:left;">hobo</td>
+<td style="text-align:right;">10755220</td>
 <td style="text-align:left;">2019-06-01 01:00:00</td>
 <td style="text-align:left;">2</td>
 <td style="text-align:right;">NA</td>
@@ -420,7 +428,8 @@
 <td style="text-align:right;">44.77241</td>
 <td style="text-align:right;">-62.72608</td>
 <td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">HOBO Pro V2-10755220</td>
+<td style="text-align:left;">hobo</td>
+<td style="text-align:right;">10755220</td>
 <td style="text-align:left;">2019-06-01 05:00:00</td>
 <td style="text-align:left;">2</td>
 <td style="text-align:right;">NA</td>
@@ -435,7 +444,8 @@
 <td style="text-align:right;">44.77241</td>
 <td style="text-align:right;">-62.72608</td>
 <td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">HOBO Pro V2-10755220</td>
+<td style="text-align:left;">hobo</td>
+<td style="text-align:right;">10755220</td>
 <td style="text-align:left;">2019-06-01 09:00:00</td>
 <td style="text-align:left;">2</td>
 <td style="text-align:right;">NA</td>
@@ -450,7 +460,8 @@
 <td style="text-align:right;">44.77241</td>
 <td style="text-align:right;">-62.72608</td>
 <td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">HOBO Pro V2-10755220</td>
+<td style="text-align:left;">hobo</td>
+<td style="text-align:right;">10755220</td>
 <td style="text-align:left;">2019-06-01 13:00:00</td>
 <td style="text-align:left;">2</td>
 <td style="text-align:right;">NA</td>
