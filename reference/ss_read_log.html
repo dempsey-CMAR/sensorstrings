@@ -55,20 +55,16 @@
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>Returns a list with 5 elements. <code>deployment.dates</code> is a
-  dataframe with two columns: <code>start.date</code> (the date of deployment) and</p>
+<p>Returns a list with 5 elements. <code>deployment_dates</code> is a data
+  frame with two columns: <code>start_date</code> (the date of deployment) and</p>
 <p></p>
-<p><code>end.date</code> (date of retrieval). <code>area.info</code> is a dataframe with
-  five columns: <code>waterbody</code>, <code>latitude</code>, <code>longitude</code>,</p>
+<p><code>end_date</code> (date of retrieval). <code>area_info</code> is a data frame with
+  five columns:<code>county</code>, <code>waterbody</code>, <code>latitude</code>,</p>
 <p></p>
-<p><code>station</code>, and <code>lease</code>. <code>HOBO</code>, <code>aM</code>, and <code>vemco</code></p>
-
-
-<p>are each a dataframe with two columns: <code>SENSOR</code> (serial number) and
-  the</p>
-
-
-<p>corresponding <code>DEPTH</code> (depth of deployment in m).</p>
+<p><code>longitude</code>, <code>station</code>, and <code>lease</code>. <code>sn_table</code> is a
+  data frame with three columns: <code>log_sensor</code> (sensor name as recorded
+  in the log), <code>sensor_serial_number</code>, and <code>depth</code> (sensor depth
+  below the surface at low tide from the Sensor_Depth column).</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -81,26 +77,26 @@
 <p><code>Deployment</code>: The deployment date, in the order "Ymd"</p>
 <p><code>Retrieval</code>: The retrieval date, in the order "Ymd"</p>
 <p><code>Logger_Latitude</code>: The latitude at which the string was deployed</p>
-<p><code>Logger_Longitude</code> The longitude at which the string was deployed</p>
+<p><code>Logger_Longitude</code> The longitude at which the string was deployed
+  (must be a negative value)</p>
 <p><code>Logger_Model</code> The type of sensor; see below for options</p>
 <p><code>Serial#</code> The sensor serial number</p>
 <p><code>Sensor_Depth</code>: Depth at which the sensor was deployed</p>
 <p>All other columns will be ignored.</p>
-<p>Entries in the <code>Logger_Model</code> column can be "HOBO Pro V2", "HOBO DO",
-  "TidbiT MX2303", "TidbiT MX2203"  "aquaMeasure DOT", "aquaMeasure SAL",
-  "aquaMeasure SST", or "VR2AR". (Some mis-spellings are accepted: "HOBO pro
-  V2", "HOBO_Pro_V2", "aquameasure DOT", "aquameasure SAL", "aquameasure
-  SST")</p>
+<p>Entries in the <code>Logger_Model</code> column must include the string
+  "aquameasure", "hobo", "tidbit", or "vr2ar" (not case sensitive).</p>
+<p>The function will stop with an Error if there is more than one eligible
+  file (csv, .xlsx or .xls) in the Log folder.</p>
+<p>The function will stop with an Error if there if the
+  <code>Logger_Longitude</code> is a positive value.</p>
 <p>A Warning message is printed to the console when the function does not
   recognize a sensor in the log.</p>
-<p>A message is printed to the console when Hobo, aquaMeasure, or Vemco
+<p>A message is printed to the console when hobo, aquameasure, or vemco
   sensors are not found in the log.</p>
 <p>A message will be printed to the console if there is more than one unique
   entry in <code>Deployment_Waterbody</code>, <code>Location_Description</code>,
   <code>Deployment</code>, <code>Retrieval</code>, <code>Logger_Latitude</code>, or
   <code>Logger_Longitude</code>.</p>
-<p>If there is more than one eligible file (csv, .xlsx or .xls) in the Log
-  folder, the function will stop with an error.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

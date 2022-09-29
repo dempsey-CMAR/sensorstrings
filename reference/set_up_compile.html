@@ -53,12 +53,12 @@ folder.</p></dd>
 
 
 <dt>sn_table</dt>
-<dd><p>A data frame with three columns: <code>sensor</code>, codeserial,
-<code>depth</code>, as returned by <code><a href="ss_read_log.html">ss_read_log()</a></code>.</p></dd>
+<dd><p>A data frame with three columns: <code>sensor_type</code>,
+codesensor_serial_number, <code>depth</code>.</p></dd>
 
 
 <dt>deployment_dates</dt>
-<dd><p>A dataframe with two columns. The first column holds
+<dd><p>A data frame with two columns. The first column holds
 the deployment date (a Date object, POSIXct object, or character string in
 the order year, month, day), and the second column holds the retrieval date
 (a Date object, POSIXct object, or character string in the order year,
@@ -67,8 +67,7 @@ month, day).</p></dd>
 
 <dt>sensor_make</dt>
 <dd><p>Make of the sensor to be compiled. Should match the name
-of the folder where the raw data files are saved and be found in the
-<code>sensor</code> column in <code>sn_table</code>. Most common entries will be
+of the folder where the raw data files. Most common entries will be
 "aquameasure", "hobo", or "vemco".</p></dd>
 
 </dl></div>
@@ -76,10 +75,18 @@ of the folder where the raw data files are saved and be found in the
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>Returns a list of parameters used in the <code>compile_**</code> functions.
-  Returns Errors and Warnings if the expected files are not found in</p>
-<p></p>
-<p><code>folder</code>.</p>
+<p>Returns a list of parameters used in the <code>compile_**</code> functions:
+  final path to the folder of interest, deployment dates, vector of files in
+  the folder, <code>sn_table</code> filtered for <code>sensor_make</code>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>An extra column named <code>sensor_type</code> is added to
+  <code>sn_table</code>, with values of <code>sensor_make</code>. The <code>sensor_type</code>
+  column is what is used in the compiled data (e.g., "aquameasure", "hobo",
+  "vr2ar" vs "HOBO PRO V2" or "aquaMeasure DOT").</p>
+<p>Returns Errors and Warnings if the expected files are not found on the
+  <code>path</code>.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
