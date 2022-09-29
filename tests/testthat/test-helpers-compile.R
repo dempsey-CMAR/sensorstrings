@@ -107,6 +107,6 @@ test_that("extract_hobo_units() returns correct units", {
 test_that("make_column_names() returns correct names", {
   expect_equal(
     new_hobo_colnames$col_name,
-    c("timestamp_utc", "dissolved_oxygen_mg_per_L", "temperature_degree_C")
+    c("timestamp_utc", "dissolved_oxygen_uncorrected_mg_per_L", "temperature_degree_C")
   )
 })

@@ -3,18 +3,26 @@
 
 #' Set up parameters, Errors, and Warnings for the \code{compile_**} functions
 #'
+#' @details An extra column named \code{sensor_type} is added to
+#'   \code{sn_table}, with values of \code{sensor_make}. The \code{sensor_type}
+#'   column is what is used in the compiled data (e.g., "aquameasure", "hobo",
+#'   "vr2ar" vs "HOBO PRO V2" or "aquaMeasure DOT").
+#'
+#'   Returns Errors and Warnings if the expected files are not found on the
+#'   \code{path}.
+#'
 #' @inheritParams ss_compile_hobo_data
+#'
 #' @param path File path to the folder with the aquameasure, hobo, or vemco
 #'   folder.
 #'
 #' @param sensor_make Make of the sensor to be compiled. Should match the name
-#'   of the folder where the raw data files are saved and be found in the
-#'   \code{sensor} column in \code{sn_table}. Most common entries will be
+#'   of the folder where the raw data files. Most common entries will be
 #'   "aquameasure", "hobo", or "vemco".
 #'
-#' @return Returns a list of parameters used in the \code{compile_**} functions.
-#'   Returns Errors and Warnings if the expected files are not found in
-#'   \code{folder}.
+#' @return Returns a list of parameters used in the \code{compile_**} functions:
+#'   final path to the folder of interest, deployment dates, vector of files in
+#'   the folder, \code{sn_table} filtered for \code{sensor_make}.
 #'
 #' @importFrom dplyr %>% mutate select
 #' @importFrom glue glue
@@ -26,15 +34,17 @@ set_up_compile <- function(path,
                            deployment_dates,
                            sensor_make) {
 
-  # make sure columns of serial.table are named correctly
-  names(sn_table) <- c("sensor", "serial_number", "depth")
+  # make sure columns of sn_table are named correctly
+  # log_sensor is the Logger_Model from the deployment log
+  names(sn_table) <- c("log_sensor", "sensor_serial_number", "depth")
   sn_table <- sn_table %>%
-    filter(str_detect(sensor, regex(sensor_make, ignore_case = TRUE))) %>%
+    filter(str_detect(log_sensor, regex(sensor_make, ignore_case = TRUE))) %>%
     mutate(
-      sensor = tolower(sensor_make),
-      sensor_serial = glue("{sensor}-{serial_number}")
+      # this standardizes the sensor_type column,
+      ## e.g., replaces "HOBO PRO V2" with "hobo"
+      sensor_type = tolower(sensor_make)
+      # sensor_serial = glue("{sensor_type}-{serial_number}")
     )
-   # mutate(sensor_serial = glue("{sensor}-{serial}"))
 
   # extract the deployment start and end dates from deployment_dates
   dates <- extract_deployment_dates(deployment_dates)
@@ -324,7 +334,7 @@ make_column_names <- function(unit_table) {
       ),
       variable = str_replace(
         variable,
-        pattern = "DO conc", replacement = "dissolved_oxygen_"
+        pattern = "DO conc", replacement = "dissolved_oxygen_uncorrected_"
       ),
       variable = str_replace(
         variable,

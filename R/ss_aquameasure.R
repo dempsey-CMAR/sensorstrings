@@ -1,12 +1,12 @@
-#' @title Import data from aquaMeasure sensors
+#' @title Import data from aquameasure sensors
 #'
-#' @details The aquaMeasure data must be saved in csv format.
+#' @details The aquameasure data must be saved in csv format.
 #'
 #' @inheritParams ss_read_hobo_data
 #'
-#' @param path File path to the aquaMeasure file.
+#' @param path File path to the aquameasure file.
 #'
-#' @return Returns a data frame of aquaMeasure data, with the same columns as in
+#' @return Returns a data frame of aquameasure data, with the same columns as in
 #'   the original file.
 #'
 #' @author Danielle Dempsey
@@ -31,12 +31,12 @@ ss_read_aquameasure_data <- function(path, file_name) {
 }
 
 
-#' Compiles data from aquaMeasure sensors
+#' Compiles data from aquameasure sensors
 #'
 #' @description Compiles and formats temperature, dissolved oxygen, salinity,
-#'   andn/or device depth data from aquaMeasure sensors.
+#'   and/or device depth data from aquameasure sensors.
 #'
-#' @details The raw aquaMeasure data must be saved in a folder named aquaMeasure
+#' @details The raw aquameasure data must be saved in a folder named aquameasure
 #'   in csv format. Folder name is not case-sensitive.
 #'
 #'   Rows with \code{undefined} and \code{... (time not set)} values in the
@@ -53,7 +53,7 @@ ss_read_aquameasure_data <- function(path, file_name) {
 #'
 #' @inheritParams ss_compile_hobo_data
 #'
-#' @return Returns a tibble with the data compiled from each of the aquaMeasure
+#' @return Returns a tibble with the data compiled from each of the aquameasure
 #'   files in path/aquameasure.
 #'
 #' @family compile
@@ -118,7 +118,7 @@ ss_compile_aquameasure_data <- function(path,
     if (length(sn_i) > 1) stop("Multiple serial numbers found in file ", file_name)
 
     # if the serial number doesn't match any of the entries in sn_table
-    if (!(sn_i %in% sn_table$serial_number)) {
+    if (!(sn_i %in% sn_table$sensor_serial_number)) {
       stop(glue("Serial number {sn_i} does not match any serial numbers in sn_table"))
     }
 
@@ -139,7 +139,7 @@ ss_compile_aquameasure_data <- function(path,
     # re-format and add other columns of interest --------------------------------------------------------
 
     # use serial number to identify the depth from sn_table
-    sensor_info_i <- dplyr::filter(sn_table, serial_number == sn_i)
+    sensor_info_i <- dplyr::filter(sn_table, sensor_serial_number == sn_i)
 
     vars <- extract_aquameasure_vars(am_colnames)
 
@@ -198,8 +198,8 @@ ss_compile_aquameasure_data <- function(path,
         deployment_range = paste(
           format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
         ),
-        sensor_type = as.character(sensor_info_i$sensor),
-        sensor_serial_number = sensor_info_i$serial_number,
+        sensor_type = as.character(sensor_info_i$sensor_type),
+        sensor_serial_number = sensor_info_i$sensor_serial_number,
         sensor_depth_at_low_tide_m = sensor_info_i$depth
       ) %>%
       select(
@@ -222,7 +222,7 @@ ss_compile_aquameasure_data <- function(path,
   am_out <- am_dat %>%
     map_df(rbind)
 
-  message("aquaMeasure data compiled")
+  message("aquameasure data compiled")
 
   tibble(am_out)
 }

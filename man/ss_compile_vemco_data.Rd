@@ -11,10 +11,10 @@ ss_compile_vemco_data(path, sn_table, deployment_dates, trim = TRUE)
 file that was extracted using Vue software. Other file types in the folder
 will be ignored.}
 
-\item{sn_table}{A data frame with three columns: \code{sensor}, code{serial},
-\code{depth}, as returned by \code{ss_read_log()}.}
+\item{sn_table}{A data frame with three columns: \code{sensor_type},
+code{sensor_serial_number}, \code{depth}.}
 
-\item{deployment_dates}{A dataframe with two columns. The first column holds
+\item{deployment_dates}{A data frame with two columns. The first column holds
 the deployment date (a Date object, POSIXct object, or character string in
 the order year, month, day), and the second column holds the retrieval date
 (a Date object, POSIXct object, or character string in the order year,

@@ -17,8 +17,8 @@ am1 <- ss_read_aquameasure_data(path_am, "aquaMeasure-670364.csv")
 # ss_compile_aquameasure_data ---------------------------------------------
 
 sn_am <- data.frame(
-  sensor = rep("aquaMeasure", 3),
-  serial_number = c(670364, 680154, 675008),
+  sensor_type = rep("aquaMeasure", 3),
+  sensor_serial_number = c(670364, 680154, 675008),
   depth = c(1, 2, 3)
 )
 
@@ -54,8 +54,8 @@ hobo2 <- ss_read_hobo_data(path_hobo, "20827226.csv") %>%
 # # ss_compile_hobo_data ----------------------------------------------------
 
 sn_hobo <- data.frame(
-  sensor = c("HOBO", "hobo"),
-  serial = c(10755220, 20827226),
+  sensor_type = c("HOBO", "hobo"),
+  sensor_serial_number = c(10755220, 20827226),
   depth = c(4, 5)
 )
 
@@ -83,8 +83,8 @@ vemco1 <- ss_read_vemco_data(path_vem1, "vemco-547109.csv")
 # ss_compile_vemco_data ---------------------------------------------
 
 sn_vem <- data.frame(
-  sensor = "VR2AR",
-  serial_number = "547109",
+  sensor_type = "VR2AR",
+  sensor_serial_number = "547109",
   depth = 6
 )
 

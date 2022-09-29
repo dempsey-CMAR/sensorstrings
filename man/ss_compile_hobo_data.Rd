@@ -2,17 +2,17 @@
 % Please edit documentation in R/ss_hobo.R
 \name{ss_compile_hobo_data}
 \alias{ss_compile_hobo_data}
-\title{Compile and format data from Hobo and TidbiT sensors}
+\title{Compile and format data from hobo and tidbit sensors}
 \usage{
 ss_compile_hobo_data(path, sn_table, deployment_dates, trim = TRUE)
 }
 \arguments{
-\item{path}{File path to the Hobo folder.}
+\item{path}{File path to the hobo folder.}
 
-\item{sn_table}{A data frame with three columns: \code{sensor}, code{serial},
-\code{depth}, as returned by \code{ss_read_log()}.}
+\item{sn_table}{A data frame with three columns: \code{sensor_type},
+code{sensor_serial_number}, \code{depth}.}
 
-\item{deployment_dates}{A dataframe with two columns. The first column holds
+\item{deployment_dates}{A data frame with two columns. The first column holds
 the deployment date (a Date object, POSIXct object, or character string in
 the order year, month, day), and the second column holds the retrieval date
 (a Date object, POSIXct object, or character string in the order year,
@@ -25,20 +25,20 @@ after 20:00 AST, which is 00:00 UTC the next day.) Default is \code{trim =
 TRUE}.}
 }
 \value{
-Returns a tibble with the data compiled from each of the HOBO and
-  TidbiT sensors in path/Hobo.
+Returns a tibble with the data compiled from each of the hobo and
+  tidbit sensors in path/hobo.
 }
 \description{
 Can handle temperature and dissolved oxygen data.
 
-  Need to decide if the DO data will be corrected for salinity!
+  Does NOT correct dissolved oxygen data for salinity.
 }
 \details{
-The exported hobo data must be saved in a folder named Hobo in csv
+The exported hobo data must be saved in a folder named hobo in csv
   format. Folder name is not case-sensitive.
 
   All of the csv files in the Hobo folder will be compiled. The name of each
-  file must be the serial number of the sensor,
+  file must be the serial number of the sensor.
 
   The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
   HM", "Ymd HMS", "dmY HM", or "dmY HMS".

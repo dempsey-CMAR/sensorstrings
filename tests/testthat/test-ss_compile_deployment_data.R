@@ -8,7 +8,7 @@ test_that("ss_compile_deployment_data() returns correct classes", {
   expect_equal(class(depl_all$sensor_depth_at_low_tide_m), c("ordered", "factor"))
   expect_equal(class(depl_all$sensor_depth_measured_m), "numeric")
   expect_equal(class(depl_all$dissolved_oxygen_percent_saturation), "numeric")
-  expect_equal(class(depl_all$dissolved_oxygen_mg_per_L), "numeric")
+  expect_equal(class(depl_all$dissolved_oxygen_uncorrected_mg_per_L), "numeric")
   expect_equal(class(depl_all$temperature_degree_C), "numeric")
   expect_equal(class(depl_all$salinity_psu), "numeric")
 })

@@ -2,17 +2,17 @@
 % Please edit documentation in R/ss_aquameasure.R
 \name{ss_compile_aquameasure_data}
 \alias{ss_compile_aquameasure_data}
-\title{Compiles data from aquaMeasure sensors}
+\title{Compiles data from aquameasure sensors}
 \usage{
 ss_compile_aquameasure_data(path, sn_table, deployment_dates, trim = TRUE)
 }
 \arguments{
-\item{path}{File path to the Hobo folder.}
+\item{path}{File path to the hobo folder.}
 
-\item{sn_table}{A data frame with three columns: \code{sensor}, code{serial},
-\code{depth}, as returned by \code{ss_read_log()}.}
+\item{sn_table}{A data frame with three columns: \code{sensor_type},
+code{sensor_serial_number}, \code{depth}.}
 
-\item{deployment_dates}{A dataframe with two columns. The first column holds
+\item{deployment_dates}{A data frame with two columns. The first column holds
 the deployment date (a Date object, POSIXct object, or character string in
 the order year, month, day), and the second column holds the retrieval date
 (a Date object, POSIXct object, or character string in the order year,
@@ -25,15 +25,15 @@ after 20:00 AST, which is 00:00 UTC the next day.) Default is \code{trim =
 TRUE}.}
 }
 \value{
-Returns a tibble with the data compiled from each of the aquaMeasure
+Returns a tibble with the data compiled from each of the aquameasure
   files in path/aquameasure.
 }
 \description{
 Compiles and formats temperature, dissolved oxygen, salinity,
-  andn/or device depth data from aquaMeasure sensors.
+  and/or device depth data from aquameasure sensors.
 }
 \details{
-The raw aquaMeasure data must be saved in a folder named aquaMeasure
+The raw aquameasure data must be saved in a folder named aquameasure
   in csv format. Folder name is not case-sensitive.
 
   Rows with \code{undefined} and \code{... (time not set)} values in the

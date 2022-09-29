@@ -1,17 +1,18 @@
-#' @title Compiles aquaMeasure, HOBO, and Vemco data from a single deployment
+#' @title Compiles aquameasure, hObO, and vemco data from a single deployment
 #'
-#' @details Calls \code{ss_compile_hobo_data()},
-#'   \code{ss_compile_aquameasure_data()} and \code{ss_compile_vemco_data()} and
-#'   returns the results in a single data frame.
+#' @details Reads the deployment log and then calls
+#'   \code{ss_compile_aquameasure_data()}, \code{ss_compile_hobo_data()}, and
+#'   \code{ss_compile_vemco_data()} and returns the results in a single data
+#'   frame.
 #'
-#'   HOBO data must be in a folder named Hobo, aquaMeasure data must be in a
-#'   folder named aquaMeasure, and Vemco data must be in a folder name Vemco
-#'   (folder names are not case sensitive). The Hobo, aquaMeasure, and Vemco
+#'   aquameasure data must be in a folder named aquameasure, hobo data must be
+#'   in a folder named hobo,  and vemco data must be in a folder name vemco
+#'   (folder names are not case sensitive). The aquameasure, hobo, and vemco
 #'   folders must be in the same folder.
 #'
 #' @inheritParams ss_compile_hobo_data
 #'
-#' @param path File path to the Log, aquaMeasure, Hobo, and/or Vemco folders.
+#' @param path File path to the log, aquameasure, hobo, and/or vemco folders.
 #'
 #' @return Returns a data frame of data from a single sensor string deployment.
 #'
@@ -38,7 +39,7 @@ ss_compile_deployment_data <- function(path, trim = TRUE) {
 
   # aquameasure -------------------------------------------------------------
   sn_am <- sn_table %>%
-    filter(str_detect(sensor, regex("aquameasure", ignore_case = TRUE)))
+    filter(str_detect(log_sensor, regex("aquameasure", ignore_case = TRUE)))
 
   if (nrow(sn_am) > 0) {
     am <- ss_compile_aquameasure_data(
@@ -54,7 +55,7 @@ ss_compile_deployment_data <- function(path, trim = TRUE) {
 
   # hobo --------------------------------------------------------------------
   sn_hobo <- sn_table %>%
-    filter(str_detect(sensor, regex("hobo", ignore_case = TRUE)))
+    filter(str_detect(log_sensor, regex("hobo", ignore_case = TRUE)))
 
   if (nrow(sn_hobo) > 0){
     hobo <- ss_compile_hobo_data(
@@ -69,7 +70,7 @@ ss_compile_deployment_data <- function(path, trim = TRUE) {
 
 # vemco -------------------------------------------------------------------
   sn_vem <- sn_table %>%
-    filter(str_detect(sensor, regex("VR2AR", ignore_case = TRUE)))
+    filter(str_detect(log_sensor, regex("VR2AR", ignore_case = TRUE)))
 
   if (nrow(sn_vem) > 0){
 
@@ -103,7 +104,7 @@ ss_compile_deployment_data <- function(path, trim = TRUE) {
       contains("timestamp"),
       contains("low_tide"),
       # variables in alphabetical order
-      contains("dissolved_oxygen_mg"),
+      contains("dissolved_oxygen_uncorrected"),
       contains("dissolved_oxygen_percent"),
       contains("salinity"),
       contains("sensor_depth_measured"),

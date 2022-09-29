@@ -16,6 +16,7 @@
 #'   \code{Logger_Latitude}: The latitude at which the string was deployed
 #'
 #'   \code{Logger_Longitude} The longitude at which the string was deployed
+#'   (must be a negative value)
 #'
 #'   \code{Logger_Model} The type of sensor; see below for options
 #'
@@ -25,16 +26,19 @@
 #'
 #'   All other columns will be ignored.
 #'
-#'   Entries in the \code{Logger_Model} column can be "HOBO Pro V2", "HOBO DO",
-#'   "TidbiT MX2303", "TidbiT MX2203"  "aquaMeasure DOT", "aquaMeasure SAL",
-#'   "aquaMeasure SST", or "VR2AR". (Some mis-spellings are accepted: "HOBO pro
-#'   V2", "HOBO_Pro_V2", "aquameasure DOT", "aquameasure SAL", "aquameasure
-#'   SST")
+#'   Entries in the \code{Logger_Model} column must include the string
+#'   "aquameasure", "hobo", "tidbit", or "vr2ar" (not case sensitive).
+#'
+#'   The function will stop with an Error if there is more than one eligible
+#'   file (csv, .xlsx or .xls) in the Log folder.
+#'
+#'   The function will stop with an Error if there if the
+#'   \code{Logger_Longitude} is a positive value.
 #'
 #'   A Warning message is printed to the console when the function does not
 #'   recognize a sensor in the log.
 #'
-#'   A message is printed to the console when Hobo, aquaMeasure, or Vemco
+#'   A message is printed to the console when hobo, aquameasure, or vemco
 #'   sensors are not found in the log.
 #'
 #'   A message will be printed to the console if there is more than one unique
@@ -42,23 +46,20 @@
 #'   \code{Deployment}, \code{Retrieval}, \code{Logger_Latitude}, or
 #'   \code{Logger_Longitude}.
 #'
-#'   If there is more than one eligible file (csv, .xlsx or .xls) in the Log
-#'   folder, the function will stop with an error.
-#'
 #' @param path File path to the Log folder.
 #'
-#' @return Returns a list with 5 elements. \code{deployment.dates} is a
-#'   dataframe with two columns: \code{start.date} (the date of deployment) and
-#'   \code{end.date} (date of retrieval). \code{area.info} is a dataframe with
-#'   five columns: \code{waterbody}, \code{latitude}, \code{longitude},
-#'   \code{station}, and \code{lease}. \code{HOBO}, \code{aM}, and \code{vemco}
-#'   are each a dataframe with two columns: \code{SENSOR} (serial number) and
-#'   the
+#' @return Returns a list with 5 elements. \code{deployment_dates} is a data
+#'   frame with two columns: \code{start_date} (the date of deployment) and
+#'   \code{end_date} (date of retrieval). \code{area_info} is a data frame with
+#'   five columns:\code{county}, \code{waterbody}, \code{latitude},
+#'   \code{longitude}, \code{station}, and \code{lease}. \code{sn_table} is a
+#'   data frame with three columns: \code{log_sensor} (sensor name as recorded
+#'   in the log), \code{sensor_serial_number}, and \code{depth} (sensor depth
+#'   below the surface at low tide from the Sensor_Depth column).
 #'
-#'   corresponding \code{DEPTH} (depth of deployment in m).
 #' @family compile
 #' @author Danielle Dempsey
-
+#'
 #' @importFrom data.table fread
 #' @importFrom dplyr %>% contains filter mutate select
 #' @importFrom glue glue
@@ -73,6 +74,7 @@
 ss_read_log <- function(path){
 
 # Read in log -----------------------------------------------------------
+  # extract the name of the log folder (e.g. Log, log, LOG)
   folder <- list.files(path) %>%
     str_extract(regex("log", ignore_case = TRUE)) %>%
     na.omit()
@@ -198,18 +200,20 @@ ss_read_log <- function(path){
 # serial number table -----------------------------------------------------
 
   sn_table <- log %>%
-    select(sensor = Logger_Model,
-           serial_number = `Serial#`,
-           depth = Sensor_Depth)
+    select(
+      log_sensor = Logger_Model,
+      sensor_serial_number = `Serial#`,
+      depth = Sensor_Depth
+    )
 
   sensors <- sn_table %>%
     mutate(
-      sensor = str_replace(sensor, "_", " "),
-      sensor = tolower(sensor),
-      detect_hobo = str_detect(sensor, "hobo"),
-      detect_tidbit = str_detect(sensor, "tidbit"),
-      detect_am = str_detect(sensor, "aquameasure"),
-      detect_vemco = str_detect(sensor, "vr2ar")
+      log_sensor = str_replace(log_sensor, "_", " "),
+      log_sensor = tolower(log_sensor),
+      detect_hobo = str_detect(log_sensor, "hobo"),
+      detect_tidbit = str_detect(log_sensor, "tidbit"),
+      detect_am = str_detect(log_sensor, "aquameasure"),
+      detect_vemco = str_detect(log_sensor, "vr2ar")
     )
 
   # warning if there are any sensors in the log that are NOT recognized by package
@@ -219,7 +223,7 @@ ss_read_log <- function(path){
 
 
   if (any(n_sensors == 0)) {
-    extra_sensor <- sensors[which(n_sensors == 0), "sensor"]
+    extra_sensor <- sensors[which(n_sensors == 0), "log_sensor"]
 
     warning(
       glue("{extra_sensor} found in the Logger_Model column of the log.

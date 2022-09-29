@@ -10,25 +10,33 @@ set_up_compile(path, sn_table, deployment_dates, sensor_make)
 \item{path}{File path to the folder with the aquameasure, hobo, or vemco
 folder.}
 
-\item{sn_table}{A data frame with three columns: \code{sensor}, code{serial},
-\code{depth}, as returned by \code{ss_read_log()}.}
+\item{sn_table}{A data frame with three columns: \code{sensor_type},
+code{sensor_serial_number}, \code{depth}.}
 
-\item{deployment_dates}{A dataframe with two columns. The first column holds
+\item{deployment_dates}{A data frame with two columns. The first column holds
 the deployment date (a Date object, POSIXct object, or character string in
 the order year, month, day), and the second column holds the retrieval date
 (a Date object, POSIXct object, or character string in the order year,
 month, day).}
 
 \item{sensor_make}{Make of the sensor to be compiled. Should match the name
-of the folder where the raw data files are saved and be found in the
-\code{sensor} column in \code{sn_table}. Most common entries will be
+of the folder where the raw data files. Most common entries will be
 "aquameasure", "hobo", or "vemco".}
 }
 \value{
-Returns a list of parameters used in the \code{compile_**} functions.
-  Returns Errors and Warnings if the expected files are not found in
-  \code{folder}.
+Returns a list of parameters used in the \code{compile_**} functions:
+  final path to the folder of interest, deployment dates, vector of files in
+  the folder, \code{sn_table} filtered for \code{sensor_make}.
 }
 \description{
 Set up parameters, Errors, and Warnings for the \code{compile_**} functions
+}
+\details{
+An extra column named \code{sensor_type} is added to
+  \code{sn_table}, with values of \code{sensor_make}. The \code{sensor_type}
+  column is what is used in the compiled data (e.g., "aquameasure", "hobo",
+  "vr2ar" vs "HOBO PRO V2" or "aquaMeasure DOT").
+
+  Returns Errors and Warnings if the expected files are not found on the
+  \code{path}.
 }

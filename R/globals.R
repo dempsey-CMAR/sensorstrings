@@ -11,7 +11,6 @@ utils::globalVariables(
     # ss_compile_hobo_data
     "variable",
     "sensor_serial_number",
-    "serial_number",
     "sensor_type",
     "depth",
     "timestamp_",
@@ -50,6 +49,7 @@ utils::globalVariables(
     "detect_hobo",
     "detect_am",
     "detect_vemco",
+    "log_sensor",
 
     # make_column_names
     "col_name",

@@ -97,12 +97,12 @@ ss_compile_vemco_data <- function(path,
     message(glue("Timestamp in file {dat_files} is in timezone: {date_tz}."))
   }
 
-   # sensor and serial number
-  sensor_serial <- tolower(unique(dat$Receiver))
+   # serial number from data file
+  serial <- as.numeric(str_remove(unique(dat$Receiver), "VR2AR-"))
 
-  if (sensor_serial != sn_table$sensor_serial) {
-    stop(glue("Serial number in sn_table ({sensor_serial}) does not match serial
-              number in file {dat_files} ({sn_table$sensor_serial})"))
+  if (serial != sn_table$sensor_serial_number) {
+    stop(glue("Serial number in sn_table ({sn_table$sensor_serial_number})
+    does not match serial number in file {dat_files} ({serial}) "))
   }
 
   # Format data -------------------------------------------------------------
@@ -168,8 +168,8 @@ ss_compile_vemco_data <- function(path,
       deployment_range = paste(
         format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
       ),
-      sensor_type = sn_table$sensor,
-      sensor_serial_number = as.numeric(sn_table$serial_number),
+      sensor_type = sn_table$sensor_type,
+      sensor_serial_number = as.numeric(sn_table$sensor_serial_number),
       sensor_depth_at_low_tide_m = sn_table$depth
     ) %>%
     select(
@@ -182,7 +182,7 @@ ss_compile_vemco_data <- function(path,
       contains("sensor_depth_measured")
     )
 
-  message(paste("Vemco data compiled:", temperature_var))
+  message(paste("vemco data compiled:", temperature_var))
 
   tibble(dat)
 

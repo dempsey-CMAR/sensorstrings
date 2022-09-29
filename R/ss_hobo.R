@@ -1,12 +1,12 @@
-#' Import data from Hobo and TidbiT sensors
+#' Import data from hobo and tidbit sensors
 #'
-#' @details The Hobo data must be saved in csv format.
+#' @details The hobo data must be saved in csv format.
 #'
 #' @param path File path to the hobo file.
 #'
 #' @param file_name Name of the file to import, including file extension.
 #'
-#' @return Returns a data frame of Hobo data, with the same columns as in the
+#' @return Returns a data frame of hobo data, with the same columns as in the
 #'   original file.
 #'
 #' @author Danielle Dempsey
@@ -36,27 +36,27 @@ ss_read_hobo_data <- function(path, file_name) {
 }
 
 
-#' @title Compile and format data from Hobo and TidbiT sensors
+#' @title Compile and format data from hobo and tidbit sensors
 #'
 #' @description Can handle temperature and dissolved oxygen data.
 #'
-#'   Need to decide if the DO data will be corrected for salinity!
+#'   Does NOT correct dissolved oxygen data for salinity.
 #'
-#' @details The exported hobo data must be saved in a folder named Hobo in csv
+#' @details The exported hobo data must be saved in a folder named hobo in csv
 #'   format. Folder name is not case-sensitive.
 #'
 #'   All of the csv files in the Hobo folder will be compiled. The name of each
-#'   file must be the serial number of the sensor,
+#'   file must be the serial number of the sensor.
 #'
 #'   The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
 #'   HM", "Ymd HMS", "dmY HM", or "dmY HMS".
 #'
-#' @param path File path to the Hobo folder.
+#' @param path File path to the hobo folder.
 #'
-#' @param sn_table A data frame with three columns: \code{sensor}, code{serial},
-#'   \code{depth}, as returned by \code{ss_read_log()}.
+#' @param sn_table A data frame with three columns: \code{sensor_type},
+#'   code{sensor_serial_number}, \code{depth}.
 #'
-#' @param deployment_dates A dataframe with two columns. The first column holds
+#' @param deployment_dates A data frame with two columns. The first column holds
 #'   the deployment date (a Date object, POSIXct object, or character string in
 #'   the order year, month, day), and the second column holds the retrieval date
 #'   (a Date object, POSIXct object, or character string in the order year,
@@ -68,8 +68,8 @@ ss_read_hobo_data <- function(path, file_name) {
 #'   after 20:00 AST, which is 00:00 UTC the next day.) Default is \code{trim =
 #'   TRUE}.
 #'
-#' @return Returns a tibble with the data compiled from each of the HOBO and
-#'   TidbiT sensors in path/Hobo.
+#' @return Returns a tibble with the data compiled from each of the hobo and
+#'   tidbit sensors in path/hobo.
 #'
 #' @family compile
 #'
@@ -139,7 +139,7 @@ ss_compile_hobo_data <- function(path,
     }
 
     # is this file in the sn_table
-    if (!(file_name %in% sn_table$serial_number)) {
+    if (!(file_name %in% sn_table$sensor_serial_number)) {
       stop(glue("The name of file {file_name} does not match any serial numbers in sn_table"))
     }
 
@@ -159,15 +159,15 @@ ss_compile_hobo_data <- function(path,
     # add other useful columns and re-order ------------------------------------------------
 
     # use serial number to identify the variable and depth (from sn_table)
-    sensor_info_i <- dplyr::filter(sn_table, serial_number == sn_i)
+    sensor_info_i <- dplyr::filter(sn_table, sensor_serial_number == sn_i)
 
     hobo_i <- hobo_i %>%
       mutate(
         deployment_range = paste(
           format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
         ),
-        sensor_type = as.character(sensor_info_i$sensor),
-        sensor_serial_number = sensor_info_i$serial_number,
+        sensor_type = as.character(sensor_info_i$sensor_type),
+        sensor_serial_number = sensor_info_i$sensor_serial_number,
         sensor_depth_at_low_tide_m = sensor_info_i$depth
       ) %>%
       select(
@@ -195,7 +195,7 @@ ss_compile_hobo_data <- function(path,
     map_df(rbind)
 
   # Return compiled data ----------------------------------------------------
-  message("HOBO data compiled")
+  message("hobo data compiled")
 
   tibble(hobo_out)
 }
