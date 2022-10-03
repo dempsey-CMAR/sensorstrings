@@ -164,23 +164,24 @@ ss_compile_vemco_data <- function(path,
 
   # # add other useful columns and re-order ------------------------------------------------
   dat <- dat %>%
-    mutate(
-      deployment_range = paste(
-        format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
-      ),
-      sensor_type = sn_table$sensor_type,
-      sensor_serial_number = as.numeric(sn_table$sensor_serial_number),
-      sensor_depth_at_low_tide_m = sn_table$depth
-    ) %>%
-    select(
-      deployment_range,
-      contains("timestamp"),
-      sensor_type,
-      sensor_serial_number,
-      sensor_depth_at_low_tide_m,
-      contains("temperature"),
-      contains("sensor_depth_measured")
-    )
+    add_deployment_columns(start_date, end_date, sn_table)
+    # mutate(
+    #   deployment_range = paste(
+    #     format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
+    #   ),
+    #   sensor_type = sn_table$sensor_type,
+    #   sensor_serial_number = as.numeric(sn_table$sensor_serial_number),
+    #   sensor_depth_at_low_tide_m = sn_table$depth
+    # ) %>%
+    # select(
+    #   deployment_range,
+    #   contains("timestamp"),
+    #   sensor_type,
+    #   sensor_serial_number,
+    #   sensor_depth_at_low_tide_m,
+    #   contains("temperature"),
+    #   contains("sensor_depth_measured")
+    # )
 
   message(paste("vemco data compiled:", temperature_var))
 

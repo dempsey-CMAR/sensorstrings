@@ -194,25 +194,26 @@ ss_compile_aquameasure_data <- function(path,
     #}
 
     am_i <- am_i %>%
-      mutate(
-        deployment_range = paste(
-          format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
-        ),
-        sensor_type = as.character(sensor_info_i$sensor_type),
-        sensor_serial_number = sensor_info_i$sensor_serial_number,
-        sensor_depth_at_low_tide_m = sensor_info_i$depth
-      ) %>%
-      select(
-        deployment_range,
-        timestamp_,
-        sensor_type,
-        sensor_serial_number,
-        sensor_depth_at_low_tide_m,
-        sensor_depth_measured_m = contains("sensor_depth_measured"),
-        dissolved_oxygen_percent_saturation = contains("percent_sat"),
-        temperature_degree_C,
-        salinity_psu = contains("salinity")
-      )
+      add_deployment_columns(start_date, end_date, sensor_info_i)
+      # mutate(
+      #   deployment_range = paste(
+      #     format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
+      #   ),
+      #   sensor_type = as.character(sensor_info_i$sensor_type),
+      #   sensor_serial_number = sensor_info_i$sensor_serial_number,
+      #   sensor_depth_at_low_tide_m = sensor_info_i$depth
+      # ) %>%
+      # select(
+      #   deployment_range,
+      #   timestamp_,
+      #   sensor_type,
+      #   sensor_serial_number,
+      #   sensor_depth_at_low_tide_m,
+      #   sensor_depth_measured_m = contains("sensor_depth_measured"),
+      #   dissolved_oxygen_percent_saturation = contains("percent_sat"),
+      #   temperature_degree_C,
+      #   salinity_psu = contains("salinity")
+      # )
 
     colnames(am_i)[which(str_detect(colnames(am_i), "timestamp"))] <- paste0("timestamp_", date_tz)
 

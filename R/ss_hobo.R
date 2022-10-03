@@ -162,23 +162,25 @@ ss_compile_hobo_data <- function(path,
     sensor_info_i <- dplyr::filter(sn_table, sensor_serial_number == sn_i)
 
     hobo_i <- hobo_i %>%
-      mutate(
-        deployment_range = paste(
-          format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
-        ),
-        sensor_type = as.character(sensor_info_i$sensor_type),
-        sensor_serial_number = sensor_info_i$sensor_serial_number,
-        sensor_depth_at_low_tide_m = sensor_info_i$depth
-      ) %>%
-      select(
-        deployment_range,
-        contains("timestamp"),
-        sensor_type,
-        sensor_serial_number,
-        sensor_depth_at_low_tide_m,
-        contains("dissolved_oxygen"),
-        contains("temperature")
-      )
+      add_deployment_columns(start_date, end_date, sn_table = sensor_info_i)
+
+      # mutate(
+      #   deployment_range = paste(
+      #     format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
+      #   ),
+      #   sensor_type = as.character(sensor_info_i$sensor_type),
+      #   sensor_serial_number = sensor_info_i$sensor_serial_number,
+      #   sensor_depth_at_low_tide_m = sensor_info_i$depth
+      # ) %>%
+      # select(
+      #   deployment_range,
+      #   contains("timestamp"),
+      #   sensor_type,
+      #   sensor_serial_number,
+      #   sensor_depth_at_low_tide_m,
+      #   contains("dissolved_oxygen"),
+      #   contains("temperature")
+      # )
 
     check_n_rows(hobo_i, file_name = file_name, trimmed = FALSE)
 

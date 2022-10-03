@@ -91,13 +91,57 @@ set_up_compile <- function(path,
     \nHINT: Please re-export in csv format."))
   }
 
-# return info
+  # return info
   list(
     path = path,
     dates = dates,
     dat_files = dat_files,
     sn_table = sn_table
   )
+}
+
+
+#' Add deployment date and sensor columns and re-order all columns
+#'
+#' @inheritParams ss_compile_hobo_data
+#'
+#' @param dat placeholder
+#' @param start_date placeholder
+#' @param end_date placeholder
+#'
+#' @return returns dat with additional columns
+
+
+add_deployment_columns <- function(
+  dat,
+  start_date,
+  end_date,
+  sn_table
+) {
+
+  dat %>%
+    mutate(
+      deployment_range = paste(
+        format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
+      ),
+      sensor_type = sn_table$sensor_type,
+      sensor_serial_number = as.numeric(sn_table$sensor_serial_number),
+      sensor_depth_at_low_tide_m = sn_table$depth
+    ) %>%
+    select(
+      deployment_range,
+      contains("timestamp"),
+      sensor_type,
+      sensor_serial_number,
+      sensor_depth_at_low_tide_m,
+      dissolved_oxygen_percent_saturation = contains("percent_sat"),
+      dissolved_oxygen_uncorrected_mg_per_L = contains("uncorrected_mg_per_L"),
+      sensor_depth_measured_m = contains("sensor_depth_measured"),
+      salinity_psu = contains("psu"),
+      temperature_degree_C = contains("degree_C")
+    )
+
+
 }
 
 
