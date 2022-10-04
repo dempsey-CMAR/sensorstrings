@@ -10,7 +10,7 @@ ss_read_log(path)
 \item{path}{File path to the Log folder.}
 }
 \value{
-Returns a list with 5 elements. \code{deployment_dates} is a data
+Returns a list with 4 elements. \code{deployment_dates} is a data
   frame with two columns: \code{start_date} (the date of deployment) and
   \code{end_date} (date of retrieval). \code{area_info} is a data frame with
   five columns:\code{county}, \code{waterbody}, \code{latitude},
@@ -18,6 +18,9 @@ Returns a list with 5 elements. \code{deployment_dates} is a data
   data frame with three columns: \code{log_sensor} (sensor name as recorded
   in the log), \code{sensor_serial_number}, and \code{depth} (sensor depth
   below the surface at low tide from the Sensor_Depth column).
+  \code{mooring_type} is a character string indicating whether the mooring
+  was "fixed" (does not move with the tide) or "float" (attached to dock or
+  other floating mooriong).
 }
 \description{
 Extract information from deployment log

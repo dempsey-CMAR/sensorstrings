@@ -48,7 +48,7 @@
 #'
 #' @param path File path to the Log folder.
 #'
-#' @return Returns a list with 5 elements. \code{deployment_dates} is a data
+#' @return Returns a list with 4 elements. \code{deployment_dates} is a data
 #'   frame with two columns: \code{start_date} (the date of deployment) and
 #'   \code{end_date} (date of retrieval). \code{area_info} is a data frame with
 #'   five columns:\code{county}, \code{waterbody}, \code{latitude},
@@ -56,6 +56,9 @@
 #'   data frame with three columns: \code{log_sensor} (sensor name as recorded
 #'   in the log), \code{sensor_serial_number}, and \code{depth} (sensor depth
 #'   below the surface at low tide from the Sensor_Depth column).
+#'   \code{mooring_type} is a character string indicating whether the mooring
+#'   was "fixed" (does not move with the tide) or "float" (attached to dock or
+#'   other floating mooriong).
 #'
 #' @family compile
 #' @author Danielle Dempsey
@@ -196,7 +199,6 @@ ss_read_log <- function(path){
     )
   }
 
-
 # serial number table -----------------------------------------------------
 
   sn_table <- log %>%
@@ -245,11 +247,52 @@ ss_read_log <- function(path){
   }
 
 
+
+# mooring type ------------------------------------------------------------
+
+  if("mooring_type" %in% colnames(log)) {
+
+    mooring_type <- unique(log$mooring_type)
+
+  } else{
+
+    mooring_link <- "https://docs.google.com/spreadsheets/d/1TxsUr-4NQtiBQ7JSQIA6oY_4zO51eIdEJ4h_qXGl5ZQ/edit#gid=0"
+
+    # read in the "Area Info" tab of the STRING TRACKING sheet
+    mooring_table <- googlesheets4::read_sheet(
+      mooring_link,
+      sheet = "mooring",
+      col_types = "c"
+      )
+
+    mooring_type <- mooring_table %>%
+      filter(
+        Station_Name == area_info$station,
+        Waterbody == area_info$waterbody,
+        Depl_Date == as.character(deployment_dates$start_date)
+      )
+
+    mooring_type <- mooring_type$Mooring
+  }
+
+  if(length(mooring_type) == 0) {
+    stop("Mooring type not found.
+          \nHINT: check station, waterbody, and deployment date in log and mooring table")
+  }
+
+  if(length(mooring_type) > 1) {
+    stop("More than one mooring type for << ",
+         area_info$station, " >> deployed on << ",
+         deployment_dates$start_date, " >>")
+  }
+
+
 # return list of deployment info -------------------------------------------
   list(
     deployment_dates = deployment_dates,
-       area_info = area_info,
-       sn_table = sn_table
-    )
+    area_info = area_info,
+    sn_table = sn_table,
+    mooring_type = mooring_type
+  )
 
 }
