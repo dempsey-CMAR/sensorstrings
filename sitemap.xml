@@ -10,6 +10,9 @@
     <loc>https://dempsey-cmar.github.io/sensorstrings/index.html</loc>
   </url>
   <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/add_deployment_columns.html</loc>
+  </url>
+  <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/check_n_rows.html</loc>
   </url>
   <url>
@@ -64,16 +67,25 @@
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_convert_depth_to_ordered_factor.html</loc>
   </url>
   <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_create_variable_labels.html</loc>
+  </url>
+  <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_dissolved_oxygen_pressure_correction.html</loc>
+  </url>
+  <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_dissolved_oxygen_salinity_correction.html</loc>
+  </url>
+  <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_download_data.html</loc>
+  </url>
+  <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_ggplot_variables.html</loc>
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_pivot_longer.html</loc>
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_pivot_wider.html</loc>
-  </url>
-  <url>
-    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_plot_variables_at_depth.html</loc>
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_read_aquameasure_data.html</loc>

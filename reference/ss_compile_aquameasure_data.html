@@ -90,9 +90,9 @@ TRUE</code>.</p></dd>
   <code>Timestamp(UTC)</code> column are filtered out.</p>
 <p>The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
   HM", "Ymd HMS", "dmY HM", or "dmY HMS".</p>
-<p>MOVE THIS TO QAQCMAR???</p>
-<p>Negative Dissolved Oxygen values are converted to <code>NA</code>.</p>
-<p>"ERR" values are converted to <code>NA</code>.</p>
+
+<p>"ERR" values are converted to <code>-111</code> (to distinguish from sensor
+  error value of -101.5).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
