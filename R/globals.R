@@ -50,6 +50,10 @@ utils::globalVariables(
     "detect_am",
     "detect_vemco",
     "log_sensor",
+    "Station_Name",
+    "Waterbody",
+    "mooring_type",
+    "Depl_Date",
 
     # make_column_names
     "col_name",
@@ -63,8 +67,25 @@ utils::globalVariables(
     # ss_download_data
     "name",
 
-    # ss_plot_variables_at_depth
-    "Date"
+    # ss_plot_variables
+    "Date",
 
+    # ss_create_variable_labels
+    "variable_label",
+
+    # dissolved oxygen corrections
+    "F_p",
+    "F_s",
+    "P_wv",
+    "T_Kelvin",
+    "T_s",
+    "alt_correction",
+    "pressure_atm",
+    "salinity_psu",
+    "theta"
   )
 )
+
+
+
+

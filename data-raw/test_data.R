@@ -49,10 +49,11 @@ dat_out <- dat_raw %>%
   dplyr::ungroup() %>%
   select(-`Timestamp(UTC)`) %>%
   dplyr::left_join(dates, by = "id") %>%
-  select(`Timestamp(UTC)`, everything(), -id)
+  select(`Timestamp(UTC)`, everything(), -id) %>%
+  mutate(`Dissolved Oxygen` = as.character(`Dissolved Oxygen`))
 
-dat_out[15, "Dissolved Oxygen"] <- -101.5
-# dat_out[19, "Dissolved Oxygen"] <- "ERR"
+dat_out[15, "Dissolved Oxygen"] <- "-101.5"
+dat_out[19, "Dissolved Oxygen"] <- "ERR"
 
 readr::write_csv(
   dat_out,
