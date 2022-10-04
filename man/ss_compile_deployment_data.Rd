@@ -31,6 +31,8 @@ Reads the deployment log and then calls
   in a folder named hobo,  and vemco data must be in a folder name vemco
   (folder names are not case sensitive). The aquameasure, hobo, and vemco
   folders must be in the same folder.
+
+  Adds location and mooring columns
 }
 \seealso{
 Other compile: 

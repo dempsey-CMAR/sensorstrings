@@ -10,6 +10,8 @@
 #'   (folder names are not case sensitive). The aquameasure, hobo, and vemco
 #'   folders must be in the same folder.
 #'
+#'   Adds location and mooring columns
+#'
 #' @inheritParams ss_compile_hobo_data
 #'
 #' @param path File path to the log, aquameasure, hobo, and/or vemco folders.
@@ -94,18 +96,19 @@ ss_compile_deployment_data <- function(path, trim = TRUE) {
       latitude = area_info$latitude,
       longitude = area_info$longitude,
       station = area_info$station,
-      lease = as.character(area_info$lease)
+      lease = as.character(area_info$lease),
+      mooring_type = depl_log$mooring_type
     ) %>%
     ss_convert_depth_to_ordered_factor() %>%
     arrange(sensor_depth_at_low_tide_m) %>%
     select(
       county, waterbody, station, lease, latitude, longitude,
-      deployment_range, sensor_type, sensor_serial_number,
+      deployment_range, mooring_type, sensor_type, sensor_serial_number,
       contains("timestamp"),
       contains("low_tide"),
       # variables in alphabetical order
-      contains("dissolved_oxygen_uncorrected"),
       contains("dissolved_oxygen_percent"),
+      contains("dissolved_oxygen_uncorrected"),
       contains("salinity"),
       contains("sensor_depth_measured"),
       contains("temperature")
