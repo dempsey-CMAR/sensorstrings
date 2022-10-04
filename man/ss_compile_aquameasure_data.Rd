@@ -42,11 +42,9 @@ The raw aquameasure data must be saved in a folder named aquameasure
   The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
   HM", "Ymd HMS", "dmY HM", or "dmY HMS".
 
-  MOVE THIS TO QAQCMAR???
 
-  Negative Dissolved Oxygen values are converted to \code{NA}.
-
-  "ERR" values are converted to \code{NA}.
+  "ERR" values are converted to \code{-111} (to distinguish from sensor
+  error value of -101.5).
 }
 \seealso{
 Other compile: 

@@ -45,11 +45,9 @@ ss_read_aquameasure_data <- function(path, file_name) {
 #'   The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
 #'   HM", "Ymd HMS", "dmY HM", or "dmY HMS".
 #'
-#'   MOVE THIS TO QAQCMAR???
 #'
-#'   Negative Dissolved Oxygen values are converted to \code{NA}.
-#'
-#'   "ERR" values are converted to \code{NA}.
+#'   "ERR" values are converted to \code{-111} (to distinguish from sensor
+#'   error value of -101.5).
 #'
 #' @inheritParams ss_compile_hobo_data
 #'
@@ -93,6 +91,8 @@ ss_compile_aquameasure_data <- function(path,
   am_dat <- list(NULL)
 
   # Import data -------------------------------------------------------------
+
+  #browser()
 
   # loop over each aM file
   for (i in seq_along(dat_files)) {
@@ -174,7 +174,6 @@ ss_compile_aquameasure_data <- function(path,
       ) %>%
       convert_timestamp_to_datetime()
 
-
     check_n_rows(am_i, file_name = file_name, trimmed = FALSE)
 
     # trim to the dates in deployment_dates
@@ -182,40 +181,23 @@ ss_compile_aquameasure_data <- function(path,
 
     check_n_rows(am_i, file_name = file_name, trimmed = trim)
 
-    # move this to qaqcmar
-    # if ("do_percent_concentration" %in% am_colnames) {
-    #   am_i <- am_i %>%
-    #     mutate(
-    #       # do_percent_saturation = na_if(do_percent_saturation, "ERR"),
-    #       do_percent_saturation = if_else(
-    #         do_percent_saturation < 0, NA_real_, do_percent_saturation
-    #       )
-    #     )
-    #}
-
     am_i <- am_i %>%
       add_deployment_columns(start_date, end_date, sensor_info_i)
-      # mutate(
-      #   deployment_range = paste(
-      #     format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
-      #   ),
-      #   sensor_type = as.character(sensor_info_i$sensor_type),
-      #   sensor_serial_number = sensor_info_i$sensor_serial_number,
-      #   sensor_depth_at_low_tide_m = sensor_info_i$depth
-      # ) %>%
-      # select(
-      #   deployment_range,
-      #   timestamp_,
-      #   sensor_type,
-      #   sensor_serial_number,
-      #   sensor_depth_at_low_tide_m,
-      #   sensor_depth_measured_m = contains("sensor_depth_measured"),
-      #   dissolved_oxygen_percent_saturation = contains("percent_sat"),
-      #   temperature_degree_C,
-      #   salinity_psu = contains("salinity")
-      # )
 
     colnames(am_i)[which(str_detect(colnames(am_i), "timestamp"))] <- paste0("timestamp_", date_tz)
+
+    if ("dissolved_oxygen_percent_saturation" %in%  colnames(am_i)) {
+      am_i <- am_i %>%
+        mutate(
+          dissolved_oxygen_percent_saturation = if_else(
+            dissolved_oxygen_percent_saturation == "ERR",
+            "-111", as.character(dissolved_oxygen_percent_saturation)
+          ),
+          dissolved_oxygen_percent_saturation = as.numeric(
+            dissolved_oxygen_percent_saturation
+          )
+        )
+    }
 
     am_dat[[i]] <- am_i
   } # end loop over files
