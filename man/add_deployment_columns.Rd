@@ -7,6 +7,8 @@
 add_deployment_columns(dat, start_date, end_date, sn_table)
 }
 \arguments{
+\item{dat}{placeholder}
+
 \item{start_date}{placeholder}
 
 \item{end_date}{placeholder}
