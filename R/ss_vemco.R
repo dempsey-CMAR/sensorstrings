@@ -1,4 +1,4 @@
-#' @title Import data from Vemco sensors
+#' @title Import data from Vemco csv files
 #'
 #' @details The Vemco data must be saved in csv format.
 #'

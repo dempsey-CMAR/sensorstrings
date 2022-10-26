@@ -1,4 +1,4 @@
-#' @title Import data from aquameasure sensors
+#' @title Import data from aquameasure csv files
 #'
 #' @details The aquameasure data must be saved in csv format.
 #'
@@ -31,9 +31,9 @@ ss_read_aquameasure_data <- function(path, file_name) {
 }
 
 
-#' Compiles data from aquameasure sensors
+#' Compile data from aquameasure sensors
 #'
-#' @description Compiles and formats temperature, dissolved oxygen, salinity,
+#' @description Compile and format temperature, dissolved oxygen, salinity,
 #'   and/or device depth data from aquameasure sensors.
 #'
 #' @details The raw aquameasure data must be saved in a folder named aquameasure

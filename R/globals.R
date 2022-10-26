@@ -73,6 +73,10 @@ utils::globalVariables(
     # ss_create_variable_labels
     "variable_label",
 
+    # ss_read_nsdfa_metadata
+    "Depl_Lon",
+    "Recv_Date",
+
     # dissolved oxygen corrections
     "F_p",
     "F_s",

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ss_aquameasure.R
 \name{ss_compile_aquameasure_data}
 \alias{ss_compile_aquameasure_data}
-\title{Compiles data from aquameasure sensors}
+\title{Compile data from aquameasure sensors}
 \usage{
 ss_compile_aquameasure_data(path, sn_table, deployment_dates, trim = TRUE)
 }
@@ -29,7 +29,7 @@ Returns a tibble with the data compiled from each of the aquameasure
   files in path/aquameasure.
 }
 \description{
-Compiles and formats temperature, dissolved oxygen, salinity,
+Compile and format temperature, dissolved oxygen, salinity,
   and/or device depth data from aquameasure sensors.
 }
 \details{

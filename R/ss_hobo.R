@@ -1,4 +1,4 @@
-#' Import data from hobo and tidbit sensors
+#' Import data from hobo and tidbit csv files
 #'
 #' @details The hobo data must be saved in csv format.
 #'

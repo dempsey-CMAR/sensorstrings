@@ -2,7 +2,7 @@
 % Please edit documentation in R/ss_hobo.R
 \name{ss_read_hobo_data}
 \alias{ss_read_hobo_data}
-\title{Import data from hobo and tidbit sensors}
+\title{Import data from hobo and tidbit csv files}
 \usage{
 ss_read_hobo_data(path, file_name)
 }
@@ -16,7 +16,7 @@ Returns a data frame of hobo data, with the same columns as in the
   original file.
 }
 \description{
-Import data from hobo and tidbit sensors
+Import data from hobo and tidbit csv files
 }
 \details{
 The hobo data must be saved in csv format.

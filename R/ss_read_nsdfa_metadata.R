@@ -16,8 +16,6 @@
 #'
 #' @export
 
-#path <- file.path("C:/Users/Danielle Dempsey/Desktop/2022-10-24 - NSDFA Tracking Sheet.xlsx")
-
 
 ss_read_nsdfa_metadata <- function(path){
 
@@ -83,6 +81,7 @@ ss_read_nsdfa_metadata <- function(path){
       )
     ) %>%
     # fix deployment/recovery dates (remove time if entered)
+    # the separate function will result in a Warning if there is no time entered in any row
     separate(Depl_Date, into = c("Depl_Date", NA), " ") %>%
     separate(Recv_Date, into = c("Recv_Date", NA), " ") %>%
     mutate(

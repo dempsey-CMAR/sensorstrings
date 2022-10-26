@@ -1,4 +1,4 @@
-#' @title Compiles aquameasure, hObO, and vemco data from a single deployment
+#' @title Compile aquameasure, hobo, and vemco data from a single deployment
 #'
 #' @details Reads the deployment log and then calls
 #'   \code{ss_compile_aquameasure_data()}, \code{ss_compile_hobo_data()}, and

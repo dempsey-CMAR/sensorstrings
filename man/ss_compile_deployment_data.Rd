@@ -2,7 +2,7 @@
 % Please edit documentation in R/ss_compile_deployment_data.R
 \name{ss_compile_deployment_data}
 \alias{ss_compile_deployment_data}
-\title{Compiles aquameasure, hObO, and vemco data from a single deployment}
+\title{Compile aquameasure, hobo, and vemco data from a single deployment}
 \usage{
 ss_compile_deployment_data(path, trim = TRUE)
 }
@@ -19,7 +19,7 @@ TRUE}.}
 Returns a data frame of data from a single sensor string deployment.
 }
 \description{
-Compiles aquameasure, hObO, and vemco data from a single deployment
+Compile aquameasure, hobo, and vemco data from a single deployment
 }
 \details{
 Reads the deployment log and then calls

@@ -58,10 +58,7 @@ ss_download_data <- function(path, station, depl_date) {
         path = paste(path, tolower(data_folder$name), name, sep = "/")
       )
 
-    # create local folder to store data
-    #if(!(data_folder$name %in% list.files(path))) {
       dir.create(paste(path, tolower(data_folder$name), sep = "/"))
-#    }
 
     # download the data
     walk2(
