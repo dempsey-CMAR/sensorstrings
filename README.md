@@ -13,7 +13,8 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 [![CodeFactor](https://www.codefactor.io/repository/github/dempsey-cmar/sensorstrings/badge)](https://www.codefactor.io/repository/github/dempsey-cmar/sensorstrings)
 [![R build
 status](https://github.com/dempsey-cmar/sensorstrings/workflows/R-CMD-check/badge.svg)](https://github.com/dempsey-cmar/sensorstrings/actions)
-
+[![Codecov test
+coverage](https://codecov.io/gh/dempsey-CMAR/sensorstrings/branch/main/graph/badge.svg)](https://app.codecov.io/gh/dempsey-CMAR/sensorstrings?branch=main)
 <!-- badges: end -->
 
 **This package replaces the
@@ -44,6 +45,12 @@ You can install the development version of `sensorstrings` from
 # install.packages("devtools")
 devtools::install_github("dempsey-CMAR/sensorstrings")
 ```
+
+## Package Structure
+
+The function at the tip calls the function at the tail.
+
+<img src="man/figures/2022-10-18_ss_structure.PNG" width="100%" height="140%" style="display: block; margin: auto;" />
 
 ## Background
 

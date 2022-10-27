@@ -36,7 +36,7 @@ knitr::include_graphics("man/figures/hex_sensorstrings.png")
 <!-- badges: start -->
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) `r badge_devel(repo, "blue")` `r badge_codefactor(repo)` `r badge_github_actions(repo)`
-
+[![Codecov test coverage](https://codecov.io/gh/dempsey-CMAR/sensorstrings/branch/main/graph/badge.svg)](https://app.codecov.io/gh/dempsey-CMAR/sensorstrings?branch=main)
 <!-- badges: end -->
 
 **This package replaces the [strings](https://github.com/Centre-for-Marine-Applied-Research/strings) package.** 
@@ -62,7 +62,18 @@ You can install the development version of `sensorstrings` from [GitHub](https:/
 ``` r
 # install.packages("devtools")
 devtools::install_github("dempsey-CMAR/sensorstrings")
-``` 
+```
+
+## Package Structure
+
+The function at the tip calls the function at the tail.
+
+```{r, echo=FALSE, out.height='140%', out.width='100%', fig.align='center', dpi=600}
+
+knitr::include_graphics("man/figures/2022-10-18_ss_structure.PNG")
+
+```
+
 
 ## Background
 
