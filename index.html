@@ -61,11 +61,13 @@
 </h1></div>
 <p><img src="reference/figures/hex_sensorstrings.png" width="25%" style="display: block; margin: auto;"></p>
 <!-- badges: start -->
-<!-- badges: end --><p><strong>This package replaces the <a href="https://github.com/Centre-for-Marine-Applied-Research/strings" class="external-link">strings</a> package.</strong></p>
+
+<p><strong>This package replaces the <a href="https://github.com/Centre-for-Marine-Applied-Research/strings" class="external-link">strings</a> package.</strong></p>
 <p>New features:</p>
 <ul>
 <li>Cleaner code</li>
-<li>More straightforward workflow<ul>
+<li>More straightforward workflow
+<ul>
 <li>don’t need to export intermediate “raw” and “trim” files</li>
 <li>few arguments to specify in templates</li>
 </ul>
@@ -85,6 +87,12 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"dempsey-CMAR/sensorstrings"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="package-structure">Package Structure<a class="anchor" aria-label="anchor" href="#package-structure"></a>
+</h2>
+<p>The function at the tip calls the function at the tail.</p>
+<p><img src="reference/figures/2022-10-18_ss_structure.PNG" width="100%" height="140%" style="display: block; margin: auto;"></p>
+</div>
+<div class="section level2">
 <h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h2>
 <p>The Centre for Marine Applied Research (<a href="https://cmar.ca/" class="external-link">CMAR</a>) coordinates an extensive <a href="https://cmar.ca/coastal-monitoring-program/" class="external-link">Coastal Monitoring Program</a> to measure <a href="https://www.goosocean.org/index.php?option=com_content&amp;view=article&amp;id=14&amp;Itemid=114" class="external-link">Essential Ocean Variables</a> from around the coast of Nova Scotia, Canada. There are three main branches of the program: <em>Water Quality</em>, <em>Currents</em>, and <em>Waves</em>. Processed data for each branch can be viewed and downloaded from several sources, as outlined in the <a href="https://github.com/Centre-for-Marine-Applied-Research/strings/blob/master/man/figures/README-access-cheatsheet.pdf" class="external-link">CMAR Report &amp; Data Access Cheat Sheet</a> (download for clickable links).</p>
@@ -96,6 +104,10 @@
 <p>The <code>sensorstrings</code> package offers functions to compile, format, convert units, and visualize sensor string data.</p>
 <p><code>sensorstrings</code> was developed specifically to streamline CMAR’s workflow, but is flexible enough that other users can apply it to process data from the accepted sensors (Table 1). <strong>Vignettes to come</strong></p>
 <table class="table">
+<colgroup>
+<col width="80%">
+<col width="19%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">Sensor</th>
 <th align="left">Variable(s) Measured</th>
@@ -133,25 +145,49 @@
 <p>Consider a string deployed from May 31, 2019 to October 19, 2019 with three sensors:</p>
 <table class="table">
 <thead><tr>
-<th style="text-align:left;">Sensor</th>
-<th style="text-align:center;">Serial #</th>
-<th style="text-align:center;">Depth</th>
+<th style="text-align:left;">
+Sensor
+</th>
+<th style="text-align:center;">
+Serial #
+</th>
+<th style="text-align:center;">
+Depth
+</th>
 </tr></thead>
 <tbody>
 <tr>
-<td style="text-align:left;">HOBO Pro V2</td>
-<td style="text-align:center;">10755220</td>
-<td style="text-align:center;">2</td>
+<td style="text-align:left;">
+HOBO Pro V2
+</td>
+<td style="text-align:center;">
+10755220
+</td>
+<td style="text-align:center;">
+2
+</td>
 </tr>
 <tr>
-<td style="text-align:left;">aquaMeasure DOT</td>
-<td style="text-align:center;">670364</td>
-<td style="text-align:center;">5</td>
+<td style="text-align:left;">
+aquaMeasure DOT
+</td>
+<td style="text-align:center;">
+670364
+</td>
+<td style="text-align:center;">
+5
+</td>
 </tr>
 <tr>
-<td style="text-align:left;">VR2AR</td>
-<td style="text-align:center;">547109</td>
-<td style="text-align:center;">15</td>
+<td style="text-align:left;">
+VR2AR
+</td>
+<td style="text-align:center;">
+547109
+</td>
+<td style="text-align:center;">
+15
+</td>
 </tr>
 </tbody>
 </table>
@@ -292,181 +328,489 @@
 <span><span class="fu">kable</span><span class="op">(</span><span class="va">dat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
 <thead><tr>
-<th style="text-align:left;">county</th>
-<th style="text-align:left;">waterbody</th>
-<th style="text-align:left;">station</th>
-<th style="text-align:left;">lease</th>
-<th style="text-align:right;">latitude</th>
-<th style="text-align:right;">longitude</th>
-<th style="text-align:left;">deployment_range</th>
-<th style="text-align:left;">sensor_type</th>
-<th style="text-align:right;">sensor_serial_number</th>
-<th style="text-align:left;">timestamp_utc</th>
-<th style="text-align:left;">sensor_depth_at_low_tide_m</th>
-<th style="text-align:right;">dissolved_oxygen_percent_saturation</th>
-<th style="text-align:right;">sensor_depth_measured_m</th>
-<th style="text-align:right;">temperature_degree_C</th>
+<th style="text-align:left;">
+county
+</th>
+<th style="text-align:left;">
+waterbody
+</th>
+<th style="text-align:left;">
+station
+</th>
+<th style="text-align:left;">
+lease
+</th>
+<th style="text-align:right;">
+latitude
+</th>
+<th style="text-align:right;">
+longitude
+</th>
+<th style="text-align:left;">
+deployment_range
+</th>
+<th style="text-align:left;">
+sensor_type
+</th>
+<th style="text-align:right;">
+sensor_serial_number
+</th>
+<th style="text-align:left;">
+timestamp_utc
+</th>
+<th style="text-align:left;">
+sensor_depth_at_low_tide_m
+</th>
+<th style="text-align:right;">
+dissolved_oxygen_percent_saturation
+</th>
+<th style="text-align:right;">
+sensor_depth_measured_m
+</th>
+<th style="text-align:right;">
+temperature_degree_C
+</th>
 </tr></thead>
 <tbody>
 <tr>
-<td style="text-align:left;">Halifax</td>
-<td style="text-align:left;">Shoal Bay</td>
-<td style="text-align:left;">Borgles Island</td>
-<td style="text-align:left;">NA</td>
-<td style="text-align:right;">44.77241</td>
-<td style="text-align:right;">-62.72608</td>
-<td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">hobo</td>
-<td style="text-align:right;">10755220</td>
-<td style="text-align:left;">2019-05-31 01:00:00</td>
-<td style="text-align:left;">2</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">7.695</td>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-31 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-05-31 01:00:00
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+7.695
+</td>
 </tr>
 <tr>
-<td style="text-align:left;">Halifax</td>
-<td style="text-align:left;">Shoal Bay</td>
-<td style="text-align:left;">Borgles Island</td>
-<td style="text-align:left;">NA</td>
-<td style="text-align:right;">44.77241</td>
-<td style="text-align:right;">-62.72608</td>
-<td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">hobo</td>
-<td style="text-align:right;">10755220</td>
-<td style="text-align:left;">2019-05-31 05:00:00</td>
-<td style="text-align:left;">2</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">7.569</td>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-31 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-05-31 05:00:00
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+7.569
+</td>
 </tr>
 <tr>
-<td style="text-align:left;">Halifax</td>
-<td style="text-align:left;">Shoal Bay</td>
-<td style="text-align:left;">Borgles Island</td>
-<td style="text-align:left;">NA</td>
-<td style="text-align:right;">44.77241</td>
-<td style="text-align:right;">-62.72608</td>
-<td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">hobo</td>
-<td style="text-align:right;">10755220</td>
-<td style="text-align:left;">2019-05-31 09:00:00</td>
-<td style="text-align:left;">2</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">6.509</td>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-31 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-05-31 09:00:00
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+6.509
+</td>
 </tr>
 <tr>
-<td style="text-align:left;">Halifax</td>
-<td style="text-align:left;">Shoal Bay</td>
-<td style="text-align:left;">Borgles Island</td>
-<td style="text-align:left;">NA</td>
-<td style="text-align:right;">44.77241</td>
-<td style="text-align:right;">-62.72608</td>
-<td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">hobo</td>
-<td style="text-align:right;">10755220</td>
-<td style="text-align:left;">2019-05-31 13:00:00</td>
-<td style="text-align:left;">2</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">6.788</td>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-31 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-05-31 13:00:00
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+6.788
+</td>
 </tr>
 <tr>
-<td style="text-align:left;">Halifax</td>
-<td style="text-align:left;">Shoal Bay</td>
-<td style="text-align:left;">Borgles Island</td>
-<td style="text-align:left;">NA</td>
-<td style="text-align:right;">44.77241</td>
-<td style="text-align:right;">-62.72608</td>
-<td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">hobo</td>
-<td style="text-align:right;">10755220</td>
-<td style="text-align:left;">2019-05-31 17:00:00</td>
-<td style="text-align:left;">2</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">6.839</td>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-31 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-05-31 17:00:00
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+6.839
+</td>
 </tr>
 <tr>
-<td style="text-align:left;">Halifax</td>
-<td style="text-align:left;">Shoal Bay</td>
-<td style="text-align:left;">Borgles Island</td>
-<td style="text-align:left;">NA</td>
-<td style="text-align:right;">44.77241</td>
-<td style="text-align:right;">-62.72608</td>
-<td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">hobo</td>
-<td style="text-align:right;">10755220</td>
-<td style="text-align:left;">2019-05-31 21:00:00</td>
-<td style="text-align:left;">2</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">7.192</td>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-31 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-05-31 21:00:00
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+7.192
+</td>
 </tr>
 <tr>
-<td style="text-align:left;">Halifax</td>
-<td style="text-align:left;">Shoal Bay</td>
-<td style="text-align:left;">Borgles Island</td>
-<td style="text-align:left;">NA</td>
-<td style="text-align:right;">44.77241</td>
-<td style="text-align:right;">-62.72608</td>
-<td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">hobo</td>
-<td style="text-align:right;">10755220</td>
-<td style="text-align:left;">2019-06-01 01:00:00</td>
-<td style="text-align:left;">2</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">7.594</td>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-31 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-06-01 01:00:00
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+7.594
+</td>
 </tr>
 <tr>
-<td style="text-align:left;">Halifax</td>
-<td style="text-align:left;">Shoal Bay</td>
-<td style="text-align:left;">Borgles Island</td>
-<td style="text-align:left;">NA</td>
-<td style="text-align:right;">44.77241</td>
-<td style="text-align:right;">-62.72608</td>
-<td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">hobo</td>
-<td style="text-align:right;">10755220</td>
-<td style="text-align:left;">2019-06-01 05:00:00</td>
-<td style="text-align:left;">2</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">7.544</td>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-31 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-06-01 05:00:00
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+7.544
+</td>
 </tr>
 <tr>
-<td style="text-align:left;">Halifax</td>
-<td style="text-align:left;">Shoal Bay</td>
-<td style="text-align:left;">Borgles Island</td>
-<td style="text-align:left;">NA</td>
-<td style="text-align:right;">44.77241</td>
-<td style="text-align:right;">-62.72608</td>
-<td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">hobo</td>
-<td style="text-align:right;">10755220</td>
-<td style="text-align:left;">2019-06-01 09:00:00</td>
-<td style="text-align:left;">2</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">6.661</td>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-31 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-06-01 09:00:00
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+6.661
+</td>
 </tr>
 <tr>
-<td style="text-align:left;">Halifax</td>
-<td style="text-align:left;">Shoal Bay</td>
-<td style="text-align:left;">Borgles Island</td>
-<td style="text-align:left;">NA</td>
-<td style="text-align:right;">44.77241</td>
-<td style="text-align:right;">-62.72608</td>
-<td style="text-align:left;">2019-May-31 to 2019-Oct-19</td>
-<td style="text-align:left;">hobo</td>
-<td style="text-align:right;">10755220</td>
-<td style="text-align:left;">2019-06-01 13:00:00</td>
-<td style="text-align:left;">2</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">NA</td>
-<td style="text-align:right;">7.242</td>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-31 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-06-01 13:00:00
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+7.242
+</td>
 </tr>
 </tbody>
 </table>
@@ -510,6 +854,7 @@
 <li><a href="https://github.com/dempsey-cmar/sensorstrings" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.1.0-blue.svg"></a></li>
 <li><a href="https://www.codefactor.io/repository/github/dempsey-cmar/sensorstrings" class="external-link"><img src="https://www.codefactor.io/repository/github/dempsey-cmar/sensorstrings/badge" alt="CodeFactor"></a></li>
 <li><a href="https://github.com/dempsey-cmar/sensorstrings/actions" class="external-link"><img src="https://github.com/dempsey-cmar/sensorstrings/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://app.codecov.io/gh/dempsey-CMAR/sensorstrings?branch=main" class="external-link"><img src="https://codecov.io/gh/dempsey-CMAR/sensorstrings/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
 
