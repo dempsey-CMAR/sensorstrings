@@ -68,9 +68,9 @@ devtools::install_github("dempsey-CMAR/sensorstrings")
 
 The function at the tip calls the function at the tail.
 
-```{r, echo=FALSE, out.height='120%', out.width='100%', fig.align='center', dpi=600}
+```{r, echo=FALSE, out.height='100%', out.width='100%', fig.align='center', dpi=600}
 
-knitr::include_graphics("man/figures/2022-10-18_ss_structure.PNG")
+knitr::include_graphics("man/figures/2022-10-18_ss_structure.png")
 
 ```
 

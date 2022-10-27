@@ -50,7 +50,7 @@ devtools::install_github("dempsey-CMAR/sensorstrings")
 
 The function at the tip calls the function at the tail.
 
-<img src="man/figures/2022-10-18_ss_structure.PNG" width="100%" height="120%" style="display: block; margin: auto;" />
+<img src="man/figures/2022-10-18_ss_structure.png" width="100%" height="100%" style="display: block; margin: auto;" />
 
 ## Background
 
