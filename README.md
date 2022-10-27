@@ -13,8 +13,6 @@ v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/li
 [![CodeFactor](https://www.codefactor.io/repository/github/dempsey-cmar/sensorstrings/badge)](https://www.codefactor.io/repository/github/dempsey-cmar/sensorstrings)
 [![R build
 status](https://github.com/dempsey-cmar/sensorstrings/workflows/R-CMD-check/badge.svg)](https://github.com/dempsey-cmar/sensorstrings/actions)
-[![Codecov test
-coverage](https://codecov.io/gh/dempsey-CMAR/sensorstrings/branch/main/graph/badge.svg)](https://app.codecov.io/gh/dempsey-CMAR/sensorstrings?branch=main)
 <!-- badges: end -->
 
 **This package replaces the
