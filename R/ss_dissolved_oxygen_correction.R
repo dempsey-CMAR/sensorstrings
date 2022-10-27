@@ -64,8 +64,8 @@
 #'
 #' @param dat_wide Data frame with at least one column:
 #'   \code{temperature_degree_C}. Corresponding salinity (psu) data may be
-#'   included in column \code{salinity_psu}. Additional columns will be ignored and
-#'   returned.
+#'   included in column \code{salinity_psu}. Additional columns will be ignored
+#'   and returned.
 #'
 #' @param sal A single value of salinity (psu). This value must be specified if
 #'   there is no \code{Salinity} column in \code{dat_wide}. Default is \code{Sal
@@ -91,7 +91,6 @@ ss_dissolved_oxygen_salinity_correction <- function(
 ){
 
 # Error Messages ----------------------------------------------------------
-
   cols <- colnames(dat_wide)
 
   if(!(tolower(method) %in% c("garcia-gordon", "benson-krause"))){
@@ -246,7 +245,7 @@ ss_dissolved_oxygen_pressure_correction <- function(dat_wide, sal = NULL, p_atm 
 # Calculate F_p -----------------------------------------------------------
 
   if(!is.null(p_atm)) dat_wide <- mutate(dat_wide, pressure_atm = p_atm)
-  if(!is.null(sal)) dat_wide <- mutate(dat_wide, salinity = sal)
+  if(!is.null(sal)) dat_wide <- mutate(dat_wide, salinity_psu = sal)
 
   dat_wide %>%
     mutate(
