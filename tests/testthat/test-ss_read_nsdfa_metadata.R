@@ -18,16 +18,16 @@ test_that("ss_read_nsdfa_metadata() corrects waterbody names", {
   expect_equal(nrow(filter(nsdfa, Waterbody == "Piper Lake")), 1)
 
   expect_equal(nrow(filter(nsdfa, Waterbody == "St Marys Bay")), 0)
-  expect_equal(nrow(filter(nsdfa, Waterbody == "St. Mary's Bay")), 7)
+  expect_equal(nrow(filter(nsdfa, Waterbody == "St. Marys Bay")), 7)
 
   expect_equal(nrow(filter(nsdfa, Waterbody == "St Margarets Bay")), 0)
   expect_equal(nrow(filter(nsdfa, Waterbody == "St. Margarets Bay")), 7)
 
   expect_equal(nrow(filter(nsdfa, Waterbody == "St Anns Bay")), 0)
-  expect_equal(nrow(filter(nsdfa, Waterbody == "St. Ann's Bay")), 1)
+  expect_equal(nrow(filter(nsdfa, Waterbody == "St. Anns Bay")), 1)
 
   expect_equal(nrow(filter(nsdfa, Waterbody == "St Peters Inlet")), 0)
-  expect_equal(nrow(filter(nsdfa, Waterbody == "St Peter's Inlet")), 1)
+  expect_equal(nrow(filter(nsdfa, Waterbody == "St. Peters Inlet")), 1)
 
   expect_equal(
     nrow(filter(nsdfa, Waterbody == "Tor Bay" & Station_Name == "Bald Rock")), 0

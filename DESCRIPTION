@@ -19,7 +19,6 @@ Imports:
     glue,
     googledrive,
     googlesheets4,
-    here,
     janitor,
     lubridate,
     purrr,
@@ -35,5 +34,5 @@ Suggests:
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 URL: https://dempsey-cmar.github.io/sensorstrings/

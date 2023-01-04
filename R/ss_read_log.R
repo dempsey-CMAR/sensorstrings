@@ -160,8 +160,8 @@ ss_read_log <- function(path){
 
   # look up the Station name in the Area Info tab and return the county
   county <- area_tracking[
-    which(area_tracking$Station == station & area_tracking$Waterbody == wb),
-    "County"]$County
+    which(area_tracking$station == station & area_tracking$waterbody == wb),
+    "county"]$county
 
   if(length(county) > 1) {
     stop("There is more than one station named << ", station, " >>
@@ -269,7 +269,7 @@ ss_read_log <- function(path){
       filter(
         Station_Name == area_info$station,
         Waterbody == area_info$waterbody,
-        Depl_Date == as.character(deployment_dates$start_date)
+        Depl_Date == as.character(deployment_dates$start_date[1])
       )
 
     mooring_type <- mooring_type$Mooring

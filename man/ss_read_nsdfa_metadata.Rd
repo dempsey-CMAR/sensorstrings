@@ -20,4 +20,6 @@ Import TempMetaData tab from the NSDFA tracking sheet
 Reads in the TempMetaData tab from the NSDFA tracking sheet and
   corrects known errors (e.g., standardizes station and waterbody spellings,
   fixes deployment dates, etc.).
+
+  **Might want to add 2021-08-27 1042 deployment
 }

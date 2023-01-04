@@ -13,8 +13,8 @@ ss_dissolved_oxygen_salinity_correction(
 \arguments{
 \item{dat_wide}{Data frame with at least one column:
 \code{temperature_degree_C}. Corresponding salinity (psu) data may be
-included in column \code{salinity_psu}. Additional columns will be ignored and
-returned.}
+included in column \code{salinity_psu}. Additional columns will be ignored
+and returned.}
 
 \item{sal}{A single value of salinity (psu). This value must be specified if
 there is no \code{Salinity} column in \code{dat_wide}. Default is \code{Sal
