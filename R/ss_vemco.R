@@ -118,7 +118,7 @@ ss_compile_vemco_data <- function(path,
     warning("There are two datetime columns in the Vemco data")
   }
 
-  vars <- c("Seawater depth", "Temperature", "Average temperature")
+  vars <- c("Average seawater depth", "Seawater depth", "Temperature", "Average temperature")
 
   # extract sensor depth
   dat <- dat %>%
@@ -131,6 +131,7 @@ ss_compile_vemco_data <- function(path,
     filter(Description %in% vars) %>%
     mutate(
       Description = dplyr::case_when(
+        Description == "Average seawater depth" ~ "sensor_depth_measured",
         Description == "Seawater depth" ~ "sensor_depth_measured",
         Description == "Temperature" ~ "temperature",
         Description == "Average temperature" ~ "temperature"

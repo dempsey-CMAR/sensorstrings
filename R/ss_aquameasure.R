@@ -199,6 +199,16 @@ ss_compile_aquameasure_data <- function(path,
         )
     }
 
+    if ("salinity_psu" %in%  colnames(am_i)) {
+      am_i <- am_i %>%
+        mutate(
+          salinity_psu = if_else(
+            salinity_psu == "ERR", "-111", as.character(salinity_psu)
+          ),
+          salinity_psu = as.numeric(salinity_psu)
+        )
+    }
+
     am_dat[[i]] <- am_i
   } # end loop over files
 

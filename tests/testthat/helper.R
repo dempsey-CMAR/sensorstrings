@@ -1,4 +1,8 @@
 
+# allow access to the google sheet
+#googlesheets4::gs4_deauth()
+
+
 # Common compile arguments ------------------------------------------------
 
 path <- system.file("testdata", package = "sensorstrings")

@@ -263,7 +263,7 @@ ss_read_log <- function(path){
       mooring_link,
       sheet = "mooring",
       col_types = "c"
-      )
+    )
 
     mooring_type <- mooring_table %>%
       filter(

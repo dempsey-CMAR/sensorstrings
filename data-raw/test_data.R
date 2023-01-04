@@ -5,6 +5,9 @@
 # adds fake timestamps to match test hobo data
 # exports to test data folder
 
+library(devtools)
+load_all()
+
 path <- file.path("C:/Users/Danielle Dempsey/Desktop/RProjects/Packages/sensorstrings/data-raw/aquameasure")
 
 # dates to match example hobo data
@@ -85,27 +88,6 @@ dates2 <- dates2 %>%
     `Timestamp(UTC)` = as.character(`Timestamp(UTC)`)
   )
 
-dat_raw2 <- ss_read_aquameasure_data(path, file_name = file_name2)
-
-dat_out2 <- dat_raw2 %>%
-  slice(19775:19814) %>%
-  dplyr::group_by(`Timestamp(UTC)`) %>%
-  mutate(id = dplyr::cur_group_id()) %>%
-  dplyr::ungroup() %>%
-  select(-`Timestamp(UTC)`) %>%
-  dplyr::left_join(dates3, by = "id") %>%
-  select(`Timestamp(UTC)`, everything(), -id)
-
-readr::write_csv(
-  dat_out2,
-  "C:/Users/Danielle Dempsey/Desktop/RProjects/Packages/sensorstrings/inst/testdata/aquameasure/aquaMeasure-680154.csv",
-  na = ""
-)
-
-# sensor depth
-
-file_name3 <- "aquaMeasure-675008.csv"
-
 dates3 <- dates %>%
   filter(
     !str_detect(`Timestamp(UTC)`, "after"),
@@ -117,7 +99,6 @@ dates3 <- dates %>%
   ) %>%
   rbind(dplyr::tibble(id = 20, `Timestamp(UTC)` = as_datetime("2019-10-21 07:00:00")))
 
-
 dates3 <- dates3 %>%
   rbind(
     dates3 %>%
@@ -128,6 +109,33 @@ dates3 <- dates3 %>%
     id = dplyr::row_number(),
     `Timestamp(UTC)` = as.character(`Timestamp(UTC)`)
   )
+
+
+dat_raw2 <- ss_read_aquameasure_data(path, file_name = file_name2)
+
+dat_out2 <- dat_raw2 %>%
+  slice(19775:19814) %>%
+  dplyr::group_by(`Timestamp(UTC)`) %>%
+  mutate(id = dplyr::cur_group_id()) %>%
+  dplyr::ungroup() %>%
+  select(-`Timestamp(UTC)`) %>%
+  dplyr::left_join(dates3, by = "id") %>%
+  select(`Timestamp(UTC)`, everything(), -id) %>%
+  mutate(Salinity = as.character(Salinity))
+
+dat_out2[2, "Salinity"] <- "ERR"
+
+readr::write_csv(
+  dat_out2,
+  "C:/Users/Danielle Dempsey/Desktop/RProjects/Packages/sensorstrings/inst/testdata/aquameasure/aquaMeasure-680154.csv",
+  na = ""
+)
+
+# sensor depth
+
+file_name3 <- "aquaMeasure-675008.csv"
+
+
 
 
 dat_raw3 <- ss_read_aquameasure_data(path, file_name = file_name3)
