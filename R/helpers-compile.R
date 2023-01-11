@@ -135,10 +135,10 @@ add_deployment_columns <- function(
       sensor_serial_number,
       sensor_depth_at_low_tide_m,
       dissolved_oxygen_percent_saturation = contains("percent_sat"),
-      dissolved_oxygen_uncorrected_mg_per_L = contains("uncorrected_mg_per_L"),
+      dissolved_oxygen_uncorrected_mg_per_l = contains("uncorrected_mg_per_l"),
       sensor_depth_measured_m = contains("sensor_depth_measured"),
       salinity_psu = contains("psu"),
-      temperature_degree_C = contains("degree_C")
+      temperature_degree_c = contains("degree_c")
     )
 
 
@@ -337,7 +337,7 @@ extract_hobo_sn <- function(hobo_colnames) {
 #' @param hobo_dat Data as read in by \code{ss_read_hobo_data()}.
 #'
 #' @return Returns a tibble of \code{variable} and \code{units} found in
-#'   \code{hobo_dat}. Units are mg_per_L for dissolved oxygen and degree_C for
+#'   \code{hobo_dat}. Units are mg_per_l for dissolved oxygen and degree_c for
 #'   temperature.
 #' @importFrom dplyr %>% contains mutate select
 #' @importFrom stringr str_replace str_remove
@@ -353,8 +353,8 @@ extract_hobo_units <- function(hobo_dat) {
     mutate(
       units = str_replace(units, pattern = "GMT", replacement = "utc"),
       units = str_remove(units, pattern = "\\+00:00"),
-      units = str_replace(units, pattern = "mg/L", replacement = "mg_per_L"),
-      units = str_replace(units, pattern = "\u00B0C", replacement = "degree_C")
+      units = str_replace(units, pattern = "mg/L", replacement = "mg_per_l"),
+      units = str_replace(units, pattern = "\u00B0C", replacement = "degree_c")
     )
 }
 

@@ -63,7 +63,7 @@
 #'   Memorandum 2011.03. USGS Office of Water Quality, 2011.
 #'
 #' @param dat_wide Data frame with at least one column:
-#'   \code{temperature_degree_C}. Corresponding salinity (psu) data may be
+#'   \code{temperature_degree_c}. Corresponding salinity (psu) data may be
 #'   included in column \code{salinity_psu}. Additional columns will be ignored
 #'   and returned.
 #'
@@ -117,10 +117,10 @@ ss_dissolved_oxygen_salinity_correction <- function(
 
     dat_out <- dat_wide %>%
       mutate(
-        temperature_degree_C = as.numeric(temperature_degree_C),
+        temperature_degree_c = as.numeric(temperature_degree_c),
 
         # temperature in Kelvin
-        T_Kelvin = temperature_degree_C + 273.15,
+        T_Kelvin = temperature_degree_c + 273.15,
 
         # correction factor
         F_s = exp(-salinity_psu * (B0_BK + B1_BK / T_Kelvin + B2_BK / T_Kelvin^2)),
@@ -141,10 +141,10 @@ ss_dissolved_oxygen_salinity_correction <- function(
 
     dat_out <- dat_wide %>%
       mutate(
-        temperature_degree_C = as.numeric(temperature_degree_C),
+        temperature_degree_c = as.numeric(temperature_degree_c),
 
         # scaled temperature
-        T_s = log((298.15 - temperature_degree_C) / (273.15 + temperature_degree_C)),
+        T_s = log((298.15 - temperature_degree_c) / (273.15 + temperature_degree_c)),
 
         # correction factor
         F_s = exp(salinity_psu * (B0_GG + B1_GG * T_s + B2_GG * T_s^2 + B3_GG * T_s^3)
@@ -196,7 +196,7 @@ ss_dissolved_oxygen_salinity_correction <- function(
 #'   Memorandum 2011.03. USGS Office of Water Quality, 2011.
 #'
 #' @param dat_wide Data frame with at least one column:
-#'   \code{temperature_degree_C}. Corresponding pressure (atm) data may be
+#'   \code{temperature_degree_c}. Corresponding pressure (atm) data may be
 #'   included in column \code{pressure_atm}. Additional columns will be ignored
 #'   and returned.
 #'
@@ -249,14 +249,14 @@ ss_dissolved_oxygen_pressure_correction <- function(dat_wide, sal = NULL, p_atm 
 
   dat_wide %>%
     mutate(
-      temperature_degree_C = as.numeric(temperature_degree_C),
+      temperature_degree_c = as.numeric(temperature_degree_c),
 
       # temperature in Kelvin
-      T_Kelvin = temperature_degree_C + 273.15,
+      T_Kelvin = temperature_degree_c + 273.15,
 
       # Coefficient that depends on the Second Virial Coefficient of oxygen
-      theta = 0.000975 - (1.426e-5) * temperature_degree_C +
-        (6.436e-8) * temperature_degree_C^2,
+      theta = 0.000975 - (1.426e-5) * temperature_degree_c +
+        (6.436e-8) * temperature_degree_c^2,
 
       # partial pressure of water vapour in atm
       P_wv = (1 - 5.370e-4 * salinity_psu) *

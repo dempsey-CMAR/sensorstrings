@@ -31,7 +31,7 @@ test_that("ss_compile_vemco_data() returns correct classes", {
   expect_equal(class(vem_all$sensor_serial_number), "numeric")
   expect_equal(class(vem_all$sensor_depth_at_low_tide_m), "numeric")
   expect_equal(class(vem_all$sensor_depth_measured_m), "numeric")
-  expect_equal(class(vem_all$temperature_degree_C), "numeric")
+  expect_equal(class(vem_all$temperature_degree_c), "numeric")
 })
 
 test_that("ss_compile_vemco_data() reads in all observations", {
@@ -41,8 +41,8 @@ test_that("ss_compile_vemco_data() reads in all observations", {
 })
 
 test_that("ss_compile_vemco_data() fixes degree symbol for UTF-8 and ANSI encoding", {
-  expect_true("temperature_degree_C" %in% colnames(vem_trim))
-  expect_true("temperature_degree_C" %in% colnames(vem_trim2))
+  expect_true("temperature_degree_c" %in% colnames(vem_trim))
+  expect_true("temperature_degree_c" %in% colnames(vem_trim2))
 })
 
 test_that("ss_compile_vemco_data() returns Error and Warnings", {

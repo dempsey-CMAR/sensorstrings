@@ -194,7 +194,7 @@ press <- seq(0.5, 1.1, 0.2)
 
 temp_sal <- expand.grid(temp, sal) %>%
   data.frame() %>%
-  rename(temperature_degree_C = Var1, salinity_psu = Var2)
+  rename(temperature_degree_c = Var1, salinity_psu = Var2)
 
 # read in usgs table for comparison with BK equation
 usgs <- read_csv(
@@ -202,7 +202,7 @@ usgs <- read_csv(
   skip = 8,
   show_col_types = FALSE
 ) %>%
-  rename(temperature_degree_C = 1)
+  rename(temperature_degree_c = 1)
 usgs <- usgs[] # to remove attributes from read_csv
 
 F_bk <- ss_dissolved_oxygen_salinity_correction(
@@ -226,14 +226,14 @@ F_gg <- ss_dissolved_oxygen_salinity_correction(
 
 temp_press <- expand.grid(temp, press) %>%
   data.frame() %>%
-  rename(temperature_degree_C = Var1, pressure_atm = Var2)
+  rename(temperature_degree_c = Var1, pressure_atm = Var2)
 
 # results as of V0.1.0
 F_p05 <- c(0.4972, 0.4959, 0.4941, 0.4916, 0.4884, 0.4840, 0.4783)
 F_p11 <- c(1.1005, 1.1008, 1.1011, 1.1016, 1.1023, 1.1032, 1.1043)
 
 F_p <- ss_dissolved_oxygen_pressure_correction(temp_press, sal = 0) %>%
-  select(temperature_degree_C, pressure_atm, F_p) %>%
+  select(temperature_degree_c, pressure_atm, F_p) %>%
   pivot_wider(names_from = "pressure_atm", values_from = "F_p")
 
 

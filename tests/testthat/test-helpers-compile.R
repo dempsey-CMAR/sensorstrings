@@ -98,7 +98,7 @@ test_that("extract_hobo_sn() works", {
 # extract_hobo_units() ----------------------------------------------------
 
 test_that("extract_hobo_units() returns correct units", {
-  expect_equal(hobo_units$units, c("utc", "degree_C", "mg_per_L"))
+  expect_equal(hobo_units$units, c("utc", "degree_c", "mg_per_l"))
 })
 
 
@@ -107,6 +107,6 @@ test_that("extract_hobo_units() returns correct units", {
 test_that("make_column_names() returns correct names", {
   expect_equal(
     new_hobo_colnames$col_name,
-    c("timestamp_utc", "dissolved_oxygen_uncorrected_mg_per_L", "temperature_degree_C")
+    c("timestamp_utc", "dissolved_oxygen_uncorrected_mg_per_l", "temperature_degree_c")
   )
 })

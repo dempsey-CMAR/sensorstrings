@@ -8,9 +8,9 @@ ss_create_variable_labels(dat_long)
 }
 \arguments{
 \item{dat_long}{Data in long format. Entries in \code{variable} column must
-be \code{temperature_degree_C}, \code{dissolved_oxygen_percent_saturation},
-\code{dissolved_oxygen_mg_per_L},
-\code{dissolved_oxygen_uncorrected_mg_per_L},
+be \code{temperature_degree_c}, \code{dissolved_oxygen_percent_saturation},
+\code{dissolved_oxygen_mg_per_l},
+\code{dissolved_oxygen_uncorrected_mg_per_l},
 \code{sensor_depth_measured_m}, \code{salinity_psu}, or
 \code{sensor_depth_measured_m}.}
 }

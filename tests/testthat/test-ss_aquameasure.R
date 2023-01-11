@@ -30,7 +30,7 @@ test_that("ss_compile_aquameasure_data() returns correct classes", {
   expect_equal(class(am_all$sensor_serial_number), "numeric")
   expect_equal(class(am_all$sensor_depth_at_low_tide_m), "numeric")
   expect_equal(class(am_all$sensor_depth_measured_m), "numeric")
-  expect_equal(class(am_all$temperature_degree_C), "numeric")
+  expect_equal(class(am_all$temperature_degree_c), "numeric")
   expect_equal(class(am_all$dissolved_oxygen_percent_saturation), "numeric")
   expect_equal(class(am_all$salinity_psu), "numeric")
 })

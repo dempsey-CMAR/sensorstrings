@@ -8,7 +8,7 @@ ss_dissolved_oxygen_pressure_correction(dat_wide, sal = NULL, p_atm = NULL)
 }
 \arguments{
 \item{dat_wide}{Data frame with at least one column:
-\code{temperature_degree_C}. Corresponding pressure (atm) data may be
+\code{temperature_degree_c}. Corresponding pressure (atm) data may be
 included in column \code{pressure_atm}. Additional columns will be ignored
 and returned.}
 

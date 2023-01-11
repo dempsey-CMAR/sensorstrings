@@ -92,9 +92,7 @@ ss_compile_aquameasure_data <- function(path,
 
   # Import data -------------------------------------------------------------
 
-  #browser()
-
-  # loop over each aM file
+    # loop over each aM file
   for (i in seq_along(dat_files)) {
 
     file_name <- dat_files[i]
@@ -113,7 +111,6 @@ ss_compile_aquameasure_data <- function(path,
 
     # check timezone
     date_tz <- extract_aquameasure_tz(am_colnames)
-
 
     if (length(sn_i) > 1) stop("Multiple serial numbers found in file ", file_name)
 
@@ -154,6 +151,8 @@ ss_compile_aquameasure_data <- function(path,
         contains("Depth")
       ) %>%
       filter(
+        !str_detect(timestamp_, "after"),
+        !str_detect(timestamp_, "undefined"),
         `Record Type` %in%
           c("Dissolved Oxygen", "Temperature", "Salinity", "Device Depth")
       ) %>%
@@ -161,14 +160,14 @@ ss_compile_aquameasure_data <- function(path,
         id_cols = "timestamp_",
         names_from = "Record Type", values_from = all_of(vars)
       ) %>%
-      filter(
-        !str_detect(timestamp_, "after"),
-        !str_detect(timestamp_, "undefined")
-      ) %>%
+      # filter(
+      #   !str_detect(timestamp_, "after"),
+      #   !str_detect(timestamp_, "undefined")
+      # ) %>%
       select(
         timestamp_,
         do_percent_saturation = contains("Dissolved Oxygen_Dissolved Oxygen"),
-        temperature_degree_C = contains("Temperature_Temperature"),
+        temperature_degree_c = contains("Temperature_Temperature"),
         salinity_psu = contains("Salinity_Salinity"),
         sensor_depth_measured_m = contains("Device Depth_Device Depth")
       ) %>%

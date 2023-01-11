@@ -36,7 +36,7 @@
 # path <- system.file("extdata", package = "sensorstrings")
 #
 # dat <- ss_compile_deployment_data(path, trim = TRUE)
-# dat[17, "temperature_degree_C"] <- -0.8
+# dat[17, "temperature_degree_c"] <- -0.8
 #
 # ss_plot_variables_at_depth(dat, measured_depth = TRUE)
 
@@ -63,9 +63,9 @@ ss_ggplot_variables <- function(
     dat <- dat %>% select(-contains("sensor_depth_measured"))
   }
 
-  if (is.null(superchill) && "temperature_degree_C" %in% colnames(dat)) {
+  if (is.null(superchill) && "temperature_degree_c" %in% colnames(dat)) {
 
-    if(min(na.omit(dat$temperature_degree_C)) <= -0.7) {
+    if(min(na.omit(dat$temperature_degree_c)) <= -0.7) {
       superchill <- TRUE
     } else superchill <- FALSE
 
@@ -106,7 +106,7 @@ ss_ggplot_variables <- function(
 
     if (isTRUE(superchill)) {
 
-    facet_panel <- data.frame(variable = "temperature_degree_C") %>%
+    facet_panel <- data.frame(variable = "temperature_degree_c") %>%
       ss_create_variable_labels()
 
     p <- p +

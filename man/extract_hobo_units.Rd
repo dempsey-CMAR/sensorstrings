@@ -11,7 +11,7 @@ extract_hobo_units(hobo_dat)
 }
 \value{
 Returns a tibble of \code{variable} and \code{units} found in
-  \code{hobo_dat}. Units are mg_per_L for dissolved oxygen and degree_C for
+  \code{hobo_dat}. Units are mg_per_l for dissolved oxygen and degree_c for
   temperature.
 }
 \description{
