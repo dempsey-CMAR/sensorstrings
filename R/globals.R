@@ -22,7 +22,7 @@ utils::globalVariables(
     "Sensor",
     "Temp(Water)",
     "Record Type",
-  #  "do_percent_saturation",
+    #  "do_percent_saturation",
     "dissolved_oxygen_percent_saturation",
     "temperature_degree_c",
     "sensor_depth_at_low_tide_m",
@@ -86,7 +86,28 @@ utils::globalVariables(
     "alt_correction",
     "pressure_atm",
     "salinity_psu",
-    "theta"
+    "theta",
+
+    # ss_import_data
+    "Notes",
+
+    # reformat_old_data
+    "COUNTY",
+    "DEPLOYMENT_PERIOD",
+    "DEPTH",
+    "LATITUDE ",
+    "LEASE",
+    "LONGITUDE",
+    "MOORING",
+    "SENSOR",
+    "STATION",
+    "TIMESTAMP",
+    "UNITS",
+    "VALUE",
+    "VARIABLE",
+    "WATERBODY",
+    "sensor"
+
   )
 )
 
