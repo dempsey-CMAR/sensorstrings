@@ -40,6 +40,9 @@
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/extract_vemco_tz.html</loc>
   </url>
   <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/filter_dat_to_plot.html</loc>
+  </url>
+  <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/get_colour_palette.html</loc>
   </url>
   <url>
@@ -79,7 +82,13 @@
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_download_data.html</loc>
   </url>
   <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_generate_depl_filepath.html</loc>
+  </url>
+  <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_ggplot_variables.html</loc>
+  </url>
+  <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_open_trimdates_app.html</loc>
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_pivot_longer.html</loc>
@@ -101,6 +110,9 @@
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_read_vemco_data.html</loc>
+  </url>
+  <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_reformat_old_data.html</loc>
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_set_up_folders.html</loc>

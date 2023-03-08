@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">sensorstrings</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,13 +42,28 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ss_read_log</span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ss_read_log</span><span class="op">(</span><span class="va">path</span>, <span class="va">path_config</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>path</dt>
 <dd><p>File path to the Log folder.</p></dd>
+
+
+<dt>path_config</dt>
+<dd><p>File path (including name and extension) of the water
+  quality configuration table. Default is
+  water_quality_configuration_table.xlsx in the tracking_sheets folder. Data
+  must be stored in an xlsx file in a tab named "deployments". Columns must
+  be Waterbody, Station_Name, and Depl_Date. One and only one row must match
+  the waterbody, station, and deployment date recorded in the Log. Options
+  for the configuration column are sub-surface buoy, surface buoy, attached
+  to gear, attached to fixed structure, floating dock, and unknown. Use of
+  the "unknown" entry is discouraged. HINT: for optimal speed, make sure the
+  table is NOT filtered in the excel file.</p>
+<p>The <code>path_config</code> argument is ignored for new deployment logs that
+  have an appropriate entry in the Configuration column.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -64,11 +79,10 @@
 <p><code>longitude</code>, <code>station</code>, and <code>lease</code>. <code>sn_table</code> is a
   data frame with three columns: <code>log_sensor</code> (sensor name as recorded
   in the log), <code>sensor_serial_number</code>, and <code>depth</code> (sensor depth
-  below the surface at low tide from the Sensor_Depth column).</p>
+  below the surface at low tide, from the Sensor_Depth column).</p>
 <p></p>
-<p><code>mooring_type</code> is a character string indicating whether the mooring
-  was "fixed" (does not move with the tide) or "float" (attached to dock or
-  other floating mooriong).</p>
+<p><code>string_configuration</code> is a character string indicating how the sensor
+  string was moored (i.e., whether the sensors float with the tide).</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
