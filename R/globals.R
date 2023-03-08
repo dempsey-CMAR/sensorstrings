@@ -73,6 +73,9 @@ utils::globalVariables(
     # ss_create_variable_labels
     "variable_label",
 
+    # ss_generate_depl_filepath
+    "depl_date",
+
     # ss_read_nsdfa_metadata
     "Depl_Lon",
     "Recv_Date",
@@ -95,7 +98,7 @@ utils::globalVariables(
     "COUNTY",
     "DEPLOYMENT_PERIOD",
     "DEPTH",
-    "LATITUDE ",
+    "LATITUDE",
     "LEASE",
     "LONGITUDE",
     "MOORING",
