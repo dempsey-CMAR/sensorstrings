@@ -83,4 +83,75 @@ ss_create_variable_labels <- function(dat_long) {
     )
 }
 
+#' Filter data before plotting to zoom in on interesting features
+#'
+#' @param dat Data frame of sensor string data in wide format, as exported from
+#'   \code{ss_compile_deployment_data()}.
+#'
+#' @param filter_to Shortcut for specifying where to filter \code{dat} before
+#'   plotting. Options are "start", "end", or "custom".
+#'
+#' @param period Character string that can be convert to a \code{lubridate}
+#'   period.
+#'
+#' @param custom_start Only required if \code{filter_to = "custom"}. POSIXct
+#'   object indicating where the filtered data will begin.
+#'
+#' @param custom_end Only required if \code{filter_to = "custom"}. POSIXct
+#'   object indicating where the filtered data will end.
+#'
+#' @return Returns a plotly object of the filtered data coloured by depth and
+#'   faceted by variable.
+#'
+#' @importFrom assertthat assert_that
+#' @importFrom lubridate period is.POSIXct  %m+% %m-%
+#' @importFrom plotly ggplotly
+#' @importFrom dplyr %>% filter
+
+filter_dat_to_plot <- function(
+    dat,
+    filter_to = c("start", "end", "custom"),
+    period = "2 days",
+    custom_start = NULL,
+    custom_end = NULL
+) {
+
+
+  assert_that(filter_to %in% c("start", "end", "custom"))
+
+  dat <- dat %>% rename(timestamp_ = contains("timestamp_"))
+
+  if(filter_to == "start") {
+
+    dat <- dat %>%
+      filter(
+        timestamp_ <=
+          (na.omit(min(dat$timestamp_)) %m+% lubridate::period(period))
+      )
+  }
+
+  if(filter_to == "end") {
+
+    dat <- dat %>%
+      filter(
+        timestamp_ >=
+          (na.omit(max(dat$timestamp_)) %m-% lubridate::period(period))
+      )
+  }
+
+  if(filter_to == "custom") {
+
+    assert_that(is.POSIXct(custom_start))
+    assert_that(is.POSIXct(custom_end))
+
+    dat <- dat %>%
+      filter(
+        timestamp_ >= custom_start & timestamp_ <= custom_end
+      )
+  }
+
+  dat
+
+}
+
 
