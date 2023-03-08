@@ -1,7 +1,7 @@
 #' Plot variables at depth
 #'
 #' @param dat Data frame of sensor string data in wide format, as exported from
-#'   ]code{ss_compile_deployment_data()}.
+#'   \code{ss_compile_deployment_data()}.
 #'
 #' @param measured_depth Logical argument indicating whether to include
 #'   \code{sensor_depth_measured_m} as a plotted variable.
@@ -79,7 +79,8 @@ ss_ggplot_variables <- function(
       contains("dissolved_oxygen"),
       contains("temperature"),
       contains("salinity"),
-      contains("depth")
+      contains("depth"),
+      contains("sensor")
     ) %>%
     ss_pivot_longer() %>% #maybe check if long or wide first
     ss_create_variable_labels() %>%
@@ -88,7 +89,19 @@ ss_ggplot_variables <- function(
 
 # plot --------------------------------------------------------------------
 
-  p <- ggplot(dat, aes(Date, value, colour = sensor_depth_at_low_tide_m)) +
+  p <- ggplot(
+    dat,
+    aes(
+      Date, value, colour = sensor_depth_at_low_tide_m,
+      text = paste(
+        "date: ", Date, "\n",
+        "value: ", value, "\n",
+        "depth: ", sensor_depth_at_low_tide_m, "\n",
+        "sensor_type: ", sensor_type, "\n",
+        "sensor_serial_number: ", sensor_serial_number
+      )
+    )
+  ) +
     geom_point(size = 0.25) +
     scale_y_continuous(name = "") +
     scale_depth_colour +
