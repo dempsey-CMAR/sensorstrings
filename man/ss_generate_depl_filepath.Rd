@@ -2,7 +2,7 @@
 % Please edit documentation in R/helpers-misc.R
 \name{ss_generate_depl_filepath}
 \alias{ss_generate_depl_filepath}
-\title{Title}
+\title{Generate file path and name for sensor string deployment data.}
 \usage{
 ss_generate_depl_filepath(dat, path = NULL, sub_folder = NULL, ext = "rds")
 }
@@ -23,5 +23,5 @@ A file path for exporting deployment data, including file name and
   extension.
 }
 \description{
-Title
+Generate file path and name for sensor string deployment data.
 }
