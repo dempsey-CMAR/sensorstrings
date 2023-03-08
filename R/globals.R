@@ -52,7 +52,7 @@ utils::globalVariables(
     "log_sensor",
     "Station_Name",
     "Waterbody",
-    "mooring_type",
+    "string_configuration",
     "Depl_Date",
 
     # make_column_names

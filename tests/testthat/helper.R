@@ -7,6 +7,8 @@
 
 path <- system.file("testdata", package = "sensorstrings")
 
+path_config = paste0(system.file("testdata", package = "sensorstrings"), "/water_quality_configuration_table.xlsx")
+
 deployment_dates <- data.frame(START = "2019-05-30", END = "2019-10-19")
 
 
@@ -118,9 +120,9 @@ vem_trim2 <- ss_compile_vemco_data(
 
 # ALL deployment data -----------------------------------------------------
 
-depl_all <- ss_compile_deployment_data(path, trim = FALSE)
+depl_all <- ss_compile_deployment_data(path, path_config, trim = FALSE)
 
-depl_trim <- ss_compile_deployment_data(path, trim = TRUE)
+depl_trim <- ss_compile_deployment_data(path, path_config, trim = TRUE)
 
 # helpers-compile ---------------------------------------------------------
 

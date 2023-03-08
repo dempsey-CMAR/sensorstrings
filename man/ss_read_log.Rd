@@ -4,10 +4,24 @@
 \alias{ss_read_log}
 \title{Extract information from deployment log}
 \usage{
-ss_read_log(path)
+ss_read_log(path, path_config)
 }
 \arguments{
 \item{path}{File path to the Log folder.}
+
+\item{path_config}{File path (including name and extension) of the water
+  quality configuration table. Default is
+  water_quality_configuration_table.xlsx in the tracking_sheets folder. Data
+  must be stored in an xlsx file in a tab named "deployments". Columns must
+  be Waterbody, Station_Name, and Depl_Date. One and only one row must match
+  the waterbody, station, and deployment date recorded in the Log. Options
+  for the configuration column are sub-surface buoy, surface buoy, attached
+  to gear, attached to fixed structure, floating dock, and unknown. Use of
+  the "unknown" entry is discouraged. HINT: for optimal speed, make sure the
+  table is NOT filtered in the excel file.
+
+  The \code{path_config} argument is ignored for new deployment logs that
+  have an appropriate entry in the Configuration column.}
 }
 \value{
 Returns a list with 4 elements. \code{deployment_dates} is a data
@@ -17,10 +31,9 @@ Returns a list with 4 elements. \code{deployment_dates} is a data
   \code{longitude}, \code{station}, and \code{lease}. \code{sn_table} is a
   data frame with three columns: \code{log_sensor} (sensor name as recorded
   in the log), \code{sensor_serial_number}, and \code{depth} (sensor depth
-  below the surface at low tide from the Sensor_Depth column).
-  \code{mooring_type} is a character string indicating whether the mooring
-  was "fixed" (does not move with the tide) or "float" (attached to dock or
-  other floating mooriong).
+  below the surface at low tide, from the Sensor_Depth column).
+  \code{string_configuration} is a character string indicating how the sensor
+  string was moored (i.e., whether the sensors float with the tide).
 }
 \description{
 Extract information from deployment log

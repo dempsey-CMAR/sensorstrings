@@ -48,6 +48,20 @@
 #'
 #' @param path File path to the Log folder.
 #'
+#' @param path_config File path (including name and extension) of the water
+#'   quality configuration table. Default is
+#'   water_quality_configuration_table.xlsx in the tracking_sheets folder. Data
+#'   must be stored in an xlsx file in a tab named "deployments". Columns must
+#'   be Waterbody, Station_Name, and Depl_Date. One and only one row must match
+#'   the waterbody, station, and deployment date recorded in the Log. Options
+#'   for the configuration column are sub-surface buoy, surface buoy, attached
+#'   to gear, attached to fixed structure, floating dock, and unknown. Use of
+#'   the "unknown" entry is discouraged. HINT: for optimal speed, make sure the
+#'   table is NOT filtered in the excel file.
+#'
+#'   The \code{path_config} argument is ignored for new deployment logs that
+#'   have an appropriate entry in the Configuration column.
+#'
 #' @return Returns a list with 4 elements. \code{deployment_dates} is a data
 #'   frame with two columns: \code{start_date} (the date of deployment) and
 #'   \code{end_date} (date of retrieval). \code{area_info} is a data frame with
@@ -55,10 +69,9 @@
 #'   \code{longitude}, \code{station}, and \code{lease}. \code{sn_table} is a
 #'   data frame with three columns: \code{log_sensor} (sensor name as recorded
 #'   in the log), \code{sensor_serial_number}, and \code{depth} (sensor depth
-#'   below the surface at low tide from the Sensor_Depth column).
-#'   \code{mooring_type} is a character string indicating whether the mooring
-#'   was "fixed" (does not move with the tide) or "float" (attached to dock or
-#'   other floating mooriong).
+#'   below the surface at low tide, from the Sensor_Depth column).
+#'   \code{string_configuration} is a character string indicating how the sensor
+#'   string was moored (i.e., whether the sensors float with the tide).
 #'
 #' @family compile
 #' @author Danielle Dempsey
@@ -74,9 +87,9 @@
 #'
 #' @export
 
-ss_read_log <- function(path){
+ss_read_log <- function(path, path_config){
 
-# Read in log -----------------------------------------------------------
+  # Read in log -----------------------------------------------------------
   # extract the name of the log folder (e.g. Log, log, LOG)
   folder <- list.files(path) %>%
     str_extract(regex("log", ignore_case = TRUE)) %>%
@@ -134,7 +147,7 @@ ss_read_log <- function(path){
     end_date = lubridate::ymd(depl_end)
   )
 
-# area info ---------------------------------------------------------------
+  # area info ---------------------------------------------------------------
 
   wb <- unique(log$Deployment_Waterbody)
   lat <- unique(log$Logger_Latitude)
@@ -182,7 +195,7 @@ ss_read_log <- function(path){
   )
 
 
-# depth -------------------------------------------------------------------
+  # depth -------------------------------------------------------------------
 
   depth <- log %>%
     select(Logger_Model, `Serial#`, Sensor_Depth) %>%
@@ -199,7 +212,7 @@ ss_read_log <- function(path){
     )
   }
 
-# serial number table -----------------------------------------------------
+  # serial number table -----------------------------------------------------
 
   sn_table <- log %>%
     select(
@@ -233,7 +246,7 @@ ss_read_log <- function(path){
     )
   }
 
-# message if any expected sensors not found
+  # message if any expected sensors not found
   if (nrow(filter(sensors, detect_hobo == TRUE)) == 0) {
     message("No Hobo sensors found in log")
   }
@@ -246,53 +259,70 @@ ss_read_log <- function(path){
     message("No VR2AR sensors found in log")
   }
 
+  # configuration ------------------------------------------------------------
 
+  config_options <- c("sub-surface buoy", "surface buoy", "attached to gear",
+                      "attached to fixed structure", "floating dock", "unknown")
 
-# mooring type ------------------------------------------------------------
+  if("Configuration" %in% colnames(log)) {
 
-  if("mooring_type" %in% colnames(log)) {
+    config <- unique(log$configuration)
 
-    mooring_type <- unique(log$mooring_type)
+    if(is.na(config)) {
+      stop("Configuration is recorded as NA in the Log.")
+    }
+
+    if(length(config) > 1) {
+      stop("More than one configuration type entered in the Log.")
+    }
 
   } else{
 
-    mooring_link <- "https://docs.google.com/spreadsheets/d/1TxsUr-4NQtiBQ7JSQIA6oY_4zO51eIdEJ4h_qXGl5ZQ/edit#gid=0"
+    if(is.null(path_config)) {
 
-    # read in the "Area Info" tab of the STRING TRACKING sheet
-    mooring_table <- googlesheets4::read_sheet(
-      mooring_link,
-      sheet = "mooring",
-      col_types = "c"
-    )
+      path_config <- file.path("Y:/coastal_monitoring_program/tracking_sheets/water_quality_configuration_table.xlsx")
 
-    mooring_type <- mooring_table %>%
+    }
+
+    config <- read_excel(path_config, sheet = "deployments") %>%
+      mutate(Deployment = as_date(Depl_Date)) %>%
       filter(
         Station_Name == area_info$station,
         Waterbody == area_info$waterbody,
-        Depl_Date == as.character(deployment_dates$start_date[1])
+        Depl_Date == deployment_dates$start_date[1]
       )
 
-    mooring_type <- mooring_type$Mooring
+    if(nrow(config) == 0) {
+      stop("Deployment not found in Configuration table.
+          \nHINT: check station, waterbody, and deployment date in log and Configuration table")
+    }
+
+    config <- config$Configuration
+
+
+    if(is.na(config)) {
+      stop("Configuration is recorded as NA in the Configuration table")
+    }
+
+    if(length(config) > 1) {
+      stop("More than one Configuration for << ", area_info$station, " >> deployed on << ",
+           deployment_dates$start_date, " >> recorded in the Configuration table")
+    }
   }
 
-  if(length(mooring_type) == 0) {
-    stop("Mooring type not found.
-          \nHINT: check station, waterbody, and deployment date in log and mooring table")
-  }
 
-  if(length(mooring_type) > 1) {
-    stop("More than one mooring type for << ",
-         area_info$station, " >> deployed on << ",
-         deployment_dates$start_date, " >>")
+  if(!(config %in% config_options)) {
+
+    warning("<< ", config, " >> is not an accepted sensor string configuration")
   }
 
 
-# return list of deployment info -------------------------------------------
+  # return list of deployment info -------------------------------------------
   list(
     deployment_dates = deployment_dates,
     area_info = area_info,
     sn_table = sn_table,
-    mooring_type = mooring_type
+    string_configuration = config
   )
 
 }

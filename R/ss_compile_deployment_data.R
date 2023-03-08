@@ -13,6 +13,7 @@
 #'   Adds location and mooring columns
 #'
 #' @inheritParams ss_compile_hobo_data
+#' @inheritParams ss_read_log
 #'
 #' @param path File path to the log, aquameasure, hobo, and/or vemco folders.
 #'
@@ -28,10 +29,10 @@
 #' @export
 
 
-ss_compile_deployment_data <- function(path, trim = TRUE) {
+ss_compile_deployment_data <- function(path, path_config = NULL, trim = TRUE) {
 
   # read in log and add location columns ----------------------------------------------------
-  depl_log <- ss_read_log(path)
+  depl_log <- ss_read_log(path, path_config = path_config)
 
   deployment_dates <- depl_log$deployment_dates
   sn_table <- depl_log$sn_table
@@ -97,13 +98,15 @@ ss_compile_deployment_data <- function(path, trim = TRUE) {
       longitude = area_info$longitude,
       station = area_info$station,
       lease = as.character(area_info$lease),
-      mooring_type = depl_log$mooring_type
+      string_configuration = depl_log$string_configuration
     ) %>%
     ss_convert_depth_to_ordered_factor() %>%
     arrange(sensor_depth_at_low_tide_m) %>%
     select(
       county, waterbody, station, lease, latitude, longitude,
-      deployment_range, mooring_type, sensor_type, sensor_serial_number,
+      deployment_range,
+      string_configuration,
+      sensor_type, sensor_serial_number,
       contains("timestamp"),
       contains("low_tide"),
       # variables in alphabetical order
