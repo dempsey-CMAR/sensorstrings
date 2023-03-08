@@ -28,7 +28,7 @@
 #' @return Opens a shiny app displaying an interactive plot of variables in
 #'   \code{dat}.
 #'
-#' @importFrom shiny fluidPage  renderPrint shinyApp verbatimTextOutput
+#' @importFrom shiny fluidPage renderTable shinyApp tableOutput
 #' @importFrom plotly ggplotly event_data plotlyOutput renderPlotly
 #' @importFrom lubridate as_datetime
 #'
@@ -48,8 +48,10 @@ ss_open_trimdates_app <- function(
   ui <- fluidPage(
 
     plotlyOutput("vars_plot", height="600px"),
-    verbatimTextOutput("info")
+    tableOutput("info")
   )
+
+  ts_save <- data.frame(ts = NA_character_)
 
   # Define server logic required to draw a histogram
   server <- function(input, output) {
@@ -70,17 +72,22 @@ ss_open_trimdates_app <- function(
 
     })
 
-    output$info <- renderPrint({
+    output$info <- renderTable({
 
-      point_info <- event_data("plotly_click", source = "plot1")
+      ts_info <- event_data("plotly_click", source = "plot1")
 
-      if (is.null(point_info)) {
+      if (is.null(ts_info)) {
 
         "Click events appear here (double-click chart to clear)"
 
       } else {
 
-        as_datetime(point_info$x)
+        ts_new <- data.frame(ts = as_datetime(ts_info$x))
+        ts_new$ts <- paste0("'", format(ts_new$ts, '%Y-%m-%d %H:%M:%S'), "'")
+
+        ts_save <<- bind_rows(ts_save, ts_new)
+
+        na.omit(ts_save)
 
       }
     })
