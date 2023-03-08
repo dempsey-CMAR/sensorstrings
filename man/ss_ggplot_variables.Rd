@@ -15,7 +15,7 @@ ss_ggplot_variables(
 }
 \arguments{
 \item{dat}{Data frame of sensor string data in wide format, as exported from
-]code{ss_compile_deployment_data()}.}
+\code{ss_compile_deployment_data()}.}
 
 \item{measured_depth}{Logical argument indicating whether to include
 \code{sensor_depth_measured_m} as a plotted variable.}
