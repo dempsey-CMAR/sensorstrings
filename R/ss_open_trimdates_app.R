@@ -63,7 +63,7 @@ ss_open_trimdates_app <- function(
           filter_to = filter_to,
           period = period,
           custom_start = custom_start,
-          custom_end = custom_start
+          custom_end = custom_end
         )
 
       p <- ss_ggplot_variables(dat) + geom_point(size = point_size)
