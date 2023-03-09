@@ -9,7 +9,7 @@ Description: Facilitates wrangling and analysis of Water Quality data collected 
     of the Centre for Marine Applied Research's Coastal Monitoring
     Program. (Compatiable sensors: HOBO Pro V2, TidbiT MX2303, TidbiT
     MX2203, aquaMeasure DOT, aquaMeasure SAL, aquaMeasure SST, VR2AR.)
-License: GPL-3
+License: GPL (>= 3)
 Imports: 
     assertthat,
     checkmate,
