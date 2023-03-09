@@ -82,10 +82,13 @@
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_download_data.html</loc>
   </url>
   <url>
-    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_generate_depl_filepath.html</loc>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_export_path.html</loc>
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_ggplot_variables.html</loc>
+  </url>
+  <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_import_path.html</loc>
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_open_trimdates_app.html</loc>
