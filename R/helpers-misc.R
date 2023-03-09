@@ -17,12 +17,7 @@ extract_file_extension <- function(file_name){
 }
 
 
-
-
-
-
-
-#' Generate file path and name for sensor string deployment data.
+#' Generate file path and name to export compiled sensor string data
 #'
 #' @param dat Data frame of sensor string data in wide or long format. Must
 #'   include columns \code{county}, \code{station}, and \code{deployment_range}.
@@ -44,7 +39,7 @@ extract_file_extension <- function(file_name){
 #' @export
 
 
-ss_generate_depl_filepath <- function(
+ss_export_path <- function(
     dat, path = NULL, sub_folder = NULL, ext = "rds"
 ) {
 
@@ -73,5 +68,44 @@ ss_generate_depl_filepath <- function(
   }
 
   file.path(paste(path, file_name, sep = "/"))
+
+}
+
+
+#' Generate file path to import raw sensor string deployment data
+#'
+#' @param path Character string of the file path to the station_folders folder.
+#'
+#' @param station Character string of the station name. Will be converted to
+#'   lower case, and a space will be replaced with an underscore.
+#'
+#' @param depl_date Character string of the deployment data in the order
+#'   yyyy-mm-dd.
+#'
+#' @return The file path for importing raw deployment data.
+#'
+#' @importFrom stringr str_replace
+#'
+#' @export
+
+ss_import_path <- function(station, depl_date, path = NULL) {
+
+  if(is.null(path)) {
+    path = "Y:/coastal_monitoring_program/data_branches/water_quality/station_folders"
+  }
+
+  station <- tolower(station)
+  station <- str_replace(station, " ", "_")
+
+  path <- paste(
+    path, station,
+    paste(station, depl_date, sep = "_"), sep = "/"
+  )
+
+  if(isFALSE(dir.exists(path))) {
+    stop("File path << ", path, " >> does not exist. Check station spelling and deployment date")
+  }
+
+  file.path(path)
 
 }
