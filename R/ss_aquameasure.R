@@ -138,7 +138,9 @@ ss_compile_aquameasure_data <- function(path,
     # use serial number to identify the depth from sn_table
     sensor_info_i <- dplyr::filter(sn_table, sensor_serial_number == sn_i)
 
-    vars <- extract_aquameasure_vars(am_colnames)
+    # don't use the am_colnames variable here in case the name of the tempeature
+    # column was changed
+    vars <- extract_aquameasure_vars(colnames(am_i))
 
     # extract sensor depth
     am_i <- am_i %>%
