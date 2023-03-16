@@ -107,18 +107,31 @@ ss_compile_vemco_data <- function(path,
 
   # Format data -------------------------------------------------------------
 
-  if("Temperature" %in% unique(dat$Description)) {
+  # clarify which rows to use if Average and Point temperature and depth incldued
+  vars_desc <- unique(dat$Description)
+
+  if("Temperature" %in% vars_desc) {
     temperature_var = "Temperature"
-  } else if("Average temperature" %in% unique(dat$Description)){
+  } else if("Average temperature" %in% vars_desc){
     temperature_var = "Average temperature"
+  } else if(("Temperature" %in% vars_desc) & ("Average temperature" %in% vars_desc)) {
+    temperature_var = "Temperature"
   } else stop("Could not find Temperature or Average temperature in vemco_dat. Check file.")
+
+  if("Seawater depth" %in% vars_desc) {
+    depth_var = "Seawater depth"
+  } else if("Average seawater depth" %in% vars_desc){
+    depth_var = "Average seawater depth"
+  } else if(("Seawater depth" %in% vars_desc) & ("Average seawater depth" %in% vars_desc)) {
+    depth_var = "Seawater depth"
+  } else stop("Could not find Seawater depth or Average seawater depth in vemco_dat. Check file.")
 
 
   if("Date and Time (UTC)" %in% dat_colnames & "Date/Time" %in% dat_colnames){
     warning("There are two datetime columns in the Vemco data")
   }
 
-  vars <- c("Average seawater depth", "Seawater depth", "Temperature", "Average temperature")
+  vars <- c(depth_var, temperature_var)
 
   # extract sensor depth
   dat <- dat %>%
@@ -139,7 +152,7 @@ ss_compile_vemco_data <- function(path,
       Units = if_else(
         Units == "\u00B0C" |           # if csv is saved with ANSI encoding
           Units == "\u00C2\u00B0C",     # if csv is saved with UTF-8 encoding
-        "degree_C", Units
+        "degree_c", Units
         ),
       Description = paste(Description, Units, sep = "_"),
       Data = as.numeric(Data)
@@ -166,25 +179,9 @@ ss_compile_vemco_data <- function(path,
   # # add other useful columns and re-order ------------------------------------------------
   dat <- dat %>%
     add_deployment_columns(start_date, end_date, sn_table)
-    # mutate(
-    #   deployment_range = paste(
-    #     format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
-    #   ),
-    #   sensor_type = sn_table$sensor_type,
-    #   sensor_serial_number = as.numeric(sn_table$sensor_serial_number),
-    #   sensor_depth_at_low_tide_m = sn_table$depth
-    # ) %>%
-    # select(
-    #   deployment_range,
-    #   contains("timestamp"),
-    #   sensor_type,
-    #   sensor_serial_number,
-    #   sensor_depth_at_low_tide_m,
-    #   contains("temperature"),
-    #   contains("sensor_depth_measured")
-    # )
 
-  message(paste("vemco data compiled:", temperature_var))
+
+  message(paste("vemco data compiled:", temperature_var, "&", depth_var))
 
   tibble(dat)
 
