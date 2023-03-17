@@ -4,7 +4,12 @@
 \alias{ss_compile_deployment_data}
 \title{Compile aquameasure, hobo, and vemco data from a single deployment}
 \usage{
-ss_compile_deployment_data(path, path_config = NULL, trim = TRUE)
+ss_compile_deployment_data(
+  path,
+  path_config = NULL,
+  trim = TRUE,
+  ignore_sensors
+)
 }
 \arguments{
 \item{path}{File path to the log, aquameasure, hobo, and/or vemco folders.}
@@ -28,6 +33,9 @@ specified in \code{deployment_dates}. (Note: four hours are added to the
 retrieval date to account for AST, e.g., in case the sensor was retrieved
 after 20:00 AST, which is 00:00 UTC the next day.) Default is \code{trim =
 TRUE}.}
+
+\item{ignore_sensors}{Vector of sensor serial numbers for sensors that are in
+the deployment log, but should NOT be compiled (e.g., data file missing).}
 }
 \value{
 Returns a data frame of data from a single sensor string deployment.

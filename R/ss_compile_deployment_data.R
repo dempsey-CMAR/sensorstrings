@@ -17,6 +17,9 @@
 #'
 #' @param path File path to the log, aquameasure, hobo, and/or vemco folders.
 #'
+#' @param ignore_sensors Vector of sensor serial numbers for sensors that are in
+#'   the deployment log, but should NOT be compiled (e.g., data file missing).
+#'
 #' @return Returns a data frame of data from a single sensor string deployment.
 #'
 #' @family compile
@@ -29,14 +32,20 @@
 #' @export
 
 
-ss_compile_deployment_data <- function(path, path_config = NULL, trim = TRUE) {
+ss_compile_deployment_data <- function(
+    path, path_config = NULL, trim = TRUE, ignore_sensors = NULL
+) {
 
   # read in log and add location columns ----------------------------------------------------
   depl_log <- ss_read_log(path, path_config = path_config)
 
+
   deployment_dates <- depl_log$deployment_dates
-  sn_table <- depl_log$sn_table
+
   area_info <- depl_log$area_info
+
+  sn_table <- depl_log$sn_table %>%
+    filter(!(sensor_serial_number %in% ignore_sensors))
 
   depl_data <- tibble(NULL)
 
