@@ -42,7 +42,12 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ss_compile_deployment_data</span><span class="op">(</span><span class="va">path</span>, path_config <span class="op">=</span> <span class="cn">NULL</span>, trim <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ss_compile_deployment_data</span><span class="op">(</span></span>
+<span>  <span class="va">path</span>,</span>
+<span>  path_config <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  trim <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">ignore_sensors</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -72,6 +77,11 @@ specified in <code>deployment_dates</code>. (Note: four hours are added to the
 retrieval date to account for AST, e.g., in case the sensor was retrieved
 after 20:00 AST, which is 00:00 UTC the next day.) Default is <code>trim =
 TRUE</code>.</p></dd>
+
+
+<dt>ignore_sensors</dt>
+<dd><p>Vector of sensor serial numbers for sensors that are in
+the deployment log, but should NOT be compiled (e.g., data file missing).</p></dd>
 
 </dl></div>
     <div class="section level2">
