@@ -161,7 +161,7 @@ ss_read_log <- function(path, path_config){
   if(length(station) > 1) message("Multiple location descriptions recorded in log")
   if(length(lease) > 1) message("Multiple leases recorded in log")
 
-  if(long > 0) stop("Longitude must be a negative value")
+  if(any(long > 0)) stop("Longitude must be a negative value")
 
   # link to the "STRING TRACKING" google sheet -
   googlesheets4::gs4_deauth()
