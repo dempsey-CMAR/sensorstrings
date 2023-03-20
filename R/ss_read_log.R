@@ -99,11 +99,17 @@ ss_read_log <- function(path, path_config){
 
   dat_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|*xls|*csv")
 
-  file_type <- extract_file_extension(dat_files)
+  # remove files that start with "~"
+  if(any(substring(dat_files, 1, 1) == "~")) {
+    dat_files <- dat_files[-which(substring(dat_files, 1, 1)== "~")]
+  }
 
   if (length(dat_files) > 1) {
     stop("More than one file found in the Log folder")
   }
+
+  # file extension
+  file_type <- extract_file_extension(dat_files)
 
   if (file_type == "xls" |  file_type == "xlsx") {
     log <- read_excel(paste(path, dat_files, sep = "/"), na = c("", "n/a", "N/A"))
@@ -152,7 +158,7 @@ ss_read_log <- function(path, path_config){
   wb <- unique(log$Deployment_Waterbody)
   lat <- unique(log$Logger_Latitude)
   long <- unique(log$Logger_Longitude)
-  station <- unique(log$Location_Description)
+  station <- as.character(unique(log$Location_Description))
   lease <- unique(log$`Lease#`)
 
   if(length(wb) > 1) message("Multiple waterbodies in log")
