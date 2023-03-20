@@ -345,7 +345,9 @@ extract_hobo_sn <- function(hobo_colnames) {
 
 extract_hobo_units <- function(hobo_dat) {
   hobo_dat %>%
-    select(contains("Date"), contains("Temp"), contains("DO")) %>%
+    select(
+      contains("Date"), contains("Temp"), contains("DO", ignore.case = FALSE)
+    ) %>%
     colnames() %>%
     data.frame() %>%
     separate(col = ".", into = c("variable", "units"), sep = ", ", extra = "drop") %>%

@@ -7,7 +7,7 @@
 ss_compile_aquameasure_data(path, sn_table, deployment_dates, trim = TRUE)
 }
 \arguments{
-\item{path}{File path to the hobo folder.}
+\item{path}{File path to the hobo or tidbit folder.}
 
 \item{sn_table}{A data frame with three columns: \code{sensor_type},
 code{sensor_serial_number}, \code{depth}.}

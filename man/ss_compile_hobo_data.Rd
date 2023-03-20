@@ -2,12 +2,18 @@
 % Please edit documentation in R/ss_hobo.R
 \name{ss_compile_hobo_data}
 \alias{ss_compile_hobo_data}
-\title{Compile and format data from hobo and tidbit sensors}
+\title{Compile and format data from hobo or tidbit sensors}
 \usage{
-ss_compile_hobo_data(path, sn_table, deployment_dates, trim = TRUE)
+ss_compile_hobo_data(
+  path,
+  sn_table,
+  deployment_dates,
+  trim = TRUE,
+  sensor_make = "hobo"
+)
 }
 \arguments{
-\item{path}{File path to the hobo folder.}
+\item{path}{File path to the hobo or tidbit folder.}
 
 \item{sn_table}{A data frame with three columns: \code{sensor_type},
 code{sensor_serial_number}, \code{depth}.}
@@ -23,10 +29,15 @@ specified in \code{deployment_dates}. (Note: four hours are added to the
 retrieval date to account for AST, e.g., in case the sensor was retrieved
 after 20:00 AST, which is 00:00 UTC the next day.) Default is \code{trim =
 TRUE}.}
+
+\item{sensor_make}{Character string indicating whether data to be compiled is
+from hobo sensors (default) or tidbit sensors. Will be used to fill in the
+\code{sensor_type} column of the output file. The raw file format is the
+same for each type of sensor.}
 }
 \value{
-Returns a tibble with the data compiled from each of the hobo and
-  tidbit sensors in path/hobo.
+Returns a tibble with the data compiled from each of the hobo or
+  tidbit sensors.
 }
 \description{
 Can handle temperature and dissolved oxygen data.
@@ -34,11 +45,12 @@ Can handle temperature and dissolved oxygen data.
   Does NOT correct dissolved oxygen data for salinity.
 }
 \details{
-The exported hobo data must be saved in a folder named hobo in csv
+Exported hobo data must be saved in a folder named hobo in csv
+  format. Exported tidbit data must be saved in a folder named tidbit in csv
   format. Folder name is not case-sensitive.
 
-  All of the csv files in the Hobo folder will be compiled. The name of each
-  file must be the serial number of the sensor.
+  All of the csv files in the hobo or tidbit folder will be compiled. The
+  name of each file must be the serial number of the sensor.
 
   The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
   HM", "Ymd HMS", "dmY HM", or "dmY HMS".

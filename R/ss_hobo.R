@@ -1,13 +1,13 @@
-#' Import data from hobo and tidbit csv files
+#' Import data from hobo or tidbit csv file
 #'
-#' @details The hobo data must be saved in csv format.
+#' @details The data must be saved in csv format.
 #'
-#' @param path File path to the hobo file.
+#' @param path File path to the hobo or tidbit file.
 #'
 #' @param file_name Name of the file to import, including file extension.
 #'
-#' @return Returns a data frame of hobo data, with the same columns as in the
-#'   original file.
+#' @return Returns a data frame of hobo or tidbit data, with the same columns as
+#'   in the original file.
 #'
 #' @author Danielle Dempsey
 #'
@@ -36,22 +36,23 @@ ss_read_hobo_data <- function(path, file_name) {
 }
 
 
-#' @title Compile and format data from hobo and tidbit sensors
+#' @title Compile and format data from hobo or tidbit sensors
 #'
 #' @description Can handle temperature and dissolved oxygen data.
 #'
 #'   Does NOT correct dissolved oxygen data for salinity.
 #'
-#' @details The exported hobo data must be saved in a folder named hobo in csv
+#' @details Exported hobo data must be saved in a folder named hobo in csv
+#'   format. Exported tidbit data must be saved in a folder named tidbit in csv
 #'   format. Folder name is not case-sensitive.
 #'
-#'   All of the csv files in the Hobo folder will be compiled. The name of each
-#'   file must be the serial number of the sensor.
+#'   All of the csv files in the hobo or tidbit folder will be compiled. The
+#'   name of each file must be the serial number of the sensor.
 #'
 #'   The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
 #'   HM", "Ymd HMS", "dmY HM", or "dmY HMS".
 #'
-#' @param path File path to the hobo folder.
+#' @param path File path to the hobo or tidbit folder.
 #'
 #' @param sn_table A data frame with three columns: \code{sensor_type},
 #'   code{sensor_serial_number}, \code{depth}.
@@ -68,8 +69,13 @@ ss_read_hobo_data <- function(path, file_name) {
 #'   after 20:00 AST, which is 00:00 UTC the next day.) Default is \code{trim =
 #'   TRUE}.
 #'
-#' @return Returns a tibble with the data compiled from each of the hobo and
-#'   tidbit sensors in path/hobo.
+#' @param sensor_make Character string indicating whether data to be compiled is
+#'   from hobo sensors (default) or tidbit sensors. Will be used to fill in the
+#'   \code{sensor_type} column of the output file. The raw file format is the
+#'   same for each type of sensor.
+#'
+#' @return Returns a tibble with the data compiled from each of the hobo or
+#'   tidbit sensors.
 #'
 #' @family compile
 #'
@@ -88,13 +94,17 @@ ss_read_hobo_data <- function(path, file_name) {
 ss_compile_hobo_data <- function(path,
                                  sn_table,
                                  deployment_dates,
-                                 trim = TRUE) {
+                                 trim = TRUE,
+                                 sensor_make = "hobo"
+) {
+
+
   # set up & check for errors
   setup <- set_up_compile(
     path = path,
     sn_table = sn_table,
     deployment_dates = deployment_dates,
-    sensor_make = "hobo"
+    sensor_make = sensor_make
   )
 
   path = setup$path
@@ -163,24 +173,6 @@ ss_compile_hobo_data <- function(path,
 
     hobo_i <- hobo_i %>%
       add_deployment_columns(start_date, end_date, sn_table = sensor_info_i)
-
-      # mutate(
-      #   deployment_range = paste(
-      #     format(start_date, "%Y-%b-%d"), "to", format(end_date, "%Y-%b-%d")
-      #   ),
-      #   sensor_type = as.character(sensor_info_i$sensor_type),
-      #   sensor_serial_number = sensor_info_i$sensor_serial_number,
-      #   sensor_depth_at_low_tide_m = sensor_info_i$depth
-      # ) %>%
-      # select(
-      #   deployment_range,
-      #   contains("timestamp"),
-      #   sensor_type,
-      #   sensor_serial_number,
-      #   sensor_depth_at_low_tide_m,
-      #   contains("dissolved_oxygen"),
-      #   contains("temperature")
-      # )
 
     check_n_rows(hobo_i, file_name = file_name, trimmed = FALSE)
 

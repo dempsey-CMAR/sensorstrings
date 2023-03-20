@@ -8,11 +8,12 @@ ss_compile_deployment_data(
   path,
   path_config = NULL,
   trim = TRUE,
-  ignore_sensors
+  ignore_sensors = NULL
 )
 }
 \arguments{
-\item{path}{File path to the log, aquameasure, hobo, and/or vemco folders.}
+\item{path}{File path to the log, aquameasure, hobo, tidbit, and/or vemco
+folders.}
 
 \item{path_config}{File path (including name and extension) of the water
   quality configuration table. Default is
@@ -50,9 +51,10 @@ Reads the deployment log and then calls
   frame.
 
   aquameasure data must be in a folder named aquameasure, hobo data must be
-  in a folder named hobo,  and vemco data must be in a folder name vemco
-  (folder names are not case sensitive). The aquameasure, hobo, and vemco
-  folders must be in the same folder.
+  in a folder named hobo, tidbit data must be in a folder named tidbit, and
+  vemco data must be in a folder name vemco (folder names are not case
+  sensitive). The aquameasure, hobo, tidbit, and vemco folders must be in the
+  same folder.
 
   Adds location and mooring columns
 }

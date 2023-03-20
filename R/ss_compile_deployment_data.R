@@ -6,16 +6,18 @@
 #'   frame.
 #'
 #'   aquameasure data must be in a folder named aquameasure, hobo data must be
-#'   in a folder named hobo,  and vemco data must be in a folder name vemco
-#'   (folder names are not case sensitive). The aquameasure, hobo, and vemco
-#'   folders must be in the same folder.
+#'   in a folder named hobo, tidbit data must be in a folder named tidbit, and
+#'   vemco data must be in a folder name vemco (folder names are not case
+#'   sensitive). The aquameasure, hobo, tidbit, and vemco folders must be in the
+#'   same folder.
 #'
 #'   Adds location and mooring columns
 #'
 #' @inheritParams ss_compile_hobo_data
 #' @inheritParams ss_read_log
 #'
-#' @param path File path to the log, aquameasure, hobo, and/or vemco folders.
+#' @param path File path to the log, aquameasure, hobo, tidbit, and/or vemco
+#'   folders.
 #'
 #' @param ignore_sensors Vector of sensor serial numbers for sensors that are in
 #'   the deployment log, but should NOT be compiled (e.g., data file missing).
@@ -74,11 +76,29 @@ ss_compile_deployment_data <- function(
       path = path,
       sn_table = sn_hobo,
       deployment_dates = deployment_dates,
-      trim = trim
+      trim = trim,
+      sensor_make = "hobo"
     )
 
     depl_data <- bind_rows(depl_data, hobo)
   }
+
+  # tidbit --------------------------------------------------------------------
+  sn_tidbit <- sn_table %>%
+    filter(str_detect(log_sensor, regex("tidbit", ignore_case = TRUE)))
+
+  if (nrow(sn_tidbit) > 0){
+    tidbit <- ss_compile_hobo_data(
+      path = path,
+      sn_table = sn_tidbit,
+      deployment_dates = deployment_dates,
+      trim = trim,
+      sensor_make = "tidbit"
+    )
+
+    depl_data <- bind_rows(depl_data, tidbit)
+  }
+
 
 # vemco -------------------------------------------------------------------
   sn_vem <- sn_table %>%

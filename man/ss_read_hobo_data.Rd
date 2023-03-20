@@ -2,24 +2,24 @@
 % Please edit documentation in R/ss_hobo.R
 \name{ss_read_hobo_data}
 \alias{ss_read_hobo_data}
-\title{Import data from hobo and tidbit csv files}
+\title{Import data from hobo or tidbit csv file}
 \usage{
 ss_read_hobo_data(path, file_name)
 }
 \arguments{
-\item{path}{File path to the hobo file.}
+\item{path}{File path to the hobo or tidbit file.}
 
 \item{file_name}{Name of the file to import, including file extension.}
 }
 \value{
-Returns a data frame of hobo data, with the same columns as in the
-  original file.
+Returns a data frame of hobo or tidbit data, with the same columns as
+  in the original file.
 }
 \description{
-Import data from hobo and tidbit csv files
+Import data from hobo or tidbit csv file
 }
 \details{
-The hobo data must be saved in csv format.
+The data must be saved in csv format.
 }
 \author{
 Danielle Dempsey
