@@ -189,7 +189,7 @@ ss_compile_hobo_data <- function(path,
     map_df(rbind)
 
   # Return compiled data ----------------------------------------------------
-  message("hobo data compiled")
+  message(paste(sensor_make, "data compiled"))
 
   tibble(hobo_out)
 }
