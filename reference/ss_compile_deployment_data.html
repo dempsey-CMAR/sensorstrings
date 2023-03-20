@@ -46,14 +46,15 @@
 <span>  <span class="va">path</span>,</span>
 <span>  path_config <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  trim <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">ignore_sensors</span></span>
+<span>  ignore_sensors <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>path</dt>
-<dd><p>File path to the log, aquameasure, hobo, and/or vemco folders.</p></dd>
+<dd><p>File path to the log, aquameasure, hobo, tidbit, and/or vemco
+folders.</p></dd>
 
 
 <dt>path_config</dt>
@@ -97,9 +98,10 @@ the deployment log, but should NOT be compiled (e.g., data file missing).</p></d
   <code><a href="ss_compile_vemco_data.html">ss_compile_vemco_data()</a></code> and returns the results in a single data
   frame.</p>
 <p>aquameasure data must be in a folder named aquameasure, hobo data must be
-  in a folder named hobo,  and vemco data must be in a folder name vemco
-  (folder names are not case sensitive). The aquameasure, hobo, and vemco
-  folders must be in the same folder.</p>
+  in a folder named hobo, tidbit data must be in a folder named tidbit, and
+  vemco data must be in a folder name vemco (folder names are not case
+  sensitive). The aquameasure, hobo, tidbit, and vemco folders must be in the
+  same folder.</p>
 <p>Adds location and mooring columns</p>
     </div>
     <div class="section level2">
