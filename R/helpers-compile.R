@@ -185,7 +185,7 @@ convert_timestamp_to_datetime <- function(dat) {
     "ymd IMS p", "Ymd IMS p",
     "Ymd HM", "Ymd HMS",
     "dmY HM", "dmY HMS",
-    "dmY IM p", "dmY IMS p"
+    "dmY IM p", "dmY IMS p", "Ymd"
   )
 
   check_date <- suppressWarnings(
