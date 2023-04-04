@@ -60,7 +60,7 @@ ss_read_aquameasure_data <- function(path, file_name) {
 #' @importFrom dplyr %>% distinct if_else mutate select slice tibble
 #' @importFrom glue glue
 #' @importFrom lubridate parse_date_time
-#' @importFrom stringr str_detect
+#' @importFrom stringr str_detect str_replace
 #' @importFrom tidyr separate pivot_wider
 #' @importFrom tidyselect all_of
 #'
@@ -112,11 +112,21 @@ ss_compile_aquameasure_data <- function(path,
     # check timezone
     date_tz <- extract_aquameasure_tz(am_colnames)
 
-    if (length(sn_i) > 1) stop("Multiple serial numbers found in file ", file_name)
+    if (length(sn_i) > 1) {
+
+      # replace blank serial numbers with phrase so that it will show up in message
+      sn_i <-  str_replace(sn_i, " ", "blank")
+
+      warning("Multiple serial numbers found in file ",
+              file_name, ": ", paste(sn_i, collapse = " "))
+    }
+
+    # assume first serial number is correct
+    sn_i <- sn_i[1]
 
     # if the serial number doesn't match any of the entries in sn_table
     if (!(sn_i %in% sn_table$sensor_serial_number)) {
-      stop(glue("Serial number {sn_i} does not match any serial numbers in sn_table"))
+      stop(glue("Serial number {sn_i[1]} does not match any serial numbers in sn_table"))
     }
 
     if (date_tz != "utc") {
@@ -138,11 +148,15 @@ ss_compile_aquameasure_data <- function(path,
     # use serial number to identify the depth from sn_table
     sensor_info_i <- dplyr::filter(sn_table, sensor_serial_number == sn_i)
 
-    # don't use the am_colnames variable here in case the name of the tempeature
+    # don't use the am_colnames variable here in case the name of the temperature
     # column was changed
     vars <- extract_aquameasure_vars(colnames(am_i))
 
-    # extract sensor depth
+    # during start-up, aquameasure sensors sometimes record the same timestamp
+    # twice, which give an error in pivot_wider (values are not uniquely identified)
+    # will try trimming BEFORE pivoting to see if this helps.
+    # if not, will group_by, summarise, and filter to remove duplicates
+
     am_i <- am_i %>%
       select(
         timestamp_ = contains("stamp"),
@@ -158,23 +172,9 @@ ss_compile_aquameasure_data <- function(path,
         `Record Type` %in%
           c("Dissolved Oxygen", "Temperature", "Salinity", "Device Depth")
       ) %>%
-      tidyr::pivot_wider(
-        id_cols = "timestamp_",
-        names_from = "Record Type", values_from = all_of(vars)
-      ) %>%
-      # filter(
-      #   !str_detect(timestamp_, "after"),
-      #   !str_detect(timestamp_, "undefined")
-      # ) %>%
-      select(
-        timestamp_,
-        do_percent_saturation = contains("Dissolved Oxygen_Dissolved Oxygen"),
-        temperature_degree_c = contains("Temperature_Temperature"),
-        salinity_psu = contains("Salinity_Salinity"),
-        sensor_depth_measured_m = contains("Device Depth_Device Depth")
-      ) %>%
       convert_timestamp_to_datetime()
 
+    # check there are more than 0 rows in am_i
     check_n_rows(am_i, file_name = file_name, trimmed = FALSE)
 
     # trim to the dates in deployment_dates
@@ -182,12 +182,30 @@ ss_compile_aquameasure_data <- function(path,
 
     check_n_rows(am_i, file_name = file_name, trimmed = trim)
 
+
     am_i <- am_i %>%
+      tidyr::pivot_wider(
+        id_cols = "timestamp_",
+        names_from = "Record Type", values_from = all_of(vars)
+      ) %>%
+      select(
+        timestamp_,
+        do_percent_saturation = contains("Dissolved Oxygen_Dissolved Oxygen"),
+        temperature_degree_c = contains("Temperature_Temperature"),
+        salinity_psu = contains("Salinity_Salinity"),
+        sensor_depth_measured_m = contains("Device Depth_Device Depth")
+      ) %>%
       add_deployment_columns(start_date, end_date, sensor_info_i)
 
     colnames(am_i)[which(str_detect(colnames(am_i), "timestamp"))] <- paste0("timestamp_", date_tz)
 
-    if ("dissolved_oxygen_percent_saturation" %in%  colnames(am_i)) {
+
+    if ("temperature_degree_c" %in%  colnames(am_i)) {
+      am_i <- am_i %>%
+        mutate(temperature_degree_c = as.numeric(temperature_degree_c))
+    }
+
+    if ("dissolved_oxygen_percent_saturation" %in% colnames(am_i)) {
       am_i <- am_i %>%
         mutate(
           dissolved_oxygen_percent_saturation = if_else(

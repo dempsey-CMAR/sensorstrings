@@ -10,7 +10,7 @@ ss_compile_aquameasure_data(path, sn_table, deployment_dates, trim = TRUE)
 \item{path}{File path to the hobo or tidbit folder.}
 
 \item{sn_table}{A data frame with three columns: \code{sensor_type},
-code{sensor_serial_number}, \code{depth}.}
+\code{sensor_serial_number}, \code{depth}.}
 
 \item{deployment_dates}{A data frame with two columns. The first column holds
 the deployment date (a Date object, POSIXct object, or character string in

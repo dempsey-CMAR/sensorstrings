@@ -55,7 +55,7 @@ ss_read_hobo_data <- function(path, file_name) {
 #' @param path File path to the hobo or tidbit folder.
 #'
 #' @param sn_table A data frame with three columns: \code{sensor_type},
-#'   code{sensor_serial_number}, \code{depth}.
+#'   \code{sensor_serial_number}, \code{depth}.
 #'
 #' @param deployment_dates A data frame with two columns. The first column holds
 #'   the deployment date (a Date object, POSIXct object, or character string in

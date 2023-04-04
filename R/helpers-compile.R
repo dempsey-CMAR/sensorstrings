@@ -87,7 +87,7 @@ set_up_compile <- function(path,
 
   if (length(excel_files) > 0) {
     warning(glue("Can't compile excel files.
-    {length(excel_files)} excel files found in hobo folder.
+    {length(excel_files)} excel files found in {sensor_make} folder.
     \nHINT: Please re-export in csv format."))
   }
 

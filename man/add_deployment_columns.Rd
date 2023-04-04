@@ -14,7 +14,7 @@ add_deployment_columns(dat, start_date, end_date, sn_table)
 \item{end_date}{placeholder}
 
 \item{sn_table}{A data frame with three columns: \code{sensor_type},
-code{sensor_serial_number}, \code{depth}.}
+\code{sensor_serial_number}, \code{depth}.}
 }
 \value{
 returns dat with additional columns

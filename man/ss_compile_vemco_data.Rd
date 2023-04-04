@@ -12,7 +12,7 @@ file that was extracted using Vue software. Other file types in the folder
 will be ignored.}
 
 \item{sn_table}{A data frame with three columns: \code{sensor_type},
-code{sensor_serial_number}, \code{depth}.}
+\code{sensor_serial_number}, \code{depth}.}
 
 \item{deployment_dates}{A data frame with two columns. The first column holds
 the deployment date (a Date object, POSIXct object, or character string in
