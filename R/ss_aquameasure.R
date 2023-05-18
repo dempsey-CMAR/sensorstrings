@@ -200,9 +200,16 @@ ss_compile_aquameasure_data <- function(path,
     colnames(am_i)[which(str_detect(colnames(am_i), "timestamp"))] <- paste0("timestamp_", date_tz)
 
 
-    if ("temperature_degree_c" %in%  colnames(am_i)) {
+# convert ERR to -111 so that column can be saved as numeric --------------
+    if ("sensor_depth_measured_m" %in% colnames(am_i)) {
       am_i <- am_i %>%
-        mutate(temperature_degree_c = as.numeric(temperature_degree_c))
+        mutate(
+          sensor_depth_measured_m = if_else(
+            sensor_depth_measured_m == "ERR",
+            "-111", as.character(sensor_depth_measured_m)
+          ),
+          sensor_depth_measured_m = as.numeric(sensor_depth_measured_m)
+        )
     }
 
     if ("dissolved_oxygen_percent_saturation" %in% colnames(am_i)) {
@@ -227,6 +234,13 @@ ss_compile_aquameasure_data <- function(path,
           salinity_psu = as.numeric(salinity_psu)
         )
     }
+
+
+    if ("temperature_degree_c" %in%  colnames(am_i)) {
+      am_i <- am_i %>%
+        mutate(temperature_degree_c = as.numeric(temperature_degree_c))
+    }
+
 
     am_dat[[i]] <- am_i
   } # end loop over files
