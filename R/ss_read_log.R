@@ -224,6 +224,7 @@ ss_read_log <- function(path, path_config = NULL){
     select(
       log_sensor = Logger_Model,
       sensor_serial_number = `Serial#`,
+      # do not conver this to numeric - will cause error if there are quali depths
       depth = Sensor_Depth
     )
 
@@ -286,7 +287,9 @@ ss_read_log <- function(path, path_config = NULL){
 
     if(is.null(path_config)) {
 
-      path_config <- file.path("Y:/coastal_monitoring_program/tracking_sheets/water_quality_configuration_table.xlsx")
+      path_config <- file.path(
+        "Y:/coastal_monitoring_program/tracking_sheets/water_quality_configuration_table.xlsx"
+      )
 
     }
 
