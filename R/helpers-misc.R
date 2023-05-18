@@ -34,6 +34,7 @@ extract_file_extension <- function(file_name){
 #'   extension.
 #'
 #' @importFrom dplyr distinct mutate
+#' @importFrom stringr str_replace_all
 #' @importFrom tidyr separate
 #'
 #' @export
@@ -55,7 +56,7 @@ ss_export_path <- function(
     mutate(
       county = tolower(county),
       station = tolower(station),
-      station = str_replace(station, " ", "_"),
+      station = str_replace_all(station, " ", "_"),
       depl_date = as.character(as_date(depl_date))
     )
 
@@ -84,7 +85,7 @@ ss_export_path <- function(
 #'
 #' @return The file path for importing raw deployment data.
 #'
-#' @importFrom stringr str_replace
+#' @importFrom stringr str_replace_all
 #'
 #' @export
 
@@ -95,7 +96,7 @@ ss_import_path <- function(station, depl_date, path = NULL) {
   }
 
   station <- tolower(station)
-  station <- str_replace(station, " ", "_")
+  station <- str_replace_all(station, " ", "_")
 
   path <- paste(
     path, station,
