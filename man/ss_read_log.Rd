@@ -4,7 +4,7 @@
 \alias{ss_read_log}
 \title{Extract information from deployment log}
 \usage{
-ss_read_log(path, path_config)
+ss_read_log(path, path_config = NULL)
 }
 \arguments{
 \item{path}{File path to the Log folder.}

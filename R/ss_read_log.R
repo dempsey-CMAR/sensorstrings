@@ -87,7 +87,7 @@
 #'
 #' @export
 
-ss_read_log <- function(path, path_config){
+ss_read_log <- function(path, path_config = NULL){
 
   # Read in log -----------------------------------------------------------
   # extract the name of the log folder (e.g. Log, log, LOG)
