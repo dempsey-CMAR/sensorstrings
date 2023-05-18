@@ -25,7 +25,7 @@ ss_reformat_old_data <- function(dat) {
       lease = LEASE,
       latitude = LATITUDE,
       longitude = LONGITUDE,
-      mooring_type = MOORING,
+      string_configuration = MOORING,
       sensor = SENSOR,
       timestamp_utc = TIMESTAMP,
       sensor_depth_at_low_tide_m = DEPTH,
