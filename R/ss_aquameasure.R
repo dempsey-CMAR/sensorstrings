@@ -161,16 +161,18 @@ ss_compile_aquameasure_data <- function(path,
       select(
         timestamp_ = contains("stamp"),
         `Record Type`,
+        Text,
         contains("Dissolved Oxygen"),
         contains("Temperature"),
         contains("Salinity"),
-        contains("Depth")
+        contains("Depth"),
+        Text
       ) %>%
       filter(
         !str_detect(timestamp_, "after"),
         !str_detect(timestamp_, "undefined"),
         `Record Type` %in%
-          c("Dissolved Oxygen", "Temperature", "Salinity", "Device Depth")
+          c("Dissolved Oxygen", "Temperature", "Salinity", "Device Depth", "Text")
       ) %>%
       convert_timestamp_to_datetime()
 
@@ -182,8 +184,28 @@ ss_compile_aquameasure_data <- function(path,
 
     check_n_rows(am_i, file_name = file_name, trimmed = trim)
 
+    # find if any timestamp groups are marked "ACT MODE", which seems to
+    # indicate duplicate timestamp
+    bad_ts <- am_i %>%
+      mutate(text_col = if_else(Text == "ACT MODE", 1, 0)) %>%
+      group_by(timestamp_) %>%
+      summarise(act_mode = sum(text_col, na.rm = TRUE)) %>%
+      filter(act_mode > 0)
+
+    if(nrow(bad_ts) > 0) {
+      message(
+       "ACT MODE found in aquameasure ",
+        sn_i,
+        " Text column at timestamp(s): ",
+        paste(bad_ts$timestamp_, collapse = ", ")
+      )
+    }
 
     am_i <- am_i %>%
+      filter(
+        !(timestamp_ %in% bad_ts$timestamp_),
+        !(`Record Type` %in% "Text")
+      ) %>%
       tidyr::pivot_wider(
         id_cols = "timestamp_",
         names_from = "Record Type", values_from = all_of(vars)
