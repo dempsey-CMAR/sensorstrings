@@ -43,8 +43,8 @@ The raw aquameasure data must be saved in a folder named aquameasure
   HM", "Ymd HMS", "dmY HM", or "dmY HMS".
 
 
-  "ERR" values are converted to \code{-111} (to distinguish from sensor
-  error value of -101.5).
+  "ERR" values are converted to \code{-111} (to distinguish from sensor error
+  value of -101.5).
 }
 \seealso{
 Other compile: 

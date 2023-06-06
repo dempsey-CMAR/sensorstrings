@@ -46,8 +46,8 @@ ss_read_aquameasure_data <- function(path, file_name) {
 #'   HM", "Ymd HMS", "dmY HM", or "dmY HMS".
 #'
 #'
-#'   "ERR" values are converted to \code{-111} (to distinguish from sensor
-#'   error value of -101.5).
+#'   "ERR" values are converted to \code{-111} (to distinguish from sensor error
+#'   value of -101.5).
 #'
 #' @inheritParams ss_compile_hobo_data
 #'
@@ -57,7 +57,8 @@ ss_read_aquameasure_data <- function(path, file_name) {
 #' @family compile
 #' @author Danielle Dempsey
 #'
-#' @importFrom dplyr %>% distinct if_else mutate select slice tibble
+#' @importFrom dplyr %>% distinct group_by if_else mutate n select slice
+#'   summarise tibble
 #' @importFrom glue glue
 #' @importFrom lubridate parse_date_time
 #' @importFrom stringr str_detect str_replace
