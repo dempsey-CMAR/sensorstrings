@@ -200,17 +200,17 @@ VR2AR
 <code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, package <span class="op">=</span> <span class="st">"sensorstrings"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">aquameasure_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ss_read_aquameasure_data.html">ss_read_aquameasure_data</a></span><span class="op">(</span></span>
-<span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path</span>, <span class="st">"/aquameasure"</span><span class="op">)</span>, </span>
+<span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path</span>, <span class="st">"/aquameasure"</span><span class="op">)</span>,</span>
 <span>  file_name <span class="op">=</span> <span class="st">"aquameasure-670364.csv"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">hobo_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ss_read_hobo_data.html">ss_read_hobo_data</a></span><span class="op">(</span></span>
-<span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path</span>, <span class="st">"/hobo"</span><span class="op">)</span>, </span>
+<span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path</span>, <span class="st">"/hobo"</span><span class="op">)</span>,</span>
 <span>  file_name <span class="op">=</span> <span class="st">"10755220.csv"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">vemco_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ss_read_vemco_data.html">ss_read_vemco_data</a></span><span class="op">(</span></span>
-<span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path</span>, <span class="st">"/vemco"</span><span class="op">)</span>, </span>
+<span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">path</span>, <span class="st">"/vemco"</span><span class="op">)</span>,</span>
 <span>  file_name <span class="op">=</span> <span class="st">"vemco-547109.csv"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Examine the first rows of each raw data file:</p>
@@ -294,24 +294,24 @@ VR2AR
 <p>The deployment log includes the deployment and retrieval dates, information on where the string was deployed, and the depth of each sensor.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">log</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ss_read_log.html">ss_read_log</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
-<span><span class="co">#&gt; v Reading from "STRING TRACKING".</span></span>
-<span><span class="co">#&gt; v Range ''Area Info''.</span></span></code></pre></div>
+<span><span class="co">#&gt; ✔ Reading from "STRING TRACKING".</span></span>
+<span><span class="co">#&gt; ✔ Range ''Area Info''.</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">log</span><span class="op">$</span><span class="va">deployment_dates</span></span>
 <span><span class="co">#&gt;   start_date   end_date</span></span>
-<span><span class="co">#&gt; 1 2019-05-31 2019-10-19</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 2019-05-30 2019-10-19</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">log</span><span class="op">$</span><span class="va">area_info</span></span>
 <span><span class="co">#&gt;    county waterbody latitude longitude        station lease</span></span>
 <span><span class="co">#&gt; 1 Halifax Shoal Bay 44.77241 -62.72608 Borgles Island    NA</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">log</span><span class="op">$</span><span class="va">sn_table</span></span>
-<span><span class="co">#&gt; # A tibble: 3 x 3</span></span>
-<span><span class="co">#&gt;   sensor          serial_number depth</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;                   &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 HOBO Pro V2          10755220     2</span></span>
-<span><span class="co">#&gt; 2 aquaMeasure DOT        670364     5</span></span>
-<span><span class="co">#&gt; 3 VR2AR                  547109    15</span></span></code></pre></div>
+<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span><span class="co">#&gt;   log_sensor      sensor_serial_number depth</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                          &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 HOBO Pro V2                 10755220     2</span></span>
+<span><span class="co">#&gt; 2 aquaMeasure DOT               670364     5</span></span>
+<span><span class="co">#&gt; 3 VR2AR                         547109    15</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="compile-data">Compile Data<a class="anchor" aria-label="anchor" href="#compile-data"></a>
@@ -319,11 +319,11 @@ VR2AR
 <p><code><a href="reference/ss_compile_deployment_data.html">ss_compile_deployment_data()</a></code> reads in the log and the data for each sensor and exports a single data frame.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ss_compile_deployment_data.html">ss_compile_deployment_data</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
-<span><span class="co">#&gt; v Reading from "STRING TRACKING".</span></span>
-<span><span class="co">#&gt; v Range ''Area Info''.</span></span>
-<span><span class="co">#&gt; aquaMeasure data compiled</span></span>
-<span><span class="co">#&gt; HOBO data compiled</span></span>
-<span><span class="co">#&gt; Vemco data compiled: Temperature</span></span>
+<span><span class="co">#&gt; ✔ Reading from "STRING TRACKING".</span></span>
+<span><span class="co">#&gt; ✔ Range ''Area Info''.</span></span>
+<span><span class="co">#&gt; aquameasure data compiled</span></span>
+<span><span class="co">#&gt; hobo data compiled</span></span>
+<span><span class="co">#&gt; vemco data compiled: Temperature &amp; Seawater depth</span></span>
 <span></span>
 <span><span class="fu">kable</span><span class="op">(</span><span class="va">dat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -350,6 +350,9 @@ longitude
 deployment_range
 </th>
 <th style="text-align:left;">
+string_configuration
+</th>
+<th style="text-align:left;">
 sensor_type
 </th>
 <th style="text-align:right;">
@@ -358,7 +361,7 @@ sensor_serial_number
 <th style="text-align:left;">
 timestamp_utc
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 sensor_depth_at_low_tide_m
 </th>
 <th style="text-align:right;">
@@ -368,7 +371,7 @@ dissolved_oxygen_percent_saturation
 sensor_depth_measured_m
 </th>
 <th style="text-align:right;">
-temperature_degree_C
+temperature_degree_c
 </th>
 </tr></thead>
 <tbody>
@@ -392,7 +395,10 @@ NA
 -62.72608
 </td>
 <td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
 </td>
 <td style="text-align:left;">
 hobo
@@ -401,361 +407,9 @@ hobo
 10755220
 </td>
 <td style="text-align:left;">
-2019-05-31 01:00:00
-</td>
-<td style="text-align:left;">
-2
+2019-05-30 21:00:00
 </td>
 <td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-7.695
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-hobo
-</td>
-<td style="text-align:right;">
-10755220
-</td>
-<td style="text-align:left;">
-2019-05-31 05:00:00
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-7.569
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-hobo
-</td>
-<td style="text-align:right;">
-10755220
-</td>
-<td style="text-align:left;">
-2019-05-31 09:00:00
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-6.509
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-hobo
-</td>
-<td style="text-align:right;">
-10755220
-</td>
-<td style="text-align:left;">
-2019-05-31 13:00:00
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-6.788
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-hobo
-</td>
-<td style="text-align:right;">
-10755220
-</td>
-<td style="text-align:left;">
-2019-05-31 17:00:00
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-6.839
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-hobo
-</td>
-<td style="text-align:right;">
-10755220
-</td>
-<td style="text-align:left;">
-2019-05-31 21:00:00
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-7.192
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-hobo
-</td>
-<td style="text-align:right;">
-10755220
-</td>
-<td style="text-align:left;">
-2019-06-01 01:00:00
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-7.594
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-hobo
-</td>
-<td style="text-align:right;">
-10755220
-</td>
-<td style="text-align:left;">
-2019-06-01 05:00:00
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-7.544
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-hobo
-</td>
-<td style="text-align:right;">
-10755220
-</td>
-<td style="text-align:left;">
-2019-06-01 09:00:00
-</td>
-<td style="text-align:left;">
 2
 </td>
 <td style="text-align:right;">
@@ -788,7 +442,10 @@ NA
 -62.72608
 </td>
 <td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
 </td>
 <td style="text-align:left;">
 hobo
@@ -797,9 +454,9 @@ hobo
 10755220
 </td>
 <td style="text-align:left;">
-2019-06-01 13:00:00
+2019-05-31 01:00:00
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
@@ -809,7 +466,383 @@ NA
 NA
 </td>
 <td style="text-align:right;">
-7.242
+7.695
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-05-31 05:00:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+7.569
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-05-31 09:00:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+6.509
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-05-31 13:00:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+6.788
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-05-31 17:00:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+6.839
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-05-31 21:00:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+7.192
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-06-01 01:00:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+7.594
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-06-01 05:00:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+7.544
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-06-01 09:00:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+6.661
 </td>
 </tr>
 </tbody>
@@ -820,7 +853,7 @@ NA
 <h3 id="plot">Plot<a class="anchor" aria-label="anchor" href="#plot"></a>
 </h3>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">ss_plot_variables_at_depth</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/ss_ggplot_variables.html">ss_ggplot_variables</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-fig1-1.png" width="100%"></p>
 </div>
 </div>
@@ -852,7 +885,7 @@ NA
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.gnu.org/licenses/gpl-3.0" class="external-link"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a></li>
-<li><a href="https://github.com/dempsey-cmar/sensorstrings" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.1.0-blue.svg"></a></li>
+<li><a href="https://github.com/dempsey-cmar/sensorstrings" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.4.0-blue.svg"></a></li>
 <li><a href="https://www.codefactor.io/repository/github/dempsey-cmar/sensorstrings" class="external-link"><img src="https://www.codefactor.io/repository/github/dempsey-cmar/sensorstrings/badge" alt="CodeFactor"></a></li>
 <li><a href="https://github.com/dempsey-cmar/sensorstrings/actions" class="external-link"><img src="https://github.com/dempsey-cmar/sensorstrings/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 </ul>
