@@ -22,21 +22,19 @@
 #' @export
 #'
 
-get_colour_palette <- function(dat){
-
+get_colour_palette <- function(dat) {
   n_depth <- dat %>%
     select(contains("low_tide")) %>%
     distinct() %>%
     nrow()
 
-  if(n_depth > 6){
+  if (n_depth > 6) {
     colour_palette <- viridis(n_depth, option = "D", direction = -1)
-  } else{
+  } else {
     colour_palette <- viridis(6, option = "D", direction = -1)
   }
 
   colour_palette
-
 }
 
 
@@ -53,7 +51,6 @@ get_colour_palette <- function(dat){
 #' @export
 
 ss_create_variable_labels <- function(dat_long) {
-
   var_order <- c(
     "Temperature \n(\u00B0C)",
     "Dissolved Oxygen \n(% sat)",
@@ -78,7 +75,8 @@ ss_create_variable_labels <- function(dat_long) {
         TRUE ~ variable
       ),
       variable_label = factor(
-        variable_label, levels = var_order, ordered = TRUE
+        variable_label,
+        levels = var_order, ordered = TRUE
       )
     )
 }
@@ -113,16 +111,12 @@ filter_dat_to_plot <- function(
     filter_to = c("start", "end", "custom"),
     period = "2 days",
     custom_start = NULL,
-    custom_end = NULL
-) {
-
-
+    custom_end = NULL) {
   assert_that(filter_to %in% c("start", "end", "custom"))
 
   dat <- dat %>% rename(timestamp_ = contains("timestamp_"))
 
-  if(filter_to == "start") {
-
+  if (filter_to == "start") {
     dat <- dat %>%
       filter(
         timestamp_ <=
@@ -130,8 +124,7 @@ filter_dat_to_plot <- function(
       )
   }
 
-  if(filter_to == "end") {
-
+  if (filter_to == "end") {
     dat <- dat %>%
       filter(
         timestamp_ >=
@@ -139,8 +132,7 @@ filter_dat_to_plot <- function(
       )
   }
 
-  if(filter_to == "custom") {
-
+  if (filter_to == "custom") {
     assert_that(is.POSIXct(custom_start))
     assert_that(is.POSIXct(custom_end))
 
@@ -151,7 +143,4 @@ filter_dat_to_plot <- function(
   }
 
   dat
-
 }
-
-

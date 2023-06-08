@@ -1,4 +1,3 @@
-
 # ss_read_vemco_data -------------------------------------------------------
 
 test_that("ss_read_vemco_data() reads in correct classes", {
@@ -50,7 +49,7 @@ test_that("ss_compile_vemco_data() returns Error and Warnings", {
     ss_compile_vemco_data(
       path = path,
       deployment_dates = deployment_dates,
-      sn_table = data.frame(sensor ="VR2AR", serial = "123456", depth = 6)
+      sn_table = data.frame(sensor = "VR2AR", serial = "123456", depth = 6)
     )
   )
 
@@ -62,7 +61,3 @@ test_that("ss_compile_vemco_data() returns Error and Warnings", {
     )
   )
 })
-
-
-
-

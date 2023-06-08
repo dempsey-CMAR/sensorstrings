@@ -8,7 +8,7 @@
 #'
 #' @importFrom tidyr separate
 
-extract_file_extension <- function(file_name){
+extract_file_extension <- function(file_name) {
   extension <- file_name %>%
     data.frame() %>%
     separate(col = 1, into = c(NA, "EXT"), sep = "\\.")
@@ -41,14 +41,12 @@ extract_file_extension <- function(file_name){
 
 
 ss_export_path <- function(
-    dat, path = NULL, sub_folder = NULL, ext = "rds"
-) {
-
-  if(is.null(path)) {
-    path = "Y:/coastal_monitoring_program/data_branches/water_quality/processed_data/deployment_data"
+    dat, path = NULL, sub_folder = NULL, ext = "rds") {
+  if (is.null(path)) {
+    path <- "Y:/coastal_monitoring_program/data_branches/water_quality/processed_data/deployment_data"
   }
 
-  if(is.null(sub_folder)) sub_folder <- "new"
+  if (is.null(sub_folder)) sub_folder <- "new"
 
   info <- dat %>%
     distinct(county, station, deployment_range) %>%
@@ -64,12 +62,11 @@ ss_export_path <- function(
 
   path <- file.path(paste(path, info$county, sub_folder, sep = "/"))
 
-  if(isFALSE(dir.exists(path))) {
+  if (isFALSE(dir.exists(path))) {
     stop("File path << ", path, " >> does not exist.\nCan't export file << ", file_name, " >>")
   }
 
   file.path(paste(path, file_name, sep = "/"))
-
 }
 
 
@@ -90,9 +87,8 @@ ss_export_path <- function(
 #' @export
 
 ss_import_path <- function(station, depl_date, path = NULL) {
-
-  if(is.null(path)) {
-    path = "Y:/coastal_monitoring_program/data_branches/water_quality/station_folders"
+  if (is.null(path)) {
+    path <- "Y:/coastal_monitoring_program/data_branches/water_quality/station_folders"
   }
 
   station <- tolower(station)
@@ -100,13 +96,13 @@ ss_import_path <- function(station, depl_date, path = NULL) {
 
   path <- paste(
     path, station,
-    paste(station, depl_date, sep = "_"), sep = "/"
+    paste(station, depl_date, sep = "_"),
+    sep = "/"
   )
 
-  if(isFALSE(dir.exists(path))) {
+  if (isFALSE(dir.exists(path))) {
     stop("File path << ", path, " >> does not exist. Check station spelling and deployment date")
   }
 
   file.path(path)
-
 }

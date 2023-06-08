@@ -35,9 +35,7 @@
 
 
 ss_compile_deployment_data <- function(
-    path, path_config = NULL, trim = TRUE, ignore_sensors = NULL
-) {
-
+    path, path_config = NULL, trim = TRUE, ignore_sensors = NULL) {
   # read in log and add location columns ----------------------------------------------------
   depl_log <- ss_read_log(path, path_config = path_config)
 
@@ -71,7 +69,7 @@ ss_compile_deployment_data <- function(
   sn_hobo <- sn_table %>%
     filter(str_detect(log_sensor, regex("hobo", ignore_case = TRUE)))
 
-  if (nrow(sn_hobo) > 0){
+  if (nrow(sn_hobo) > 0) {
     hobo <- ss_compile_hobo_data(
       path = path,
       sn_table = sn_hobo,
@@ -87,7 +85,7 @@ ss_compile_deployment_data <- function(
   sn_tidbit <- sn_table %>%
     filter(str_detect(log_sensor, regex("tidbit", ignore_case = TRUE)))
 
-  if (nrow(sn_tidbit) > 0){
+  if (nrow(sn_tidbit) > 0) {
     tidbit <- ss_compile_hobo_data(
       path = path,
       sn_table = sn_tidbit,
@@ -100,12 +98,11 @@ ss_compile_deployment_data <- function(
   }
 
 
-# vemco -------------------------------------------------------------------
+  # vemco -------------------------------------------------------------------
   sn_vem <- sn_table %>%
     filter(str_detect(log_sensor, regex("VR2AR", ignore_case = TRUE)))
 
-  if (nrow(sn_vem) > 0){
-
+  if (nrow(sn_vem) > 0) {
     vemco <- ss_compile_vemco_data(
       path = path,
       sn_table = sn_vem,
@@ -113,12 +110,12 @@ ss_compile_deployment_data <- function(
       trim = trim
     )
 
-   # browser()
+    # browser()
 
     depl_data <- bind_rows(depl_data, vemco)
   }
 
-# add area info columns and export ----------------------------------------
+  # add area info columns and export ----------------------------------------
   depl_data %>%
     mutate(
       county = area_info$county,
@@ -129,7 +126,7 @@ ss_compile_deployment_data <- function(
       lease = as.character(area_info$lease),
       string_configuration = depl_log$string_configuration
     ) %>%
-   # ss_convert_depth_to_ordered_factor() %>%
+    # ss_convert_depth_to_ordered_factor() %>%
     arrange(sensor_depth_at_low_tide_m) %>%
     select(
       county, waterbody, station, lease, latitude, longitude,
@@ -146,4 +143,3 @@ ss_compile_deployment_data <- function(
       contains("temperature")
     )
 }
-

@@ -13,7 +13,6 @@ test_that("ss_read_nsdfa_metadata() reads in correct classes", {
 
 # spot checks
 test_that("ss_read_nsdfa_metadata() corrects waterbody names", {
-
   expect_equal(nrow(filter(nsdfa, Waterbody == "Pipers lake")), 0)
   expect_equal(nrow(filter(nsdfa, Waterbody == "Piper Lake")), 1)
 
@@ -34,14 +33,12 @@ test_that("ss_read_nsdfa_metadata() corrects waterbody names", {
   )
   expect_equal(
     nrow(filter(nsdfa, Waterbody == "Whitehead Harbour" &
-                  Station_Name == "Bald Rock")), 2
+      Station_Name == "Bald Rock")), 2
   )
-
 })
 
 
 test_that("ss_read_nsdfa_metadata() corrects station names", {
-
   expect_equal(nrow(filter(nsdfa, Station_Name == "Pipers lake")), 0)
   expect_equal(nrow(filter(nsdfa, Station_Name == "Piper Lake")), 1)
 
@@ -50,5 +47,4 @@ test_that("ss_read_nsdfa_metadata() corrects station names", {
 
   expect_equal(nrow(filter(nsdfa, Station_Name == "Owls head")), 0)
   expect_equal(nrow(filter(nsdfa, Station_Name == "Owls Head")), 1)
-
 })

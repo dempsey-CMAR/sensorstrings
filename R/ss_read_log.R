@@ -87,8 +87,7 @@
 #'
 #' @export
 
-ss_read_log <- function(path, path_config = NULL){
-
+ss_read_log <- function(path, path_config = NULL) {
   # Read in log -----------------------------------------------------------
   # extract the name of the log folder (e.g. Log, log, LOG)
   folder <- list.files(path) %>%
@@ -100,8 +99,8 @@ ss_read_log <- function(path, path_config = NULL){
   dat_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|*xls|*csv")
 
   # remove files that start with "~"
-  if(any(substring(dat_files, 1, 1) == "~")) {
-    dat_files <- dat_files[-which(substring(dat_files, 1, 1)== "~")]
+  if (any(substring(dat_files, 1, 1) == "~")) {
+    dat_files <- dat_files[-which(substring(dat_files, 1, 1) == "~")]
   }
 
   if (length(dat_files) > 1) {
@@ -111,7 +110,7 @@ ss_read_log <- function(path, path_config = NULL){
   # file extension
   file_type <- extract_file_extension(dat_files)
 
-  if (file_type == "xls" |  file_type == "xlsx") {
+  if (file_type == "xls" | file_type == "xlsx") {
     log <- read_excel(paste(path, dat_files, sep = "/"), na = c("", "n/a", "N/A"))
   }
 
@@ -127,7 +126,7 @@ ss_read_log <- function(path, path_config = NULL){
   # deployment dates ------------------------------------------------------------
 
   # deployment dates
-  depl_start  <- unique(log$Deployment)
+  depl_start <- unique(log$Deployment)
   depl_end <- unique(log$Retrieval)
 
   # message if there is more than one Deployment or Retrieval date
@@ -161,13 +160,13 @@ ss_read_log <- function(path, path_config = NULL){
   station <- as.character(unique(log$Location_Description))
   lease <- unique(log$`Lease#`)
 
-  if(length(wb) > 1) message("Multiple waterbodies in log")
-  if(length(lat) > 1) message("Multiple latitudes recorded in log")
-  if(length(long) > 1) message("Multiple longitudes recorded in log")
-  if(length(station) > 1) message("Multiple location descriptions recorded in log")
-  if(length(lease) > 1) message("Multiple leases recorded in log")
+  if (length(wb) > 1) message("Multiple waterbodies in log")
+  if (length(lat) > 1) message("Multiple latitudes recorded in log")
+  if (length(long) > 1) message("Multiple longitudes recorded in log")
+  if (length(station) > 1) message("Multiple location descriptions recorded in log")
+  if (length(lease) > 1) message("Multiple leases recorded in log")
 
-  if(any(long > 0)) stop("Longitude must be a negative value")
+  if (any(long > 0)) stop("Longitude must be a negative value")
 
   # link to the "STRING TRACKING" google sheet -
   googlesheets4::gs4_deauth()
@@ -180,13 +179,14 @@ ss_read_log <- function(path, path_config = NULL){
   # look up the Station name in the Area Info tab and return the county
   county <- area_tracking[
     which(area_tracking$station == station & area_tracking$waterbody == wb),
-    "county"]$county
+    "county"
+  ]$county
 
-  if(length(county) > 1) {
+  if (length(county) > 1) {
     stop("There is more than one station named << ", station, " >>
          with waterbody <<", wb, " >> in the Area Info tab")
   }
-  if(length(county) < 1) {
+  if (length(county) < 1) {
     stop("There is no station named << ", station, " >>
          with waterbody << ", wb, " >> in the Area Info tab")
   }
@@ -196,7 +196,7 @@ ss_read_log <- function(path, path_config = NULL){
     waterbody = log$Deployment_Waterbody[1],
     latitude = log$Logger_Latitude[1],
     longitude = log$Logger_Longitude[1],
-    station  = log$Location_Description[1],
+    station = log$Location_Description[1],
     lease = log$`Lease#`[1]
   )
 
@@ -258,39 +258,36 @@ ss_read_log <- function(path, path_config = NULL){
     message("No Hobo sensors found in log")
   }
 
-  if (nrow(filter(sensors, detect_am == TRUE)) == 0){
+  if (nrow(filter(sensors, detect_am == TRUE)) == 0) {
     message("No aquaMeasure sensors found in log")
   }
 
-  if(nrow(filter(sensors, detect_vemco == TRUE)) == 0){
+  if (nrow(filter(sensors, detect_vemco == TRUE)) == 0) {
     message("No VR2AR sensors found in log")
   }
 
   # configuration ------------------------------------------------------------
 
-  config_options <- c("sub-surface buoy", "surface buoy", "attached to gear",
-                      "attached to fixed structure", "floating dock", "unknown")
+  config_options <- c(
+    "sub-surface buoy", "surface buoy", "attached to gear",
+    "attached to fixed structure", "floating dock", "unknown"
+  )
 
-  if("Configuration" %in% colnames(log)) {
-
+  if ("Configuration" %in% colnames(log)) {
     config <- unique(log$configuration)
 
-    if(is.na(config)) {
+    if (is.na(config)) {
       stop("Configuration is recorded as NA in the Log.")
     }
 
-    if(length(config) > 1) {
+    if (length(config) > 1) {
       stop("More than one configuration type entered in the Log.")
     }
-
-  } else{
-
-    if(is.null(path_config)) {
-
+  } else {
+    if (is.null(path_config)) {
       path_config <- file.path(
         "Y:/coastal_monitoring_program/tracking_sheets/water_quality_configuration_table.xlsx"
       )
-
     }
 
     config <- read_excel(path_config, sheet = "deployments") %>%
@@ -301,7 +298,7 @@ ss_read_log <- function(path, path_config = NULL){
         Depl_Date == deployment_dates$start_date[1]
       )
 
-    if(nrow(config) == 0) {
+    if (nrow(config) == 0) {
       stop("Deployment not found in Configuration table.
           \nHINT: check station, waterbody, and deployment date in log and Configuration table")
     }
@@ -309,19 +306,20 @@ ss_read_log <- function(path, path_config = NULL){
     config <- config$Configuration
 
 
-    if(is.na(config)) {
+    if (is.na(config)) {
       stop("Configuration is recorded as NA in the Configuration table")
     }
 
-    if(length(config) > 1) {
-      stop("More than one Configuration for << ", area_info$station, " >> deployed on << ",
-           deployment_dates$start_date, " >> recorded in the Configuration table")
+    if (length(config) > 1) {
+      stop(
+        "More than one Configuration for << ", area_info$station, " >> deployed on << ",
+        deployment_dates$start_date, " >> recorded in the Configuration table"
+      )
     }
   }
 
 
-  if(!(config %in% config_options)) {
-
+  if (!(config %in% config_options)) {
     warning("<< ", config, " >> is not an accepted sensor string configuration")
   }
 
@@ -333,5 +331,4 @@ ss_read_log <- function(path, path_config = NULL){
     sn_table = sn_table,
     string_configuration = config
   )
-
 }

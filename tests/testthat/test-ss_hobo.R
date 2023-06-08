@@ -1,4 +1,3 @@
-
 # ss_read_hobo_data -------------------------------------------------------
 
 test_that("ss_read_hobo_data() reads in correct classes", {
@@ -42,8 +41,7 @@ test_that("ss_compile_hobo_data() reads in all observations", {
   expect_equal(nrow(hobo_trim), 36)
 })
 
-test_that("ss_compile_hobo_data() returns error if file name does not match entries in sn_table",{
-
+test_that("ss_compile_hobo_data() returns error if file name does not match entries in sn_table", {
   expect_error(
     ss_compile_hobo_data(
       path,
@@ -66,4 +64,3 @@ test_that("ss_compile_hobo_data() returns Error if trimming removes all rows", {
     )
   )
 })
-

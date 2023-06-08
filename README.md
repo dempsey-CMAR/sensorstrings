@@ -9,7 +9,7 @@
 
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![](https://img.shields.io/badge/devel%20version-0.1.0-blue.svg)](https://github.com/dempsey-cmar/sensorstrings)
+[![](https://img.shields.io/badge/devel%20version-0.4.0-blue.svg)](https://github.com/dempsey-cmar/sensorstrings)
 [![CodeFactor](https://www.codefactor.io/repository/github/dempsey-cmar/sensorstrings/badge)](https://www.codefactor.io/repository/github/dempsey-cmar/sensorstrings)
 [![R build
 status](https://github.com/dempsey-cmar/sensorstrings/workflows/R-CMD-check/badge.svg)](https://github.com/dempsey-cmar/sensorstrings/actions)
@@ -21,15 +21,15 @@ package.**
 
 New features:
 
--   Cleaner code
--   More straightforward workflow
-    -   don’t need to export intermediate “raw” and “trim” files
-    -   few arguments to specify in templates
--   Additional functions (e.g., `ss_download_data()`)
--   Variable names consistent with [Climate
-    Forecast](https://cfconventions.org/) conventions
--   Formal tests
--   More helpful `Error` and `Warning` messages
+- Cleaner code
+- More straightforward workflow
+  - don’t need to export intermediate “raw” and “trim” files
+  - few arguments to specify in templates
+- Additional functions (e.g., `ss_download_data()`)
+- Variable names consistent with [Climate
+  Forecast](https://cfconventions.org/) conventions
+- Formal tests
+- More helpful `Error` and `Warning` messages
 
 Compile, format, and visualize Water Quality (temperature, dissolved
 oxygen, salinity) data measured by different sensors.
@@ -123,7 +123,7 @@ three sensors:
 Sensor
 </th>
 <th style="text-align:center;">
-Serial #
+Serial \#
 </th>
 <th style="text-align:center;">
 Depth
@@ -178,17 +178,17 @@ Import raw data files:
 path <- system.file("extdata", package = "sensorstrings")
 
 aquameasure_raw <- ss_read_aquameasure_data(
-  path = paste0(path, "/aquameasure"), 
+  path = paste0(path, "/aquameasure"),
   file_name = "aquameasure-670364.csv"
 )
 
 hobo_raw <- ss_read_hobo_data(
-  path = paste0(path, "/hobo"), 
+  path = paste0(path, "/hobo"),
   file_name = "10755220.csv"
 )
 
 vemco_raw <- ss_read_vemco_data(
-  path = paste0(path, "/vemco"), 
+  path = paste0(path, "/vemco"),
   file_name = "vemco-547109.csv"
 )
 ```
@@ -280,14 +280,14 @@ sensor.
 
 ``` r
 log <- ss_read_log(path)
-#> v Reading from "STRING TRACKING".
-#> v Range ''Area Info''.
+#> ✔ Reading from "STRING TRACKING".
+#> ✔ Range ''Area Info''.
 ```
 
 ``` r
 log$deployment_dates
 #>   start_date   end_date
-#> 1 2019-05-31 2019-10-19
+#> 1 2019-05-30 2019-10-19
 ```
 
 ``` r
@@ -298,12 +298,12 @@ log$area_info
 
 ``` r
 log$sn_table
-#> # A tibble: 3 x 3
-#>   sensor          serial_number depth
-#>   <chr>                   <dbl> <dbl>
-#> 1 HOBO Pro V2          10755220     2
-#> 2 aquaMeasure DOT        670364     5
-#> 3 VR2AR                  547109    15
+#> # A tibble: 3 × 3
+#>   log_sensor      sensor_serial_number depth
+#>   <chr>                          <dbl> <dbl>
+#> 1 HOBO Pro V2                 10755220     2
+#> 2 aquaMeasure DOT               670364     5
+#> 3 VR2AR                         547109    15
 ```
 
 #### Compile Data
@@ -313,11 +313,11 @@ sensor and exports a single data frame.
 
 ``` r
 dat <- ss_compile_deployment_data(path)
-#> v Reading from "STRING TRACKING".
-#> v Range ''Area Info''.
-#> aquaMeasure data compiled
-#> HOBO data compiled
-#> Vemco data compiled: Temperature
+#> ✔ Reading from "STRING TRACKING".
+#> ✔ Range ''Area Info''.
+#> aquameasure data compiled
+#> hobo data compiled
+#> vemco data compiled: Temperature & Seawater depth
 
 kable(dat[1:10, ])
 ```
@@ -347,6 +347,9 @@ longitude
 deployment_range
 </th>
 <th style="text-align:left;">
+string_configuration
+</th>
+<th style="text-align:left;">
 sensor_type
 </th>
 <th style="text-align:right;">
@@ -355,7 +358,7 @@ sensor_serial_number
 <th style="text-align:left;">
 timestamp_utc
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 sensor_depth_at_low_tide_m
 </th>
 <th style="text-align:right;">
@@ -365,7 +368,7 @@ dissolved_oxygen_percent_saturation
 sensor_depth_measured_m
 </th>
 <th style="text-align:right;">
-temperature_degree_C
+temperature_degree_c
 </th>
 </tr>
 </thead>
@@ -390,7 +393,10 @@ NA
 -62.72608
 </td>
 <td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
 </td>
 <td style="text-align:left;">
 hobo
@@ -399,361 +405,9 @@ hobo
 10755220
 </td>
 <td style="text-align:left;">
-2019-05-31 01:00:00
-</td>
-<td style="text-align:left;">
-2
+2019-05-30 21:00:00
 </td>
 <td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-7.695
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-hobo
-</td>
-<td style="text-align:right;">
-10755220
-</td>
-<td style="text-align:left;">
-2019-05-31 05:00:00
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-7.569
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-hobo
-</td>
-<td style="text-align:right;">
-10755220
-</td>
-<td style="text-align:left;">
-2019-05-31 09:00:00
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-6.509
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-hobo
-</td>
-<td style="text-align:right;">
-10755220
-</td>
-<td style="text-align:left;">
-2019-05-31 13:00:00
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-6.788
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-hobo
-</td>
-<td style="text-align:right;">
-10755220
-</td>
-<td style="text-align:left;">
-2019-05-31 17:00:00
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-6.839
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-hobo
-</td>
-<td style="text-align:right;">
-10755220
-</td>
-<td style="text-align:left;">
-2019-05-31 21:00:00
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-7.192
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-hobo
-</td>
-<td style="text-align:right;">
-10755220
-</td>
-<td style="text-align:left;">
-2019-06-01 01:00:00
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-7.594
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-hobo
-</td>
-<td style="text-align:right;">
-10755220
-</td>
-<td style="text-align:left;">
-2019-06-01 05:00:00
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-7.544
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Halifax
-</td>
-<td style="text-align:left;">
-Shoal Bay
-</td>
-<td style="text-align:left;">
-Borgles Island
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-44.77241
-</td>
-<td style="text-align:right;">
--62.72608
-</td>
-<td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
-</td>
-<td style="text-align:left;">
-hobo
-</td>
-<td style="text-align:right;">
-10755220
-</td>
-<td style="text-align:left;">
-2019-06-01 09:00:00
-</td>
-<td style="text-align:left;">
 2
 </td>
 <td style="text-align:right;">
@@ -786,7 +440,10 @@ NA
 -62.72608
 </td>
 <td style="text-align:left;">
-2019-May-31 to 2019-Oct-19
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
 </td>
 <td style="text-align:left;">
 hobo
@@ -795,9 +452,9 @@ hobo
 10755220
 </td>
 <td style="text-align:left;">
-2019-06-01 13:00:00
+2019-05-31 01:00:00
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
@@ -807,7 +464,383 @@ NA
 NA
 </td>
 <td style="text-align:right;">
-7.242
+7.695
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-05-31 05:00:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+7.569
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-05-31 09:00:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+6.509
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-05-31 13:00:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+6.788
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-05-31 17:00:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+6.839
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-05-31 21:00:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+7.192
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-06-01 01:00:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+7.594
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-06-01 05:00:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+7.544
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Halifax
+</td>
+<td style="text-align:left;">
+Shoal Bay
+</td>
+<td style="text-align:left;">
+Borgles Island
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+44.77241
+</td>
+<td style="text-align:right;">
+-62.72608
+</td>
+<td style="text-align:left;">
+2019-May-30 to 2019-Oct-19
+</td>
+<td style="text-align:left;">
+sub-surface buoy
+</td>
+<td style="text-align:left;">
+hobo
+</td>
+<td style="text-align:right;">
+10755220
+</td>
+<td style="text-align:left;">
+2019-06-01 09:00:00
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+6.661
 </td>
 </tr>
 </tbody>
@@ -816,7 +849,7 @@ NA
 ### Plot
 
 ``` r
-ss_plot_variables_at_depth(dat)
+ss_ggplot_variables(dat)
 ```
 
 <img src="man/figures/README-fig1-1.png" width="100%" />

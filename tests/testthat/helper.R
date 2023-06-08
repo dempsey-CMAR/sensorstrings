@@ -1,6 +1,5 @@
-
 # allow access to the google sheet
-#googlesheets4::gs4_deauth()
+# googlesheets4::gs4_deauth()
 
 
 # Common compile arguments ------------------------------------------------
@@ -237,6 +236,3 @@ nsdfa <- ss_read_nsdfa_metadata(paste0(path, "/nsdfa_tracking_sheet.xlsx"))
 # F_p <- ss_dissolved_oxygen_pressure_correction(temp_press, sal = 0) %>%
 #   select(temperature_degree_c, pressure_atm, F_p) %>%
 #   pivot_wider(names_from = "pressure_atm", values_from = "F_p")
-
-
-

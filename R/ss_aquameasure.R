@@ -79,7 +79,7 @@ ss_compile_aquameasure_data <- function(path,
     sensor_make = "aquameasure"
   )
 
-  path = setup$path
+  path <- setup$path
 
   sn_table <- setup$sn_table
 
@@ -93,9 +93,8 @@ ss_compile_aquameasure_data <- function(path,
 
   # Import data -------------------------------------------------------------
 
-    # loop over each aM file
+  # loop over each aM file
   for (i in seq_along(dat_files)) {
-
     file_name <- dat_files[i]
 
     am_i <- ss_read_aquameasure_data(path, file_name)
@@ -114,12 +113,13 @@ ss_compile_aquameasure_data <- function(path,
     date_tz <- extract_aquameasure_tz(am_colnames)
 
     if (length(sn_i) > 1) {
-
       # replace blank serial numbers with phrase so that it will show up in message
-      sn_i <-  str_replace(sn_i, " ", "blank")
+      sn_i <- str_replace(sn_i, " ", "blank")
 
-      warning("Multiple serial numbers found in file ",
-              file_name, ": ", paste(sn_i, collapse = " "))
+      warning(
+        "Multiple serial numbers found in file ",
+        file_name, ": ", paste(sn_i, collapse = " ")
+      )
     }
 
     # assume first serial number is correct
@@ -190,9 +190,9 @@ ss_compile_aquameasure_data <- function(path,
       summarise(n = n()) %>%
       filter(n > length(vars))
 
-    if(nrow(bad_ts) > 0) {
+    if (nrow(bad_ts) > 0) {
       message(
-       "Duplicate timestamp(s) found and removed from aquameasure ",
+        "Duplicate timestamp(s) found and removed from aquameasure ",
         sn_i, ": ",
         paste(bad_ts$timestamp_, collapse = ", ")
       )
@@ -216,7 +216,7 @@ ss_compile_aquameasure_data <- function(path,
     colnames(am_i)[which(str_detect(colnames(am_i), "timestamp"))] <- paste0("timestamp_", date_tz)
 
 
-# convert ERR to -111 so that column can be saved as numeric --------------
+    # convert ERR to -111 so that column can be saved as numeric --------------
     if ("sensor_depth_measured_m" %in% colnames(am_i)) {
       am_i <- am_i %>%
         mutate(
@@ -241,7 +241,7 @@ ss_compile_aquameasure_data <- function(path,
         )
     }
 
-    if ("salinity_psu" %in%  colnames(am_i)) {
+    if ("salinity_psu" %in% colnames(am_i)) {
       am_i <- am_i %>%
         mutate(
           salinity_psu = if_else(
@@ -252,7 +252,7 @@ ss_compile_aquameasure_data <- function(path,
     }
 
 
-    if ("temperature_degree_c" %in%  colnames(am_i)) {
+    if ("temperature_degree_c" %in% colnames(am_i)) {
       am_i <- am_i %>%
         mutate(temperature_degree_c = as.numeric(temperature_degree_c))
     }

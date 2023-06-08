@@ -110,10 +110,5 @@ utils::globalVariables(
     "VARIABLE",
     "WATERBODY",
     "sensor"
-
   )
 )
-
-
-
-

@@ -14,7 +14,6 @@
 #' @export
 
 ss_pivot_longer <- function(dat_wide) {
-
   dat_wide %>%
     pivot_longer(
       cols = c(
@@ -26,8 +25,8 @@ ss_pivot_longer <- function(dat_wide) {
       names_to = "variable",
       values_to = "value",
       values_drop_na = TRUE
-    ) #%>%
-  #arrange(sensor_depth_at_low_tide_m, variable) # comment out so depl_trim = dat_wide in the test
+    ) # %>%
+  # arrange(sensor_depth_at_low_tide_m, variable) # comment out so depl_trim = dat_wide in the test
 }
 
 
@@ -45,16 +44,8 @@ ss_pivot_longer <- function(dat_wide) {
 #' @export
 
 ss_pivot_wider <- function(dat_long) {
-
   dat_long %>%
     pivot_wider(
       names_from = variable, values_from = value, names_sort = TRUE
     )
-
 }
-
-
-
-
-
-

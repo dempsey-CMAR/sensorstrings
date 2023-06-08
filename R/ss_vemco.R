@@ -67,7 +67,7 @@ ss_read_vemco_data <- function(path, file_name) {
 ss_compile_vemco_data <- function(path,
                                   sn_table,
                                   deployment_dates,
-                                  trim = TRUE){
+                                  trim = TRUE) {
   # set up & check for errors
   setup <- set_up_compile(
     path = path,
@@ -76,7 +76,7 @@ ss_compile_vemco_data <- function(path,
     sensor_make = "VR2AR"
   )
 
-  path = setup$path
+  path <- setup$path
 
   sn_table <- setup$sn_table
 
@@ -97,7 +97,7 @@ ss_compile_vemco_data <- function(path,
     message(glue("Timestamp in file {dat_files} is in timezone: {date_tz}."))
   }
 
-   # serial number from data file
+  # serial number from data file
   serial <- as.numeric(str_remove(unique(dat$Receiver), "VR2AR-"))
 
   if (serial != sn_table$sensor_serial_number) {
@@ -110,24 +110,28 @@ ss_compile_vemco_data <- function(path,
   # clarify which rows to use if Average and Point temperature and depth incldued
   vars_desc <- unique(dat$Description)
 
-  if("Temperature" %in% vars_desc) {
-    temperature_var = "Temperature"
-  } else if("Average temperature" %in% vars_desc){
-    temperature_var = "Average temperature"
-  } else if(("Temperature" %in% vars_desc) & ("Average temperature" %in% vars_desc)) {
-    temperature_var = "Temperature"
-  } else stop("Could not find Temperature or Average temperature in vemco_dat. Check file.")
+  if ("Temperature" %in% vars_desc) {
+    temperature_var <- "Temperature"
+  } else if ("Average temperature" %in% vars_desc) {
+    temperature_var <- "Average temperature"
+  } else if (("Temperature" %in% vars_desc) & ("Average temperature" %in% vars_desc)) {
+    temperature_var <- "Temperature"
+  } else {
+    stop("Could not find Temperature or Average temperature in vemco_dat. Check file.")
+  }
 
-  if("Seawater depth" %in% vars_desc) {
-    depth_var = "Seawater depth"
-  } else if("Average seawater depth" %in% vars_desc){
-    depth_var = "Average seawater depth"
-  } else if(("Seawater depth" %in% vars_desc) & ("Average seawater depth" %in% vars_desc)) {
-    depth_var = "Seawater depth"
-  } else stop("Could not find Seawater depth or Average seawater depth in vemco_dat. Check file.")
+  if ("Seawater depth" %in% vars_desc) {
+    depth_var <- "Seawater depth"
+  } else if ("Average seawater depth" %in% vars_desc) {
+    depth_var <- "Average seawater depth"
+  } else if (("Seawater depth" %in% vars_desc) & ("Average seawater depth" %in% vars_desc)) {
+    depth_var <- "Seawater depth"
+  } else {
+    stop("Could not find Seawater depth or Average seawater depth in vemco_dat. Check file.")
+  }
 
 
-  if("Date and Time (UTC)" %in% dat_colnames & "Date/Time" %in% dat_colnames){
+  if ("Date and Time (UTC)" %in% dat_colnames & "Date/Time" %in% dat_colnames) {
     warning("There are two datetime columns in the Vemco data")
   }
 
@@ -150,10 +154,10 @@ ss_compile_vemco_data <- function(path,
         Description == "Average temperature" ~ "temperature"
       ),
       Units = if_else(
-        Units == "\u00B0C" |           # if csv is saved with ANSI encoding
-          Units == "\u00C2\u00B0C",     # if csv is saved with UTF-8 encoding
+        Units == "\u00B0C" | # if csv is saved with ANSI encoding
+          Units == "\u00C2\u00B0C", # if csv is saved with UTF-8 encoding
         "degree_c", Units
-        ),
+      ),
       Description = paste(Description, Units, sep = "_"),
       Data = as.numeric(Data)
     ) %>%
@@ -174,7 +178,7 @@ ss_compile_vemco_data <- function(path,
 
   colnames(dat)[which(str_detect(colnames(dat), "timestamp"))] <- paste0("timestamp_", date_tz)
 
- # browser()
+  # browser()
 
   # # add other useful columns and re-order ------------------------------------------------
   dat <- dat %>%
@@ -184,5 +188,4 @@ ss_compile_vemco_data <- function(path,
   message(paste("vemco data compiled:", temperature_var, "&", depth_var))
 
   tibble(dat)
-
 }

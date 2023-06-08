@@ -42,17 +42,15 @@
 
 
 ss_ggplot_variables <- function(
-  dat,
-  measured_depth = TRUE,
-  superchill = NULL,
-  color_palette = NULL,
-  legend_name = "Depth (m)",
-  legend_position = "right"
-) {
-
+    dat,
+    measured_depth = TRUE,
+    superchill = NULL,
+    color_palette = NULL,
+    legend_name = "Depth (m)",
+    legend_position = "right") {
   theme_set(theme_light())
 
-  if(is.null(color_palette)){
+  if (is.null(color_palette)) {
     color_palette <- get_colour_palette(dat)
   }
   scale_depth_colour <- scale_colour_manual(
@@ -64,14 +62,14 @@ ss_ggplot_variables <- function(
   }
 
   if (is.null(superchill) && "temperature_degree_c" %in% colnames(dat)) {
-
-    if(min(na.omit(dat$temperature_degree_c)) <= -0.7) {
+    if (min(na.omit(dat$temperature_degree_c)) <= -0.7) {
       superchill <- TRUE
-    } else superchill <- FALSE
-
+    } else {
+      superchill <- FALSE
+    }
   }
 
-#  format data -------------------------------------------------------------
+  #  format data -------------------------------------------------------------
 
   dat <- dat %>%
     select(
@@ -82,17 +80,18 @@ ss_ggplot_variables <- function(
       contains("depth"),
       contains("sensor")
     ) %>%
-    ss_pivot_longer() %>% #maybe check if long or wide first
+    ss_pivot_longer() %>% # maybe check if long or wide first
     ss_create_variable_labels() %>%
     ss_convert_depth_to_ordered_factor()
 
 
-# plot --------------------------------------------------------------------
+  # plot --------------------------------------------------------------------
 
   p <- ggplot(
     dat,
     aes(
-      Date, value, colour = sensor_depth_at_low_tide_m,
+      Date, value,
+      colour = sensor_depth_at_low_tide_m,
       text = paste(
         "date: ", Date, "\n",
         "value: ", value, "\n",
@@ -105,7 +104,7 @@ ss_ggplot_variables <- function(
     geom_point(size = 0.25) +
     scale_y_continuous(name = "") +
     scale_depth_colour +
-    facet_wrap(~ variable_label, scales = "free_y", ncol = 1, strip.position = "left") +
+    facet_wrap(~variable_label, scales = "free_y", ncol = 1, strip.position = "left") +
     theme(
       strip.placement = "outside",
       strip.background = element_blank(),
@@ -115,10 +114,9 @@ ss_ggplot_variables <- function(
     guides(color = guide_legend(override.aes = list(size = 4)))
 
 
-# add superchill shading --------------------------------------------------
+  # add superchill shading --------------------------------------------------
 
-    if (isTRUE(superchill)) {
-
+  if (isTRUE(superchill)) {
     facet_panel <- data.frame(variable = "temperature_degree_c") %>%
       ss_create_variable_labels()
 
@@ -135,6 +133,4 @@ ss_ggplot_variables <- function(
   }
 
   p
-
 }
-

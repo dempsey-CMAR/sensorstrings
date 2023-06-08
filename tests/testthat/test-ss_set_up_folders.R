@@ -1,4 +1,3 @@
-
 test_that("ss_set_up_folders() returns expected Errors", {
   expect_error(
     ss_set_up_folders(station = "test", depl_date = "not a date")
@@ -9,13 +8,13 @@ test_that("ss_set_up_folders() returns expected Errors", {
 })
 
 test_that("ss_set_up_folders() creates expected folders", {
-
   expect_message(
     ss_set_up_folders(
       path = path,
       station = "station name",
       depl_date = "2022-08-31",
-      sensor_folders = TRUE)
+      sensor_folders = TRUE
+    )
   )
 
   expect_true(
@@ -34,5 +33,3 @@ test_that("ss_set_up_folders() creates expected folders", {
   # remove the folders so test will work again next time
   unlink(paste0(path, "/station name"), recursive = TRUE)
 })
-
-

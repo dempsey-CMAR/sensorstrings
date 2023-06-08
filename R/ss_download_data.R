@@ -29,7 +29,6 @@
 # depl_date <- "2022-09-07"
 
 ss_download_data <- function(path, station, depl_date) {
-
   # create the station and deployment folders
   ss_set_up_folders(path, station, depl_date)
 
@@ -39,7 +38,7 @@ ss_download_data <- function(path, station, depl_date) {
   # find the deployment folder on the Google drive
   depl_folder <- drive_find(
     type = "folder", pattern = "CMP Station Data", n_max = 1
-    ) %>%
+  ) %>%
     drive_ls() %>%
     filter(name == station) %>%
     drive_ls() %>%
@@ -48,7 +47,6 @@ ss_download_data <- function(path, station, depl_date) {
 
   # look inside each Google drive folder and download the data to the appropriate folder
   for (i in 1:nrow(depl_folder)) {
-
     data_folder <- depl_folder[i, ]
 
     # list files in data_folder - all will be downloaded
@@ -58,7 +56,7 @@ ss_download_data <- function(path, station, depl_date) {
         path = paste(path, tolower(data_folder$name), name, sep = "/")
       )
 
-      dir.create(paste(path, tolower(data_folder$name), sep = "/"))
+    dir.create(paste(path, tolower(data_folder$name), sep = "/"))
 
     # download the data
     walk2(

@@ -32,7 +32,6 @@ ss_read_hobo_data <- function(path, file_name) {
     skip = "Date",
     encoding = "UTF-8", data.table = FALSE
   )
-
 }
 
 
@@ -95,10 +94,7 @@ ss_compile_hobo_data <- function(path,
                                  sn_table,
                                  deployment_dates,
                                  trim = TRUE,
-                                 sensor_make = "hobo"
-) {
-
-
+                                 sensor_make = "hobo") {
   # set up & check for errors
   setup <- set_up_compile(
     path = path,
@@ -107,7 +103,7 @@ ss_compile_hobo_data <- function(path,
     sensor_make = sensor_make
   )
 
-  path = setup$path
+  path <- setup$path
 
   sn_table <- setup$sn_table
 
@@ -121,17 +117,16 @@ ss_compile_hobo_data <- function(path,
 
   # loop over each HOBO file
   for (i in seq_along(dat_files)) {
-
     # Import Data -------------------------------------------------------------
     file_name <- dat_files[i]
 
-  #  browser()
+    #  browser()
 
-    hobo_i <- ss_read_hobo_data(path, file_name)  %>%
+    hobo_i <- ss_read_hobo_data(path, file_name) %>%
       # to avoid deprecation Warning from GitHub Actions check
-      filter(if_all(everything(),  ~ !grepl("Logged", .)))
-      #filter(across(everything(), ~ !grepl("Logged", .)))    # this works but across() is deprecated for filter()
-     # filter(if_any(everything(),  ~ !grepl("Logged", .)))   # this doesn't work
+      filter(if_all(everything(), ~ !grepl("Logged", .)))
+    # filter(across(everything(), ~ !grepl("Logged", .)))    # this works but across() is deprecated for filter()
+    # filter(if_any(everything(),  ~ !grepl("Logged", .)))   # this doesn't work
 
     # combine these two functions
     hobo_units <- extract_hobo_units(hobo_i)

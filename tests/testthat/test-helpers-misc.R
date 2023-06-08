@@ -1,4 +1,3 @@
-
 # extract_file_extension()
 
 test_that("extract_file_extension() identifies correct extension", {

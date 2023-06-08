@@ -171,7 +171,7 @@ vem <- vem_raw %>%
     )
   )
 
-data.table::fwrite(vem , file = "inst/testdata/vemco/vemco-547109.csv")
+data.table::fwrite(vem, file = "inst/testdata/vemco/vemco-547109.csv")
 
 
 
@@ -187,11 +187,3 @@ readr::write_csv(
   "C:/Users/Danielle Dempsey/Desktop/VR2AR-547109.csv",
   na = ""
 )
-
-
-
-
-
-
-
-

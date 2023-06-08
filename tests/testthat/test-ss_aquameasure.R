@@ -1,4 +1,3 @@
-
 # ss_read_aquameasure_data -------------------------------------------------------
 
 test_that("ss_read_aquameasure_data() reads in correct classes", {
@@ -49,5 +48,3 @@ test_that("ss_compile_aquameasure_data() returns Error if trimming removes all r
     )
   )
 })
-
-

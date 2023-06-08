@@ -1,4 +1,3 @@
-
 # all compile foos --------------------------------------------------------
 
 #' Set up parameters, Errors, and Warnings for the \code{compile_**} functions
@@ -33,7 +32,6 @@ set_up_compile <- function(path,
                            sn_table,
                            deployment_dates,
                            sensor_make) {
-
   # make sure columns of sn_table are named correctly
   # log_sensor is the Logger_Model from the deployment log
   names(sn_table) <- c("log_sensor", "sensor_serial_number", "depth")
@@ -50,14 +48,14 @@ set_up_compile <- function(path,
   dates <- extract_deployment_dates(deployment_dates)
 
   # name of folder (case-insensitive)
-  if(sensor_make == "VR2AR") sensor_make <- "vemco"
+  if (sensor_make == "VR2AR") sensor_make <- "vemco"
 
   folder <- list.files(path) %>%
     str_extract(regex(sensor_make, ignore_case = TRUE)) %>%
     na.omit()
 
-  if(length(folder) == 0) {
-    stop("There is no folder named << ", sensor_make, " >> in path << ", path, " >>" )
+  if (length(folder) == 0) {
+    stop("There is no folder named << ", sensor_make, " >> in path << ", path, " >>")
   }
 
   # path to hobo files
@@ -113,12 +111,10 @@ set_up_compile <- function(path,
 
 
 add_deployment_columns <- function(
-  dat,
-  start_date,
-  end_date,
-  sn_table
-) {
-
+    dat,
+    start_date,
+    end_date,
+    sn_table) {
   dat %>%
     mutate(
       deployment_range = paste(
@@ -140,8 +136,6 @@ add_deployment_columns <- function(
       salinity_psu = contains("psu"),
       temperature_degree_c = contains("degree_c")
     )
-
-
 }
 
 
@@ -156,13 +150,12 @@ add_deployment_columns <- function(
 #' @return Returns a Warning if there no rows in \code{dat}.
 
 check_n_rows <- function(dat, file_name, trimmed = TRUE) {
-
-  if(nrow(dat) == 0) {
-    if(isFALSE(trimmed)) {
+  if (nrow(dat) == 0) {
+    if (isFALSE(trimmed)) {
       stop("Before trimming, there are 0 rows of data in file ", file_name)
     }
 
-    if(isTRUE(trimmed)) {
+    if (isTRUE(trimmed)) {
       stop("After trimming, there are 0 rows of data in file ", file_name)
     }
   }
@@ -198,7 +191,6 @@ convert_timestamp_to_datetime <- function(dat) {
         timestamp_ = lubridate::parse_date_time(timestamp_, orders = parse_orders)
       )
   } else {
-
     # Error message if the date format is incorrect
     stop(paste0("Can't parse date in format ", date_format))
   }
@@ -215,7 +207,6 @@ convert_timestamp_to_datetime <- function(dat) {
 #' @importFrom lubridate as_datetime
 
 extract_deployment_dates <- function(deployment_dates) {
-
   # name deployment.dates
   names(deployment_dates) <- c("start_date", "end_date")
 
@@ -286,7 +277,6 @@ extract_aquameasure_tz <- function(am_colnames) {
 #' @return Returns a vector of the variables included in the file.
 
 extract_aquameasure_vars <- function(am_colnames) {
-
   ## check colnames of dat.i for "Temperature", "Dissolved Oxygen", and "Salinity"
   temp <- ifelse("Temperature" %in% am_colnames, "Temperature", NA)
   DO <- ifelse("Dissolved Oxygen" %in% am_colnames, "Dissolved Oxygen", NA)
@@ -423,7 +413,3 @@ extract_vemco_tz <- function(dat_colnames) {
 
   tolower(gsub("[()]", "", x[[1]][4]))
 }
-
-
-
-

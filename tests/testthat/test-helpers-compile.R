@@ -1,4 +1,3 @@
-
 # set_up_compile ----------------------------------------------------------
 test_that("set_up_compile() returns Errors and Warnings", {
   # when no csv file in folder

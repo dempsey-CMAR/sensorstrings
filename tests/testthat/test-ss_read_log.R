@@ -1,6 +1,4 @@
-
 test_that("ss_read_log() returns Errors and Warnings", {
-
   # 2 files in log folder
   expect_error(ss_read_log(paste0(path, "/test1"), path_config))
 
@@ -21,5 +19,4 @@ test_that("ss_read_log() returns Errors and Warnings", {
 
   # add area tests when qaqcmar is ready
   # could also add tests for when Hobo/am/vem sensor not found (to increase test coverage)
-
 })

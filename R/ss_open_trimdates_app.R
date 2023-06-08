@@ -41,13 +41,10 @@ ss_open_trimdates_app <- function(
     period = "2 days",
     custom_start = NULL,
     custom_end = NULL,
-    point_size = 2
-) {
-
+    point_size = 2) {
   # Define UI for application that draws a histogram
   ui <- fluidPage(
-
-    plotlyOutput("vars_plot", height="600px"),
+    plotlyOutput("vars_plot", height = "600px"),
     tableOutput("info")
   )
 
@@ -55,10 +52,8 @@ ss_open_trimdates_app <- function(
 
   # Define server logic required to draw a histogram
   server <- function(input, output) {
-
     output$vars_plot <- renderPlotly({
-
-      dat  <- dat %>%
+      dat <- dat %>%
         filter_dat_to_plot(
           filter_to = filter_to,
           period = period,
@@ -69,31 +64,24 @@ ss_open_trimdates_app <- function(
       p <- ss_ggplot_variables(dat) + geom_point(size = point_size)
 
       ggplotly(p, source = "plot1", tooltip = "text")
-
     })
 
     output$info <- renderTable({
-
       ts_info <- event_data("plotly_click", source = "plot1")
 
       if (is.null(ts_info)) {
-
         "Click events appear here (double-click chart to clear)"
-
       } else {
-
         ts_new <- data.frame(ts = as_datetime(ts_info$x))
-        ts_new$ts <- paste0("'", format(ts_new$ts, '%Y-%m-%d %H:%M:%S'), "'")
+        ts_new$ts <- paste0("'", format(ts_new$ts, "%Y-%m-%d %H:%M:%S"), "'")
 
         ts_save <<- bind_rows(ts_save, ts_new)
 
         na.omit(ts_save)
-
       }
     })
   }
 
   # Run the application
   shinyApp(ui = ui, server = server)
-
 }

@@ -1,15 +1,14 @@
-
 # path <- "C:/Users/Danielle Dempsey/Desktop/Data_Strings"
 #
 # station <- "Madeline Point"
 #
 # station <- "test 1"
 # depl_date <- "2019-04-25"
- #depl_date <- "19-04-25"
- #depl_date <- "25-06-2019"
-#depl_date <- "not a date"
+# depl_date <- "19-04-25"
+# depl_date <- "25-06-2019"
+# depl_date <- "not a date"
 
- #ss_set_up_folders(station = "test", depl_date = Sys.Date())
+# ss_set_up_folders(station = "test", depl_date = Sys.Date())
 
 
 #' Create folders for the raw sensor string data from a given deployment
@@ -33,10 +32,8 @@
 #' @export
 
 ss_set_up_folders <- function(
-  path = NULL, station, depl_date, sensor_folders = FALSE
-) {
-
-  parse_orders <- c("Ymd", "ymd","dmY", "dmy", "mdY", "mdy")
+    path = NULL, station, depl_date, sensor_folders = FALSE) {
+  parse_orders <- c("Ymd", "ymd", "dmY", "dmy", "mdY", "mdy")
 
   # will give an error if depl_date is not in the correct order
   depl_date_out <- as.character(
@@ -70,11 +67,10 @@ ss_set_up_folders <- function(
 
   dir.create(path)
 
-  if(isTRUE(sensor_folders)) {
+  if (isTRUE(sensor_folders)) {
     dir.create(paste0(path, "/log"))
     dir.create(paste0(path, "/aquameasure"))
     dir.create(paste0(path, "/hobo"))
     dir.create(paste0(path, "/vemco"))
   }
 }
-

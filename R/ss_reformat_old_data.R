@@ -1,4 +1,3 @@
-
 #' Convert old data structure to ss format
 #'
 #' @param dat Water quality data in the old format.
@@ -12,8 +11,7 @@
 
 
 ss_reformat_old_data <- function(dat) {
-
-  if("COUNTY" %in% colnames(dat)) {
+  if ("COUNTY" %in% colnames(dat)) {
     dat <- dat %>% rename(county = COUNTY)
   }
 
@@ -46,5 +44,4 @@ ss_reformat_old_data <- function(dat) {
     ) %>%
     select(-UNITS) %>%
     pivot_wider(names_from = variable, values_from = value)
-
 }

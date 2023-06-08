@@ -11,7 +11,7 @@
 #' @importFrom data.table fwrite
 #' @importFrom dplyr row_number
 
-#path <- system.file("data-raw", package = "sensorstrings")
+# path <- system.file("data-raw", package = "sensorstrings")
 path <- here()
 
 # aquaMeasure -------------------------------------------------------------
@@ -24,7 +24,7 @@ aquameasure_raw <- ss_read_aquameasure_data(
 aquameasure <- aquameasure_raw %>%
   dplyr::filter(dplyr::row_number() %% 40 == 0)
 
-data.table::fwrite(aquameasure , file = "inst/extdata/aquameasure/aquameasure-670364.csv")
+data.table::fwrite(aquameasure, file = "inst/extdata/aquameasure/aquameasure-670364.csv")
 
 
 # hobo --------------------------------------------------------------------
@@ -37,7 +37,7 @@ hobo_raw <- ss_read_hobo_data(
 hobo <- hobo_raw %>%
   dplyr::filter(dplyr::row_number() %% 4 == 0)
 
-data.table::fwrite(hobo , file = "inst/extdata/hobo/10755220.csv")
+data.table::fwrite(hobo, file = "inst/extdata/hobo/10755220.csv")
 
 
 # Vemco -------------------------------------------------------------------
@@ -50,6 +50,4 @@ vemco_raw <- ss_read_vemco_data(
 vemco <- vemco_raw %>%
   dplyr::filter(dplyr::row_number() %% 15 == 0)
 
-data.table::fwrite(vemco , file = "inst/extdata/vemco/vemco-547109.csv")
-
-
+data.table::fwrite(vemco, file = "inst/extdata/vemco/vemco-547109.csv")

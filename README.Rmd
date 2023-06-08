@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-"
-  #out.width = "100%"
+  # out.width = "100%"
 )
 
 library(badger)
@@ -27,9 +27,7 @@ repo <- "dempsey-cmar/sensorstrings"
 
 
 ```{r, echo=FALSE, out.width="25%", fig.align='center'}
-
 knitr::include_graphics("man/figures/hex_sensorstrings.png")
-
 ```
 
 
@@ -68,9 +66,7 @@ devtools::install_github("dempsey-CMAR/sensorstrings")
 The function at the tip calls the function at the tail.
 
 ```{r, echo=FALSE, out.height='120%', out.width='100%', fig.align='center', dpi=600}
-
 knitr::include_graphics("man/figures/2022-10-18_ss_structure.png")
-
 ```
 
 
@@ -83,9 +79,7 @@ The `sensorstrings` package is the backbone of the data pipeline for the _Water 
 _Water Quality_ data (temperature, dissolved oxygen, and salinity) is collected using “sensor strings”. Each sensor string is attached to the seafloor by an anchor and suspended by a sub-surface buoy, with autonomous sensors attached at various depths (Figure 1). A string typically includes three sensor models: Hobo, aquaMeasure, and VR2AR (Table 1). Strings are deployed at a station for several months and data are measured every 1 minute to 1 hour, depending on the sensor.
 
 ```{r, echo=FALSE, out.width="55%", fig.align="center"}
-
 knitr::include_graphics("man/figures/figure1.png")
-
 ```
 Figure 1: Typical sensor string configuration (not to scale).
 
@@ -99,7 +93,6 @@ The `sensorstrings` package offers functions to compile, format, convert units, 
 `sensorstrings` was developed specifically to streamline CMAR’s workflow, but is flexible enough that other users can apply it to process data from the accepted sensors (Table 1). **Vignettes to come**
 
 ```{r, echo=FALSE,caption= "Sensor Models included"}
-
 tibble(
   SENSORS = c(
     "HOBO Pro V2", "HOBO DO",
@@ -113,16 +106,15 @@ tibble(
     "https://www.innovasea.com/wp-content/uploads/2021/07/Innovasea-Aquaculture-Intelligence-Spec-Sheet-062221.pdf",
     "https://www.innovasea.com/wp-content/uploads/2021/06/Innovasea-Fish-Tracking-vr2ar-data-sheet-0621.pdf"
   ),
-  
   `Variable(s) Measured` = c(
-    "Temperature", "Temperature, Dissolved Oxygen", 
-    "Temperature, Dissolved Oxygen", "Temperature, Salinity", 
-    "Temperature" )
-) %>% 
-  mutate(Sensor = glue::glue("[{SENSORS}]({urls})")) %>% 
-  select(Sensor, `Variable(s) Measured`) %>% 
+    "Temperature", "Temperature, Dissolved Oxygen",
+    "Temperature, Dissolved Oxygen", "Temperature, Salinity",
+    "Temperature"
+  )
+) %>%
+  mutate(Sensor = glue::glue("[{SENSORS}]({urls})")) %>%
+  select(Sensor, `Variable(s) Measured`) %>%
   kable(align = "ll", format = "pipe")
-
 ```
 
 For more information on _Water Quality_ data collection and processing, visit the [CMAR Water Quality Data Collection & Processing Cheat Sheet](man/figures/README-workflow-cheatsheet.pdf) (download for clickable links).
@@ -137,14 +129,12 @@ library(sensorstrings)
 Consider a string deployed from May 31, 2019 to October 19, 2019 with three sensors:
 
 ```{r, echo=FALSE}
-
 tibble(
   "Sensor" = c("HOBO Pro V2", "aquaMeasure DOT", "VR2AR"),
   "Serial #" = c("10755220", "670364", "547109"),
   "Depth" = c("2", "5", "15")
-) %>% 
-kable(align = "lcc")
-
+) %>%
+  kable(align = "lcc")
 ```
 
 ### Raw data files
@@ -154,24 +144,22 @@ The data from each sensor is saved in separate csv file, each with manufacturer-
 Import raw data files:
 
 ```{r}
-
 path <- system.file("extdata", package = "sensorstrings")
 
 aquameasure_raw <- ss_read_aquameasure_data(
-  path = paste0(path, "/aquameasure"), 
+  path = paste0(path, "/aquameasure"),
   file_name = "aquameasure-670364.csv"
 )
 
 hobo_raw <- ss_read_hobo_data(
-  path = paste0(path, "/hobo"), 
+  path = paste0(path, "/hobo"),
   file_name = "10755220.csv"
 )
 
 vemco_raw <- ss_read_vemco_data(
-  path = paste0(path, "/vemco"), 
+  path = paste0(path, "/vemco"),
   file_name = "vemco-547109.csv"
 )
-
 ```
 
 Examine the first rows of each raw data file:
@@ -232,7 +220,7 @@ kable(dat[1:10, ])
 ### Plot
 
 ```{r fig1, out.width='100%', dpi=600}
-ss_plot_variables_at_depth(dat)
+ss_ggplot_variables(dat)
 ```
 
 
