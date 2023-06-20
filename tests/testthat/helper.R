@@ -49,13 +49,13 @@ am_trim <- ss_compile_aquameasure_data(
 path_hobo <- system.file("testdata/Hobo", package = "sensorstrings")
 
 hobo1 <- ss_read_hobo_data(path_hobo, "10755220.csv") %>%
-  # I think the degree symbol was causing a problem
+  # the degree symbol was causing a problem
   dplyr::rename(temperature = 2)
 
 hobo2 <- ss_read_hobo_data(path_hobo, "20827226.csv") %>%
-  # I think the degree symbol was causing a problem
+  # the degree symbol was causing a problem
   dplyr::rename(temperature = 4)
-#
+
 # # ss_compile_hobo_data ----------------------------------------------------
 
 sn_hobo <- data.frame(

@@ -120,20 +120,15 @@ ss_compile_hobo_data <- function(path,
     # Import Data -------------------------------------------------------------
     file_name <- dat_files[i]
 
-    #  browser()
-
     hobo_i <- ss_read_hobo_data(path, file_name) %>%
       # to avoid deprecation Warning from GitHub Actions check
       filter(if_all(everything(), ~ !grepl("Logged", .)))
-    # filter(across(everything(), ~ !grepl("Logged", .)))    # this works but across() is deprecated for filter()
-    # filter(if_any(everything(),  ~ !grepl("Logged", .)))   # this doesn't work
 
-    # combine these two functions
+    # extract units and make column names
     hobo_units <- extract_hobo_units(hobo_i)
     new_col_names <- make_column_names(hobo_units)
 
     # sn and timezone checks --------------------------------------------------
-
     file_name <- str_remove(file_name, ".csv")
     sn_i <- extract_hobo_sn(colnames(hobo_i))
 
