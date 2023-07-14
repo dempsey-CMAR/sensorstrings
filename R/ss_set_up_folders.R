@@ -27,7 +27,7 @@
 #'   a single deployment.
 #'
 #' @importFrom lubridate parse_date_time
-#' @importFrom stringr str_detect
+#' @importFrom stringr str_detect str_to_lower str_replace_all
 #'
 #' @export
 
@@ -47,21 +47,21 @@ ss_set_up_folders <- function(
   station_folders <- list.files(path)
 
   # ensure station is converted to snake case
-  station_sn <- str_to_lower(station)
-  station_sn <- str_replace_all(station_sn, " ", "_")
+  station_snake <- str_to_lower(station)
+  station_snake <- str_replace_all(station_snake, " ", "_")
 
   # if the station folder does not exist, create it
-  if (!any(str_detect(station_folders, station_sn))) {
-    dir.create(paste0(path, "/", station_sn))
+  if (!any(str_detect(station_folders, station_snake))) {
+    dir.create(paste0(path, "/", station_snake))
 
-    message("Created folder << ", station_sn, " >> in <<", path, " >>")
+    message("Created folder << ", station_snake, " >> in <<", path, " >>")
   }
 
-  path <- paste0(path, "/", station_sn)
+  path <- paste0(path, "/", station_snake)
 
   depl_folders <- list.files(path)
 
-  new_folder <- paste(station_sn, depl_date_out, sep = "_")
+  new_folder <- paste(station_snake, depl_date_out, sep = "_")
 
   if (any(str_detect(depl_folders, new_folder))) {
     stop("Deployment folder << ", new_folder, " >> already exists in << ", path, " >>")

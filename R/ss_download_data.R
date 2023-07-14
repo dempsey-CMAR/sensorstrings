@@ -15,7 +15,7 @@
 #' @importFrom dplyr %>% filter
 #' @importFrom googledrive as_id drive_find drive_ls drive_download
 #' @importFrom purrr walk2
-#' @importFrom stringr str_detect
+#' @importFrom stringr str_detect str_to_lower str_replace_all
 #'
 #' @export
 
@@ -33,11 +33,12 @@ ss_download_data <- function(path, station, depl_date) {
   ss_set_up_folders(path, station, depl_date)
 
   #ensure station is converted to snake case
-  station_sn <- str_to_lower(station)
-  station_sn <- str_replace_all(station_sn, " ","_")
+  station_snake <- str_to_lower(station)
+  station_snake <- str_replace_all(station_snake, " ","_")
 
   # set path to the new deployment folder
-  path <- paste(path, station_sn, paste0(station_sn, "_", depl_date), sep = "/")
+  path <- paste(
+    path, station_snake, paste0(station_snake, "_", depl_date), sep = "/")
 
   # find the deployment folder on the Google drive
   depl_folder <- drive_find(

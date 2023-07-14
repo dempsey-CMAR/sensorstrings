@@ -11,25 +11,25 @@ test_that("ss_set_up_folders() creates expected folders", {
   expect_message(
     ss_set_up_folders(
       path = path,
-      station = "station name",
+      station = "Station Name",
       depl_date = "2022-08-31",
       sensor_folders = TRUE
     )
   )
 
   expect_true(
-    dir.exists(paste0(path, "/station name/station name_2022-08-31/aquameasure"))
+    dir.exists(paste0(path, "/station_name/station_name_2022-08-31/aquameasure"))
   )
   expect_true(
-    dir.exists(paste0(path, "/station name/station name_2022-08-31/hobo"))
+    dir.exists(paste0(path, "/station_name/station_name_2022-08-31/hobo"))
   )
   expect_true(
-    dir.exists(paste0(path, "/station name/station name_2022-08-31/log"))
+    dir.exists(paste0(path, "/station_name/station_name_2022-08-31/log"))
   )
   expect_true(
-    dir.exists(paste0(path, "/station name/station name_2022-08-31/vemco"))
+    dir.exists(paste0(path, "/station_name/station_name_2022-08-31/vemco"))
   )
 
   # remove the folders so test will work again next time
-  unlink(paste0(path, "/station name"), recursive = TRUE)
+  unlink(paste0(path, "/station_name"), recursive = TRUE)
 })
