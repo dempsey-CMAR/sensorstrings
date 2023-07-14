@@ -32,8 +32,12 @@ ss_download_data <- function(path, station, depl_date) {
   # create the station and deployment folders
   ss_set_up_folders(path, station, depl_date)
 
+  #ensure station is converted to snake case
+  station_sn <- str_to_lower(station)
+  station_sn <- str_replace_all(station_sn, " ","_")
+
   # set path to the new deployment folder
-  path <- paste(path, station, paste0(station, "_", depl_date), sep = "/")
+  path <- paste(path, station_sn, paste0(station_sn, "_", depl_date), sep = "/")
 
   # find the deployment folder on the Google drive
   depl_folder <- drive_find(
