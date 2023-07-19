@@ -273,7 +273,7 @@ ss_read_log <- function(path, path_config = NULL) {
     "attached to fixed structure", "floating dock", "unknown"
   )
 
-  if ("Configuration" %in% colnames(log)) {
+  if ("configuration" %in% tolower(colnames(log))) {
     config <- unique(log$configuration)
 
     if (is.na(config)) {

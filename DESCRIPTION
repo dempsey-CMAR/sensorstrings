@@ -1,7 +1,7 @@
 Type: Package
 Package: sensorstrings
 Title: Compile, Format, and Visualize Sensor String Data
-Version: 0.4.1
+Version: 0.4.2
 Authors@R: person("Danielle", "Dempsey", , "ddempsey@perennia.ca", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Maintainer: Danielle Dempsey <ddempsey@perennia.ca>
