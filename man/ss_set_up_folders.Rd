@@ -15,7 +15,7 @@ ss_set_up_folders(path = NULL, station, depl_date, sensor_folders = FALSE)
 
 \item{sensor_folders}{Logical argument indicating whether to create the
 aquameasure, hobo, log, and vemco folders in the deployment folder. These
-folder may also be created using \code{ss_download_data()}.}
+folders may also be created using \code{ss_download_data()}.}
 }
 \value{
 Creates the folder structure for storing raw sensor string data from

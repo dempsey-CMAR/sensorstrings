@@ -21,7 +21,7 @@
 #'
 #' @param sensor_folders Logical argument indicating whether to create the
 #'   aquameasure, hobo, log, and vemco folders in the deployment folder. These
-#'   folder may also be created using \code{ss_download_data()}.
+#'   folders may also be created using \code{ss_download_data()}.
 #'
 #' @return Creates the folder structure for storing raw sensor string data from
 #'   a single deployment.
