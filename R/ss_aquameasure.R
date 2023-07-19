@@ -183,8 +183,7 @@ ss_compile_aquameasure_data <- function(path,
 
     check_n_rows(am_i, file_name = file_name, trimmed = trim)
 
-    # find if any timestamp groups are marked "ACT MODE", which seems to
-    # indicate duplicate timestamp
+    # find if any duplicate timestamps
     bad_ts <- am_i %>%
       group_by(timestamp_) %>%
       summarise(n = n()) %>%
@@ -198,6 +197,7 @@ ss_compile_aquameasure_data <- function(path,
       )
     }
 
+    # remove duplicate timestamps and pivot wider
     am_i <- am_i %>%
       filter(!(timestamp_ %in% bad_ts$timestamp_)) %>%
       tidyr::pivot_wider(

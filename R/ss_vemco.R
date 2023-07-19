@@ -61,7 +61,8 @@ ss_read_vemco_data <- function(path, file_name) {
 #' @family compile
 #' @author Danielle Dempsey
 #'
-#' @importFrom dplyr %>% case_when contains mutate select tibble
+#' @importFrom dplyr %>% case_when contains filter group_by mutate select
+#'   summarise tibble
 #' @export
 
 ss_compile_vemco_data <- function(path,
@@ -154,20 +155,16 @@ ss_compile_vemco_data <- function(path,
         Description == "Average temperature" ~ "temperature"
       ),
       Units = if_else(
-        Units == "\u00B0C" | # if csv is saved with ANSI encoding
+        Units == "\u00B0C" |        # if csv is saved with ANSI encoding
           Units == "\u00C2\u00B0C", # if csv is saved with UTF-8 encoding
         "degree_c", Units
       ),
       Description = paste(Description, Units, sep = "_"),
       Data = as.numeric(Data)
     ) %>%
-    tidyr::pivot_wider(
-      id_cols = "timestamp_",
-      names_from = "Description", values_from = Data
-    ) %>%
     convert_timestamp_to_datetime()
 
-
+  # check there are more than 0 rows in dat
   check_n_rows(dat, file_name = dat_files, trimmed = FALSE)
 
   # trim to the dates in deployment_dates
@@ -176,13 +173,30 @@ ss_compile_vemco_data <- function(path,
   check_n_rows(dat, file_name = dat_files, trimmed = trim)
 
 
-  colnames(dat)[which(str_detect(colnames(dat), "timestamp"))] <- paste0("timestamp_", date_tz)
+  # find if any duplicate timestamps
+  bad_ts <- dat %>%
+    group_by(timestamp_) %>%
+    summarise(n = n()) %>%
+    filter(n > length(vars))
 
-  # browser()
+  if (nrow(bad_ts) > 0) {
+    message(
+      "Duplicate timestamp(s) found and removed from vemco ",
+      serial, ": ",
+      paste(bad_ts$timestamp_, collapse = ", ")
+    )
+  }
 
-  # # add other useful columns and re-order ------------------------------------------------
+  # remove duplicate timestamps and pivot wider
   dat <- dat %>%
+    filter(!(timestamp_ %in% bad_ts$timestamp_)) %>%
+    tidyr::pivot_wider(
+      id_cols = "timestamp_",
+      names_from = "Description", values_from = Data
+    ) %>%
     add_deployment_columns(start_date, end_date, sn_table)
+
+  colnames(dat)[which(str_detect(colnames(dat), "timestamp"))] <- paste0("timestamp_", date_tz)
 
 
   message(paste("vemco data compiled:", temperature_var, "&", depth_var))
