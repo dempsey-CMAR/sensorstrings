@@ -4,7 +4,13 @@
 \alias{ss_compile_vemco_data}
 \title{Format temperature data from Vemco deployment}
 \usage{
-ss_compile_vemco_data(path, sn_table, deployment_dates, trim = TRUE)
+ss_compile_vemco_data(
+  path,
+  sn_table,
+  deployment_dates,
+  trim = TRUE,
+  depth_override = NULL
+)
 }
 \arguments{
 \item{path}{File path to the Vemco folder. This folder should have one csv
@@ -25,6 +31,12 @@ specified in \code{deployment_dates}. (Note: four hours are added to the
 retrieval date to account for AST, e.g., in case the sensor was retrieved
 after 20:00 AST, which is 00:00 UTC the next day.) Default is \code{trim =
 TRUE}.}
+
+\item{depth_override}{An optional character string indicating which depth
+variable to compile. In some files (e.g., Borgles Island 2018-02-28), there
+is only one "Seawater depth" observation, but a full deployment of "Average
+seawater depth" observations. In this case, force the code to compile the
+average seawater depth with \code{depth_override = Average seawater depth}.}
 }
 \value{
 Returns a tibble with the data compiled from the file in path/vemco.
@@ -41,6 +53,12 @@ The raw Vemco data must be saved in a folder named Vemco in csv
   extracted and compiled. If there are no "Temperature" entries, but there
   are "Average temperature" entries, these will be extracted and compiled.
   Otherwise, the function will stop with an error message.
+
+  If there are "Seawater depth" entries in the Description column, these will
+  be extracted and compiled. If there are no "Seawater depth" entries, but
+  there are "Average seawater depth" entries, these will be extracted and
+  compiled. Otherwise, the function will stop with an error message.  (See
+  argument \code{depth_override} for exception.)
 }
 \seealso{
 Other compile: 

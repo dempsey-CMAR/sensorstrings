@@ -8,7 +8,8 @@ ss_compile_deployment_data(
   path,
   path_config = NULL,
   trim = TRUE,
-  ignore_sensors = NULL
+  ignore_sensors = NULL,
+  depth_override = NULL
 )
 }
 \arguments{
@@ -37,6 +38,12 @@ TRUE}.}
 
 \item{ignore_sensors}{Vector of sensor serial numbers for sensors that are in
 the deployment log, but should NOT be compiled (e.g., data file missing).}
+
+\item{depth_override}{An optional character string indicating which depth
+variable to compile. In some files (e.g., Borgles Island 2018-02-28), there
+is only one "Seawater depth" observation, but a full deployment of "Average
+seawater depth" observations. In this case, force the code to compile the
+average seawater depth with \code{depth_override = Average seawater depth}.}
 }
 \value{
 Returns a data frame of data from a single sensor string deployment.

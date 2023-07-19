@@ -50,11 +50,23 @@ ss_read_vemco_data <- function(path, file_name) {
 #'   are "Average temperature" entries, these will be extracted and compiled.
 #'   Otherwise, the function will stop with an error message.
 #'
+#'   If there are "Seawater depth" entries in the Description column, these will
+#'   be extracted and compiled. If there are no "Seawater depth" entries, but
+#'   there are "Average seawater depth" entries, these will be extracted and
+#'   compiled. Otherwise, the function will stop with an error message.  (See
+#'   argument \code{depth_override} for exception.)
+#'
 #' @inheritParams ss_compile_hobo_data
 #'
 #' @param path File path to the Vemco folder. This folder should have one csv
 #'   file that was extracted using Vue software. Other file types in the folder
 #'   will be ignored.
+#'
+#' @param depth_override An optional character string indicating which depth
+#'   variable to compile. In some files (e.g., Borgles Island 2018-02-28), there
+#'   is only one "Seawater depth" observation, but a full deployment of "Average
+#'   seawater depth" observations. In this case, force the code to compile the
+#'   average seawater depth with \code{depth_override = Average seawater depth}.
 #'
 #' @return Returns a tibble with the data compiled from the file in path/vemco.
 #'
@@ -68,7 +80,9 @@ ss_read_vemco_data <- function(path, file_name) {
 ss_compile_vemco_data <- function(path,
                                   sn_table,
                                   deployment_dates,
-                                  trim = TRUE) {
+                                  trim = TRUE,
+                                  depth_override = NULL
+                                  ) {
   # set up & check for errors
   setup <- set_up_compile(
     path = path,
@@ -121,7 +135,10 @@ ss_compile_vemco_data <- function(path,
     stop("Could not find Temperature or Average temperature in vemco_dat. Check file.")
   }
 
-  if ("Seawater depth" %in% vars_desc) {
+
+  if (!is.null(depth_override)) {
+    depth_var <- depth_override
+  } else if ("Seawater depth" %in% vars_desc) {
     depth_var <- "Seawater depth"
   } else if ("Average seawater depth" %in% vars_desc) {
     depth_var <- "Average seawater depth"
@@ -172,8 +189,7 @@ ss_compile_vemco_data <- function(path,
 
   check_n_rows(dat, file_name = dat_files, trimmed = trim)
 
-
-  # find if any duplicate timestamps
+  # find any duplicate timestamps
   bad_ts <- dat %>%
     group_by(timestamp_) %>%
     summarise(n = n()) %>%
@@ -197,7 +213,6 @@ ss_compile_vemco_data <- function(path,
     add_deployment_columns(start_date, end_date, sn_table)
 
   colnames(dat)[which(str_detect(colnames(dat), "timestamp"))] <- paste0("timestamp_", date_tz)
-
 
   message(paste("vemco data compiled:", temperature_var, "&", depth_var))
 

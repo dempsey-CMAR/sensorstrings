@@ -14,6 +14,7 @@
 #'   Adds location and mooring columns
 #'
 #' @inheritParams ss_compile_hobo_data
+#' @inheritParams ss_compile_vemco_data
 #' @inheritParams ss_read_log
 #'
 #' @param path File path to the log, aquameasure, hobo, tidbit, and/or vemco
@@ -35,7 +36,8 @@
 
 
 ss_compile_deployment_data <- function(
-    path, path_config = NULL, trim = TRUE, ignore_sensors = NULL) {
+    path, path_config = NULL, trim = TRUE,
+    ignore_sensors = NULL, depth_override = NULL) {
   # read in log and add location columns ----------------------------------------------------
   depl_log <- ss_read_log(path, path_config = path_config)
 
@@ -107,7 +109,8 @@ ss_compile_deployment_data <- function(
       path = path,
       sn_table = sn_vem,
       deployment_dates = deployment_dates,
-      trim = trim
+      trim = trim,
+      depth_override = depth_override
     )
 
     # browser()
