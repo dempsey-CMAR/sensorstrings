@@ -171,7 +171,7 @@ ss_read_log <- function(path, path_config = NULL) {
   # link to the "STRING TRACKING" google sheet -
   googlesheets4::gs4_deauth()
 
-  link <- "https://docs.google.com/spreadsheets/d/1a3QvJsvwr4dd64g3jxgewRtfutIpsKjT2yrMEAoxA3I/edit#gid=828367890"
+  link <- "http://docs.google.com/spreadsheets/d/1a3QvJsvwr4dd64g3jxgewRtfutIpsKjT2yrMEAoxA3I/edit#gid=828367890"
 
   # read in the "Area Info" tab of the STRING TRACKING sheet
   area_tracking <- googlesheets4::read_sheet(link, sheet = "Area Info")
