@@ -68,7 +68,6 @@ set_up_compile <- function(path,
   excel_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|xls")
 
   # check for surprises in dat_files
-
   if (length(dat_files) == 0) {
     stop(glue("Can't find csv files in {path}"))
   }
