@@ -123,13 +123,12 @@ ss_compile_deployment_data <- function(
     mutate(
       county = area_info$county,
       waterbody = area_info$waterbody,
-      latitude = area_info$latitude,
-      longitude = area_info$longitude,
-      station = area_info$station,
+      latitude = as.numeric(area_info$latitude),
+      longitude = as.numeric(area_info$longitude),
+      station =  as.character(area_info$station),
       lease = as.character(area_info$lease),
       string_configuration = depl_log$string_configuration
     ) %>%
-    # ss_convert_depth_to_ordered_factor() %>%
     arrange(sensor_depth_at_low_tide_m) %>%
     select(
       county, waterbody, station, lease, latitude, longitude,
