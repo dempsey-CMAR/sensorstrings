@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">sensorstrings</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.5</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,7 +46,8 @@
 <span>  <span class="va">path</span>,</span>
 <span>  path_config <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  trim <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  ignore_sensors <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  ignore_sensors <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  depth_override <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -83,6 +84,14 @@ TRUE</code>.</p></dd>
 <dt>ignore_sensors</dt>
 <dd><p>Vector of sensor serial numbers for sensors that are in
 the deployment log, but should NOT be compiled (e.g., data file missing).</p></dd>
+
+
+<dt>depth_override</dt>
+<dd><p>An optional character string indicating which depth
+variable to compile. In some files (e.g., Borgles Island 2018-02-28), there
+is only one "Seawater depth" observation, but a full deployment of "Average
+seawater depth" observations. In this case, force the code to compile the
+average seawater depth with <code>depth_override = Average seawater depth</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
