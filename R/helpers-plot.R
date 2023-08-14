@@ -5,10 +5,10 @@
 #'   (Option D). If there are 6 or less unique values of
 #'   \code{sensor_depth_at_low_tide_m}, the palette will have 6 colours. If
 #'   there are more than 6 unique values of \code{sensor_depth_at_low_tide_m},
-#'   the palette will have the number of colours equal to the number depths.
+#'   there will be one colour for each depth.
 #'
-#' @param dat Data to be plotted, **as returned by the function
-#'   \code{convert_to_tidydata()}. Must include the column \code{DEPTH}.**
+#' @param dat Data frame with at least one column. The column name must include
+#'   the string "low_tide".
 #'
 #' @return Returns a vector of hex colours from the viridis palette (Option D,
 #'   direction = -1).
@@ -22,9 +22,15 @@
 #' @export
 #'
 
-get_colour_palette <- function(dat) {
+ss_get_colour_palette <- function(dat) {
   n_depth <- dat %>%
-    select(contains("low_tide")) %>%
+    select(contains("low_tide"))
+
+  if(ncol(n_depth) > 1) {
+    stop("More than one column named with the string low_tide detected in dat.")
+  }
+
+  n_depth <- n_depth %>%
     distinct() %>%
     nrow()
 
@@ -40,14 +46,17 @@ get_colour_palette <- function(dat) {
 
 #' Create plot labels from variable names
 #'
-#' @param dat_long Data in long format. Entries in \code{variable} column must
-#'   be \code{temperature_degree_c}, \code{dissolved_oxygen_percent_saturation},
-#'   \code{dissolved_oxygen_mg_per_l},
-#'   \code{dissolved_oxygen_uncorrected_mg_per_l},
-#'   \code{sensor_depth_measured_m}, \code{salinity_psu}, or
-#'   \code{sensor_depth_measured_m}.
+#' @param dat_long Data frame of Water Quality data with variables in long
+#'   format. Entries in \code{variable} column must be
+#'   \code{dissolved_oxygen_percent_saturation},
+#'   \code{dissolved_oxygen_uncorrected_mg_per_l}, \code{salinity_psu},
+#'   \code{sensor_depth_measured_m}, or \code{temperature_degree_c}.
 #'
-#' @return placeholder
+#' @return Returns \code{dat_long} with an addition column
+#'   \code{variable_label}. \code{variable_label}
+#'
+#' @importFrom dplyr case_when mutate
+#'
 #' @export
 
 ss_create_variable_labels <- function(dat_long) {
@@ -83,23 +92,11 @@ ss_create_variable_labels <- function(dat_long) {
 
 #' Filter data before plotting to zoom in on interesting features
 #'
-#' @param dat Data frame of sensor string data in wide format, as exported from
-#'   \code{ss_compile_deployment_data()}.
+#' Called by \code{ss_open_trimdates_app()}.
 #'
-#' @param filter_to Shortcut for specifying where to filter \code{dat} before
-#'   plotting. Options are "start", "end", or "custom".
+#' @inheritParams ss_open_trimdates_app
 #'
-#' @param period Character string that can be convert to a \code{lubridate}
-#'   period.
-#'
-#' @param custom_start Only required if \code{filter_to = "custom"}. POSIXct
-#'   object indicating where the filtered data will begin.
-#'
-#' @param custom_end Only required if \code{filter_to = "custom"}. POSIXct
-#'   object indicating where the filtered data will end.
-#'
-#' @return Returns a plotly object of the filtered data coloured by depth and
-#'   faceted by variable.
+#' @return Returns \code{dat} filtered to the specified dates.
 #'
 #' @importFrom assertthat assert_that
 #' @importFrom lubridate period is.POSIXct  %m+% %m-%

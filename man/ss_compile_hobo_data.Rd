@@ -40,20 +40,20 @@ Returns a tibble with the data compiled from each of the hobo or
   tidbit sensors.
 }
 \description{
-Can handle temperature and dissolved oxygen data.
-
-  Does NOT correct dissolved oxygen data for salinity.
+Compile and format data from hobo or tidbit sensors
 }
 \details{
-Exported hobo data must be saved in a folder named hobo in csv
-  format. Exported tidbit data must be saved in a folder named tidbit in csv
-  format. Folder name is not case-sensitive.
+This code does not correct dissolved oxygen data for salinity.
 
-  All of the csv files in the hobo or tidbit folder will be compiled. The
-  name of each file must be the serial number of the sensor.
+Exported hobo data must be saved in a folder named hobo in csv format.
+Exported tidbit data must be saved in a folder named tidbit in csv format.
+Folder name is not case-sensitive.
 
-  The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
-  HM", "Ymd HMS", "dmY HM", or "dmY HMS".
+All of the csv files in the hobo or tidbit folder will be compiled. The name
+of each file must be the serial number of the sensor.
+
+The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
+HM", "Ymd HMS", "dmY HM", or "dmY HMS".
 }
 \seealso{
 Other compile: 

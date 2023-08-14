@@ -7,8 +7,8 @@
 ss_pivot_longer(dat_wide)
 }
 \arguments{
-\item{dat_wide}{Data frame of sensor string data, as returned by
-\code{ss_compile_**()} functions.}
+\item{dat_wide}{Data frame of sensor string data in a wide format, as
+returned by \code{ss_compile_**()} functions.}
 }
 \value{
 Returns \code{dat} in long format. Variables (e.g., temperature,

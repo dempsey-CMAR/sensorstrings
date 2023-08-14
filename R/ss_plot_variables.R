@@ -51,7 +51,7 @@ ss_ggplot_variables <- function(
   theme_set(theme_light())
 
   if (is.null(color_palette)) {
-    color_palette <- get_colour_palette(dat)
+    color_palette <- ss_get_colour_palette(dat)
   }
   scale_depth_colour <- scale_colour_manual(
     name = legend_name, values = color_palette, drop = FALSE

@@ -10,13 +10,13 @@ ss_export_path(dat, path = NULL, sub_folder = NULL, ext = "rds")
 \item{dat}{Data frame of sensor string data in wide or long format. Must
 include columns \code{county}, \code{station}, and \code{deployment_range}.}
 
-\item{path}{Character string of the file path to the county folder.}
+\item{path}{File path to a folder named \code{county}.}
 
 \item{sub_folder}{Character string of the sub-folder name (inside county
 folder) where \code{dat} should be exported. Default is \code{sub-folder =
 "new"}.}
 
-\item{ext}{File extension. Default is \code{ext = "csv"}.}
+\item{ext}{File extension. Default is \code{ext = "rds"}.}
 }
 \value{
 A file path for exporting deployment data, including file name and

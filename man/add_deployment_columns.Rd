@@ -2,7 +2,7 @@
 % Please edit documentation in R/helpers-compile.R
 \name{add_deployment_columns}
 \alias{add_deployment_columns}
-\title{Add deployment date and sensor columns and re-order all columns}
+\title{Add and reorder columns}
 \usage{
 add_deployment_columns(dat, start_date, end_date, sn_table)
 }
@@ -20,5 +20,6 @@ add_deployment_columns(dat, start_date, end_date, sn_table)
 returns dat with additional columns
 }
 \description{
-Add deployment date and sensor columns and re-order all columns
+Add \code{deployment_range}, and \code{sensor_type}, \code{sensor_serial
+number} columns. Rename \code{depth} column to \code{sensor_depth_at_low_tide_m}.
 }

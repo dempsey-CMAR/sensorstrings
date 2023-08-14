@@ -2,7 +2,8 @@
 % Please edit documentation in R/ss_compile_deployment_data.R
 \name{ss_compile_deployment_data}
 \alias{ss_compile_deployment_data}
-\title{Compile aquameasure, hobo, and vemco data from a single deployment}
+\title{Compile aquameasure, hobo, tidbit, and vemco data from a single
+  deployment}
 \usage{
 ss_compile_deployment_data(
   path,
@@ -46,10 +47,11 @@ seawater depth" observations. In this case, force the code to compile the
 average seawater depth with \code{depth_override = Average seawater depth}.}
 }
 \value{
-Returns a data frame of data from a single sensor string deployment.
+Returns a data frame of data from a sensor string deployment.
 }
 \description{
-Compile aquameasure, hobo, and vemco data from a single deployment
+Compile aquameasure, hobo, tidbit, and vemco data from a single
+  deployment
 }
 \details{
 Reads the deployment log and then calls
@@ -63,7 +65,8 @@ Reads the deployment log and then calls
   sensitive). The aquameasure, hobo, tidbit, and vemco folders must be in the
   same folder.
 
-  Adds location and mooring columns
+  Columns with deployment details are added (e.g., county, waterbody,
+  latitude, longitude, station, lease, string_configuration).
 }
 \seealso{
 Other compile: 

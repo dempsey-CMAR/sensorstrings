@@ -2,26 +2,26 @@
 
 #' Set up parameters, Errors, and Warnings for the \code{compile_**} functions
 #'
-#' @details An extra column named \code{sensor_type} is added to
-#'   \code{sn_table}, with values of \code{sensor_make}. The \code{sensor_type}
-#'   column is what is used in the compiled data (e.g., "aquameasure", "hobo",
-#'   "vr2ar" vs "HOBO PRO V2" or "aquaMeasure DOT").
+#' @details A column named \code{sensor_type} is added to \code{sn_table}, with
+#'   values of \code{sensor_make}. The \code{sensor_type} column is added to the
+#'   compiled data (e.g., "aquameasure", "hobo", "vr2ar" vs "HOBO PRO V2" or
+#'   "aquaMeasure DOT").
 #'
 #'   Returns Errors and Warnings if the expected files are not found on the
 #'   \code{path}.
 #'
 #' @inheritParams ss_compile_hobo_data
 #'
-#' @param path File path to the folder with the aquameasure, hobo, or vemco
-#'   folder.
+#' @param path File path to the folder with the aquameasure, hobo, tidbit, or
+#'   vemco folder.
 #'
 #' @param sensor_make Make of the sensor to be compiled. Should match the name
-#'   of the folder where the raw data files. Most common entries will be
+#'   of the folder with the raw data files. Most common entries will be
 #'   "aquameasure", "hobo", or "vemco".
 #'
 #' @return Returns a list of parameters used in the \code{compile_**} functions:
 #'   final path to the folder of interest, deployment dates, vector of files in
-#'   the folder, \code{sn_table} filtered for \code{sensor_make}.
+#'   the folder, and \code{sn_table}.
 #'
 #' @importFrom dplyr %>% mutate select
 #' @importFrom glue glue
@@ -46,6 +46,10 @@ set_up_compile <- function(path,
 
   # extract the deployment start and end dates from deployment_dates
   dates <- extract_deployment_dates(deployment_dates)
+
+  if (dates$start > dates$end) {
+    stop("The deployment date is after the retrieval date")
+  }
 
   # name of folder (case-insensitive)
   if (sensor_make == "VR2AR") sensor_make <- "vemco"
@@ -98,7 +102,10 @@ set_up_compile <- function(path,
 }
 
 
-#' Add deployment date and sensor columns and re-order all columns
+#' Add and reorder columns
+#'
+#' Add \code{deployment_range}, and \code{sensor_type}, \code{sensor_serial
+#' number} columns. Rename \code{depth} column to \code{sensor_depth_at_low_tide_m}.
 #'
 #' @inheritParams ss_compile_hobo_data
 #'
@@ -107,7 +114,6 @@ set_up_compile <- function(path,
 #' @param end_date placeholder
 #'
 #' @return returns dat with additional columns
-
 
 add_deployment_columns <- function(
     dat,
@@ -140,13 +146,15 @@ add_deployment_columns <- function(
 
 #' Check number of rows of data file
 #'
-#' @param dat Data frame
+#' @param dat Data frame. An Error will be returned if there are 0 rows of data.
 #'
-#' @param file_name Name of file to check.
+#' @param file_name Name of file that is being checked, e.g., the csv file that
+#'   was read in as \code{dat}. Used in the Error message to pinpoint the
+#'   problematic file.
 #'
 #' @param trimmed Logical value indicating if \code{dat} has been trimmed.
 #'
-#' @return Returns a Warning if there no rows in \code{dat}.
+#' @return Returns an Error if there are no rows in \code{dat}.
 
 check_n_rows <- function(dat, file_name, trimmed = TRUE) {
   if (nrow(dat) == 0) {
@@ -161,12 +169,13 @@ check_n_rows <- function(dat, file_name, trimmed = TRUE) {
 }
 
 
-#' convert_timestamp_to_datetime()
+#' Convert timestamp to datetime
 #'
-#' @param dat Data.frame with column \code{timestamp_} that has timestamps as
-#'   character values.
+#' @param dat Data frame with at least one column, \code{timestamp_} that has
+#'   datetimes as character values.
 #'
-#' @details Convert the timestamp_ column to a POSIXct object.
+#' @details Converts the timestamp_ column to a POSIXct object. Every datetime
+#'   entry must be in the same order.
 #'
 #' @importFrom lubridate parse_date_time
 
@@ -199,8 +208,9 @@ convert_timestamp_to_datetime <- function(dat) {
 
 
 #' Extract deployment dates
-#' @param deployment_dates Data.frame with start and end dates of the deployment
-#'   in the form yyyy-mm-dd. Two columns: \code{START} and \code{END}.
+#'
+#' @param deployment_dates Data frame with two columns; the first column holds
+#'   the deployment date, and the second column holds the retrieval date.
 #'
 #' @importFrom tidyr separate
 #' @importFrom lubridate as_datetime
@@ -223,8 +233,11 @@ extract_deployment_dates <- function(deployment_dates) {
 #' 4 hours adde to end_date to account for AST (e.g., in case the sensor was
 #' retrieved after 20:00 AST, which is 00:00 UTC **The next day**)
 #'
-#' @param dat Data.frame with column including the string "timestamp"
+#' @param dat Data frame with at least one column. Column name must include the
+#'   string "timestamp".
+#'
 #' @param start_date POSIXct/POSIXt value of the first good timestamp.
+#'
 #' @param end_date POSIXct/POSIXt value of the last good timestamp.
 #'
 #' @importFrom checkmate assert_posixct
@@ -276,7 +289,7 @@ extract_aquameasure_tz <- function(am_colnames) {
 #' @return Returns a vector of the variables included in the file.
 
 extract_aquameasure_vars <- function(am_colnames) {
-  ## check colnames of dat.i for "Temperature", "Dissolved Oxygen", and "Salinity"
+
   temp <- ifelse("Temperature" %in% am_colnames, "Temperature", NA)
   DO <- ifelse("Dissolved Oxygen" %in% am_colnames, "Dissolved Oxygen", NA)
   sal <- ifelse("Salinity" %in% am_colnames, "Salinity", NA)
@@ -291,12 +304,12 @@ extract_aquameasure_vars <- function(am_colnames) {
 
 # HOBO --------------------------------------------------------------------
 
-#' Extract HOBO serial number from the data file
+#' Extract hobo serial number from the data file
 #'
-#' @param hobo_colnames Column names of the HOBO file, as imported by
+#' @param hobo_colnames Column names of the hobo file, as imported by
 #'   \code{ss_read_hobo_data()}.
 #'
-#' @return Returns the HOBO serial number.
+#' @return Returns the hobo serial number.
 #'
 #' @importFrom glue glue
 #' @importFrom stringr str_detect str_remove str_split
@@ -315,7 +328,7 @@ extract_hobo_sn <- function(hobo_colnames) {
     as.numeric(SENSOR_SN)
   } else {
     stop(
-      glue("HOBO file LOGR S/N ({LOGGER_SN}) does not match SEN S/N ({SENSOR_SN})")
+      glue("Hobo file LOGR S/N ({LOGGER_SN}) does not match SEN S/N ({SENSOR_SN})")
     )
   }
 }
@@ -351,10 +364,10 @@ extract_hobo_units <- function(hobo_dat) {
 
 #' Glue variable name and units to create column names
 #'
-#' @param unit_table Data.frame including columns \code{variable} and
+#' @param unit_table Data frame including columns \code{variable} and
 #'   \code{units}, as returned from \code{extract_hobo_units()}.
 #'
-#' @return Data.frame with column names in the form \code{variable_units}.
+#' @return Data frame with column names in the form \code{variable_units}.
 #'
 #' @importFrom dplyr %>% arrange mutate
 #' @importFrom stringr str_detect str_replace
@@ -398,7 +411,7 @@ make_column_names <- function(unit_table) {
 
 #' Extract the timezone of vemco timestamps
 #'
-#' @param dat_colnames Column names of the Vemco file.
+#' @param dat_colnames Column names of the vemco file.
 #'
 #' @return Returns a character string of the timezone indicated in the Timestamp
 #'   column.

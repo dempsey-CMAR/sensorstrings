@@ -13,7 +13,7 @@ ss_compile_vemco_data(
 )
 }
 \arguments{
-\item{path}{File path to the Vemco folder. This folder should have one csv
+\item{path}{File path to the vemco folder. This folder should have one csv
 file that was extracted using Vue software. Other file types in the folder
 will be ignored.}
 
@@ -46,7 +46,7 @@ Compiles and formats temperature and seawater depth data from
   VR2AR sensors.
 }
 \details{
-The raw Vemco data must be saved in a folder named Vemco in csv
+The raw vemco data must be saved in a folder named vemco in csv
   format. Folder name is not case-sensitive.
 
   If there are "Temperature" entries in the Description column, these will be

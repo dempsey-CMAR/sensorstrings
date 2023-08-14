@@ -9,9 +9,9 @@
 #'   \code{Lease#}: If located on an aquaculture site, the lease number (NA
 #'   otherwise)
 #'
-#'   \code{Deployment}: The deployment date, in the order "Ymd"
+#'   \code{Deployment}: deployment date, in the order "Ymd"
 #'
-#'   \code{Retrieval}: The retrieval date, in the order "Ymd"
+#'   \code{Retrieval}: retrieval date, in the order "Ymd"
 #'
 #'   \code{Logger_Latitude}: The latitude at which the string was deployed
 #'
@@ -41,7 +41,7 @@
 #'   A message is printed to the console when hobo, aquameasure, or vemco
 #'   sensors are not found in the log.
 #'
-#'   A message will be printed to the console if there is more than one unique
+#'   A message is printed to the console if there is more than one unique
 #'   entry in \code{Deployment_Waterbody}, \code{Location_Description},
 #'   \code{Deployment}, \code{Retrieval}, \code{Logger_Latitude}, or
 #'   \code{Logger_Longitude}.
@@ -65,7 +65,7 @@
 #' @return Returns a list with 4 elements. \code{deployment_dates} is a data
 #'   frame with two columns: \code{start_date} (the date of deployment) and
 #'   \code{end_date} (date of retrieval). \code{area_info} is a data frame with
-#'   five columns:\code{county}, \code{waterbody}, \code{latitude},
+#'   five columns: \code{county}, \code{waterbody}, \code{latitude},
 #'   \code{longitude}, \code{station}, and \code{lease}. \code{sn_table} is a
 #'   data frame with three columns: \code{log_sensor} (sensor name as recorded
 #'   in the log), \code{sensor_serial_number}, and \code{depth} (sensor depth
@@ -151,6 +151,11 @@ ss_read_log <- function(path, path_config = NULL) {
     start_date = lubridate::ymd(depl_start),
     end_date = lubridate::ymd(depl_end)
   )
+
+  # stop with Error if deployment date is after retrieval date
+  if (deployment_dates$start_date[1] > deployment_dates$end_date[1]) {
+    stop("The deployment date is after the retrieval date")
+  }
 
   # area info ---------------------------------------------------------------
 

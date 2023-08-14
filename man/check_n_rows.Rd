@@ -7,14 +7,16 @@
 check_n_rows(dat, file_name, trimmed = TRUE)
 }
 \arguments{
-\item{dat}{Data frame}
+\item{dat}{Data frame. An Error will be returned if there are 0 rows of data.}
 
-\item{file_name}{Name of file to check.}
+\item{file_name}{Name of file that is being checked, e.g., the csv file that
+was read in as \code{dat}. Used in the Error message to pinpoint the
+problematic file.}
 
 \item{trimmed}{Logical value indicating if \code{dat} has been trimmed.}
 }
 \value{
-Returns a Warning if there no rows in \code{dat}.
+Returns an Error if there are no rows in \code{dat}.
 }
 \description{
 Check number of rows of data file

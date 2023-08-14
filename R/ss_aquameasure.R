@@ -45,14 +45,13 @@ ss_read_aquameasure_data <- function(path, file_name) {
 #'   The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
 #'   HM", "Ymd HMS", "dmY HM", or "dmY HMS".
 #'
-#'
 #'   "ERR" values are converted to \code{-111} (to distinguish from sensor error
 #'   value of -101.5).
 #'
 #' @inheritParams ss_compile_hobo_data
 #'
-#' @return Returns a tibble with the data compiled from each of the aquameasure
-#'   files in path/aquameasure.
+#' @return Returns a tibble with the compiled data from each of the aquameasure
+#'   files saved in path/aquameasure.
 #'
 #' @family compile
 #' @author Danielle Dempsey

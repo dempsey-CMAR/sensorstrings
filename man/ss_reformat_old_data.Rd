@@ -2,7 +2,7 @@
 % Please edit documentation in R/ss_reformat_old_data.R
 \name{ss_reformat_old_data}
 \alias{ss_reformat_old_data}
-\title{Convert old data structure to ss format}
+\title{Convert old data structure to sensorstrings format}
 \usage{
 ss_reformat_old_data(dat)
 }
@@ -10,8 +10,9 @@ ss_reformat_old_data(dat)
 \item{dat}{Water quality data in the old format.}
 }
 \value{
-\code{dat} formatted for use in \code{sensorstrings}.
+\code{dat} formatted for use with \code{sensorstrings} and
+  \code{qaqcmar}.
 }
 \description{
-Convert old data structure to ss format
+Convert old data structure to sensorstrings format
 }

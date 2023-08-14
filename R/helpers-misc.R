@@ -1,6 +1,6 @@
 #' @title Extracts the extension of a file name
 #'
-#' @details Extracts the file extension from a character string using //. as the
+#' @details Extracts the file extension from a character string using "\\." as the
 #'   separator.
 #'
 #' @param file_name Character string of a file name or path. Must only include
@@ -22,13 +22,13 @@ extract_file_extension <- function(file_name) {
 #' @param dat Data frame of sensor string data in wide or long format. Must
 #'   include columns \code{county}, \code{station}, and \code{deployment_range}.
 #'
-#' @param path Character string of the file path to the county folder.
+#' @param path File path to a folder named \code{county}.
 #'
 #' @param sub_folder Character string of the sub-folder name (inside county
 #'   folder) where \code{dat} should be exported. Default is \code{sub-folder =
 #'   "new"}.
 #'
-#' @param ext File extension. Default is \code{ext = "csv"}.
+#' @param ext File extension. Default is \code{ext = "rds"}.
 #'
 #' @return A file path for exporting deployment data, including file name and
 #'   extension.
@@ -38,7 +38,6 @@ extract_file_extension <- function(file_name) {
 #' @importFrom tidyr separate
 #'
 #' @export
-
 
 ss_export_path <- function(
     dat, path = NULL, sub_folder = NULL, ext = "rds") {
@@ -72,10 +71,13 @@ ss_export_path <- function(
 
 #' Generate file path to import raw sensor string deployment data
 #'
-#' @param path Character string of the file path to the station_folders folder.
+#' Raw data must be saved in a folder path/station/station_yyyy-mm-dd.
+#'
+#' @param path File path to the station_folders folder on the Coastal Monitoring
+#'   Program server.
 #'
 #' @param station Character string of the station name. Will be converted to
-#'   lower case, and a space will be replaced with an underscore.
+#'   lower case, and all spaces will be replaced with an underscore.
 #'
 #' @param depl_date Character string of the deployment data in the order
 #'   yyyy-mm-dd.

@@ -1,23 +1,10 @@
-# path <- "C:/Users/Danielle Dempsey/Desktop/Data_Strings"
-#
-# station <- "Madeline Point"
-#
-# station <- "test 1"
-# depl_date <- "2019-04-25"
-# depl_date <- "19-04-25"
-# depl_date <- "25-06-2019"
-# depl_date <- "not a date"
-
-# ss_set_up_folders(station = "test", depl_date = Sys.Date())
-
-
 #' Create folders for the raw sensor string data from a given deployment
 #'
 #' @param path File path to where the deployment folder should be created.
 #'
 #' @param station Station name.
 #'
-#' @param depl_date Deployment start date.
+#' @param depl_date Deployment start date as a character string.
 #'
 #' @param sensor_folders Logical argument indicating whether to create the
 #'   aquameasure, hobo, log, and vemco folders in the deployment folder. These

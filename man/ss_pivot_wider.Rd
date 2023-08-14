@@ -7,12 +7,12 @@
 ss_pivot_wider(dat_long)
 }
 \arguments{
-\item{dat_long}{Data frame of sensor string data, as returned by
-\code{ss_pivot_longer()}.}
+\item{dat_long}{Data frame of sensor string data in long format, as returned
+by \code{ss_pivot_longer()}.}
 }
 \value{
-Returns \code{dat_long} in wide format, with a separate column for each
-  \code{variable}.
+Returns \code{dat_long} in wide format, with a separate column for
+  each \code{variable}.
 }
 \description{
 Pivot sensor string data from wide to long format

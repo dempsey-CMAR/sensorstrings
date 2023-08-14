@@ -2,17 +2,18 @@
 % Please edit documentation in R/helpers-compile.R
 \name{convert_timestamp_to_datetime}
 \alias{convert_timestamp_to_datetime}
-\title{convert_timestamp_to_datetime()}
+\title{Convert timestamp to datetime}
 \usage{
 convert_timestamp_to_datetime(dat)
 }
 \arguments{
-\item{dat}{Data.frame with column \code{timestamp_} that has timestamps as
-character values.}
+\item{dat}{Data frame with at least one column, \code{timestamp_} that has
+datetimes as character values.}
 }
 \description{
-convert_timestamp_to_datetime()
+Convert timestamp to datetime
 }
 \details{
-Convert the timestamp_ column to a POSIXct object.
+Converts the timestamp_ column to a POSIXct object. Every datetime
+  entry must be in the same order.
 }

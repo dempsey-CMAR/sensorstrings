@@ -7,8 +7,8 @@
 extract_deployment_dates(deployment_dates)
 }
 \arguments{
-\item{deployment_dates}{Data.frame with start and end dates of the deployment
-in the form yyyy-mm-dd. Two columns: \code{START} and \code{END}.}
+\item{deployment_dates}{Data frame with two columns; the first column holds
+the deployment date, and the second column holds the retrieval date.}
 }
 \description{
 Extract deployment dates

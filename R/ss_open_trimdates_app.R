@@ -1,21 +1,15 @@
-#
-# library(shiny)
-# library(ggplot2)
-# library(lubridate)
-# library(plotly)
-# library(sensorstrings)
-# library(data.table)
-
 #' Open interactive plot
 #'
 #' @param dat Data frame of sensor string data in wide format, as exported from
-#'   \code{ss_compile_deployment_data()}.
+#'   \code{ss_compile_deployment_data()}. Must include columns timestamp_,
+#'   sensor_depth_at_low_tide_m, sensor_type, sensor-serial number, and the
+#'   variables to plot (e.g., temperature_degree_c).
 #'
 #' @param filter_to Shortcut for specifying where to filter \code{dat} before
 #'   plotting. Options are "start", "end", or "custom".
 #'
-#' @param period Character string that can be convert to a \code{lubridate}
-#'   period.
+#' @param period Character string that can be converted to a \code{lubridate}
+#'   period. Default is \code{"2 days"}.
 #'
 #' @param custom_start Only required if \code{filter_to = "custom"}. POSIXct
 #'   object indicating where the filtered data will begin.
@@ -26,7 +20,7 @@
 #' @param point_size Size of points in the plot.
 #'
 #' @return Opens a shiny app displaying an interactive plot of variables in
-#'   \code{dat}.
+#'   \code{dat}, coloured by depth.
 #'
 #' @importFrom shiny fluidPage renderTable shinyApp tableOutput
 #' @importFrom plotly ggplotly event_data plotlyOutput renderPlotly

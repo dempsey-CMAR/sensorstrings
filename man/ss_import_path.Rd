@@ -8,16 +8,17 @@ ss_import_path(station, depl_date, path = NULL)
 }
 \arguments{
 \item{station}{Character string of the station name. Will be converted to
-lower case, and a space will be replaced with an underscore.}
+lower case, and all spaces will be replaced with an underscore.}
 
 \item{depl_date}{Character string of the deployment data in the order
 yyyy-mm-dd.}
 
-\item{path}{Character string of the file path to the station_folders folder.}
+\item{path}{File path to the station_folders folder on the Coastal Monitoring
+Program server.}
 }
 \value{
 The file path for importing raw deployment data.
 }
 \description{
-Generate file path to import raw sensor string deployment data
+Raw data must be saved in a folder path/station/station_yyyy-mm-dd.
 }

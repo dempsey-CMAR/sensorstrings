@@ -1,4 +1,4 @@
-#' @title Import data from Vemco csv files
+#' @title Import data from vemco csv files
 #'
 #' @details The Vemco data must be saved in csv format.
 #'
@@ -6,7 +6,7 @@
 #'
 #' @param path File path to the vemco folder.
 #'
-#' @return Returns a data frame of Vemco data, with the same columns as in the
+#' @return Returns a data frame of vemco data, with the same columns as in the
 #'   original file.
 #'
 #' @author Danielle Dempsey
@@ -42,7 +42,7 @@ ss_read_vemco_data <- function(path, file_name) {
 #' @description Compiles and formats temperature and seawater depth data from
 #'   VR2AR sensors.
 #'
-#' @details The raw Vemco data must be saved in a folder named Vemco in csv
+#' @details The raw vemco data must be saved in a folder named vemco in csv
 #'   format. Folder name is not case-sensitive.
 #'
 #'   If there are "Temperature" entries in the Description column, these will be
@@ -58,7 +58,7 @@ ss_read_vemco_data <- function(path, file_name) {
 #'
 #' @inheritParams ss_compile_hobo_data
 #'
-#' @param path File path to the Vemco folder. This folder should have one csv
+#' @param path File path to the vemco folder. This folder should have one csv
 #'   file that was extracted using Vue software. Other file types in the folder
 #'   will be ignored.
 #'
@@ -81,8 +81,7 @@ ss_compile_vemco_data <- function(path,
                                   sn_table,
                                   deployment_dates,
                                   trim = TRUE,
-                                  depth_override = NULL
-                                  ) {
+                                  depth_override = NULL) {
   # set up & check for errors
   setup <- set_up_compile(
     path = path,
@@ -172,7 +171,7 @@ ss_compile_vemco_data <- function(path,
         Description == "Average temperature" ~ "temperature"
       ),
       Units = if_else(
-        Units == "\u00B0C" |        # if csv is saved with ANSI encoding
+        Units == "\u00B0C" | # if csv is saved with ANSI encoding
           Units == "\u00C2\u00B0C", # if csv is saved with UTF-8 encoding
         "degree_c", Units
       ),

@@ -14,6 +14,6 @@ one ".", which is used as the separator.}
 Extracts the extension of a file name
 }
 \details{
-Extracts the file extension from a character string using //. as the
+Extracts the file extension from a character string using "\\." as the
   separator.
 }

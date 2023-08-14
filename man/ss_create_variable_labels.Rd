@@ -7,15 +7,15 @@
 ss_create_variable_labels(dat_long)
 }
 \arguments{
-\item{dat_long}{Data in long format. Entries in \code{variable} column must
-be \code{temperature_degree_c}, \code{dissolved_oxygen_percent_saturation},
-\code{dissolved_oxygen_mg_per_l},
-\code{dissolved_oxygen_uncorrected_mg_per_l},
-\code{sensor_depth_measured_m}, \code{salinity_psu}, or
-\code{sensor_depth_measured_m}.}
+\item{dat_long}{Data frame of Water Quality data with variables in long
+format. Entries in \code{variable} column must be
+\code{dissolved_oxygen_percent_saturation},
+\code{dissolved_oxygen_uncorrected_mg_per_l}, \code{salinity_psu},
+\code{sensor_depth_measured_m}, or \code{temperature_degree_c}.}
 }
 \value{
-placeholder
+Returns \code{dat_long} with an addition column
+  \code{variable_label}. \code{variable_label}
 }
 \description{
 Create plot labels from variable names

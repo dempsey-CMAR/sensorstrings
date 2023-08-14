@@ -7,7 +7,7 @@
 extract_vemco_tz(dat_colnames)
 }
 \arguments{
-\item{dat_colnames}{Column names of the Vemco file.}
+\item{dat_colnames}{Column names of the vemco file.}
 }
 \value{
 Returns a character string of the timezone indicated in the Timestamp

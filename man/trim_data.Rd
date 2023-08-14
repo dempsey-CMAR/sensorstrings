@@ -7,7 +7,8 @@
 trim_data(dat, start_date, end_date)
 }
 \arguments{
-\item{dat}{Data.frame with column including the string "timestamp"}
+\item{dat}{Data frame with at least one column. Column name must include the
+string "timestamp".}
 
 \item{start_date}{POSIXct/POSIXt value of the first good timestamp.}
 

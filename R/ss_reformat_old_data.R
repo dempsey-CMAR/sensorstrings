@@ -1,8 +1,9 @@
-#' Convert old data structure to ss format
+#' Convert old data structure to sensorstrings format
 #'
 #' @param dat Water quality data in the old format.
 #'
-#' @return \code{dat} formatted for use in \code{sensorstrings}.
+#' @return \code{dat} formatted for use with \code{sensorstrings} and
+#'   \code{qaqcmar}.
 #'
 #' @importFrom dplyr %>% case_when mutate rename select
 #' @importFrom tidyr separate

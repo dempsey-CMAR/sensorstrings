@@ -11,7 +11,7 @@ ss_set_up_folders(path = NULL, station, depl_date, sensor_folders = FALSE)
 
 \item{station}{Station name.}
 
-\item{depl_date}{Deployment start date.}
+\item{depl_date}{Deployment start date as a character string.}
 
 \item{sensor_folders}{Logical argument indicating whether to create the
 aquameasure, hobo, log, and vemco folders in the deployment folder. These

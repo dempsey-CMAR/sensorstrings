@@ -2,24 +2,24 @@
 % Please edit documentation in R/ss_download_data.R
 \name{ss_download_data}
 \alias{ss_download_data}
-\title{Download deployment data from Google drive to the shared Perennia drive}
+\title{Download deployment data from Google drive to the shared CMAR server}
 \usage{
 ss_download_data(path, station, depl_date)
 }
 \arguments{
-\item{path}{File path to the deployment folder (as created by
-\code{ss_set_up_folders()}).}
+\item{path}{File path to the deployment folder on the CMAR server (as created
+by \code{ss_set_up_folders()}).}
 
 \item{station}{Station name. Should match the name of a folder on the CMAR
 Google drive, in CMAR - Coastal Monitoring Program/CMP Station Data}
 
-\item{depl_date}{Deployment date. Should be in the name of one of the
-deployment folders.}
+\item{depl_date}{Deployment date (character string). Should be in the name of
+one of the deployment folders.}
 }
 \value{
 Downloads files from Google drive to the corresponding folder on the
-  Perennia drive for processing.
+  CMAR server.
 }
 \description{
-Download deployment data from Google drive to the shared Perennia drive
+Download deployment data from Google drive to the shared CMAR server
 }

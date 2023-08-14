@@ -1,4 +1,5 @@
-#' @title Compile aquameasure, hobo, and vemco data from a single deployment
+#' @title Compile aquameasure, hobo, tidbit, and vemco data from a single
+#'   deployment
 #'
 #' @details Reads the deployment log and then calls
 #'   \code{ss_compile_aquameasure_data()}, \code{ss_compile_hobo_data()}, and
@@ -11,7 +12,8 @@
 #'   sensitive). The aquameasure, hobo, tidbit, and vemco folders must be in the
 #'   same folder.
 #'
-#'   Adds location and mooring columns
+#'   Columns with deployment details are added (e.g., county, waterbody,
+#'   latitude, longitude, station, lease, string_configuration).
 #'
 #' @inheritParams ss_compile_hobo_data
 #' @inheritParams ss_compile_vemco_data
@@ -23,7 +25,7 @@
 #' @param ignore_sensors Vector of sensor serial numbers for sensors that are in
 #'   the deployment log, but should NOT be compiled (e.g., data file missing).
 #'
-#' @return Returns a data frame of data from a single sensor string deployment.
+#' @return Returns a data frame of data from a sensor string deployment.
 #'
 #' @family compile
 #' @author Danielle Dempsey
@@ -125,7 +127,7 @@ ss_compile_deployment_data <- function(
       waterbody = area_info$waterbody,
       latitude = as.numeric(area_info$latitude),
       longitude = as.numeric(area_info$longitude),
-      station =  as.character(area_info$station),
+      station = as.character(area_info$station),
       lease = as.character(area_info$lease),
       string_configuration = depl_log$string_configuration
     ) %>%

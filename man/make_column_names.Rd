@@ -7,11 +7,11 @@
 make_column_names(unit_table)
 }
 \arguments{
-\item{unit_table}{Data.frame including columns \code{variable} and
+\item{unit_table}{Data frame including columns \code{variable} and
 \code{units}, as returned from \code{extract_hobo_units()}.}
 }
 \value{
-Data.frame with column names in the form \code{variable_units}.
+Data frame with column names in the form \code{variable_units}.
 }
 \description{
 Glue variable name and units to create column names

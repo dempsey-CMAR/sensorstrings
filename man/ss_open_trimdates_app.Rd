@@ -15,13 +15,15 @@ ss_open_trimdates_app(
 }
 \arguments{
 \item{dat}{Data frame of sensor string data in wide format, as exported from
-\code{ss_compile_deployment_data()}.}
+\code{ss_compile_deployment_data()}. Must include columns timestamp_,
+sensor_depth_at_low_tide_m, sensor_type, sensor-serial number, and the
+variables to plot (e.g., temperature_degree_c).}
 
 \item{filter_to}{Shortcut for specifying where to filter \code{dat} before
 plotting. Options are "start", "end", or "custom".}
 
-\item{period}{Character string that can be convert to a \code{lubridate}
-period.}
+\item{period}{Character string that can be converted to a \code{lubridate}
+period. Default is \code{"2 days"}.}
 
 \item{custom_start}{Only required if \code{filter_to = "custom"}. POSIXct
 object indicating where the filtered data will begin.}
@@ -33,7 +35,7 @@ object indicating where the filtered data will end.}
 }
 \value{
 Opens a shiny app displaying an interactive plot of variables in
-  \code{dat}.
+  \code{dat}, coloured by depth.
 }
 \description{
 Open interactive plot
