@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">sensorstrings</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,19 +48,22 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>dat_long</dt>
-<dd><p>Data in long format. Entries in <code>variable</code> column must
-be <code>temperature_degree_c</code>, <code>dissolved_oxygen_percent_saturation</code>,
-<code>dissolved_oxygen_mg_per_l</code>,
-<code>dissolved_oxygen_uncorrected_mg_per_l</code>,
-<code>sensor_depth_measured_m</code>, <code>salinity_psu</code>, or
-<code>sensor_depth_measured_m</code>.</p></dd>
+<dd><p>Data frame of Water Quality data with variables in long
+format. Entries in <code>variable</code> column must be
+<code>dissolved_oxygen_percent_saturation</code>,
+<code>dissolved_oxygen_uncorrected_mg_per_l</code>, <code>salinity_psu</code>,
+<code>sensor_depth_measured_m</code>, or <code>temperature_degree_c</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>placeholder</p>
+<p>Returns <code>dat_long</code> with an addition column</p>
+<p></p>
+<p><code>variable_label</code>. <code>variable_label</code></p>
+
+
     </div>
 
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

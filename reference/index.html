@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">sensorstrings</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +49,7 @@
           
           <code><a href="add_deployment_columns.html">add_deployment_columns()</a></code> 
         </dt>
-        <dd>Add deployment date and sensor columns and re-order all columns</dd>
+        <dd>Add and reorder columns</dd>
       </dl><dl><dt>
           
           <code><a href="check_n_rows.html">check_n_rows()</a></code> 
@@ -59,7 +59,7 @@
           
           <code><a href="convert_timestamp_to_datetime.html">convert_timestamp_to_datetime()</a></code> 
         </dt>
-        <dd>convert_timestamp_to_datetime()</dd>
+        <dd>Convert timestamp to datetime</dd>
       </dl><dl><dt>
           
           <code><a href="extract_aquameasure_tz.html">extract_aquameasure_tz()</a></code> 
@@ -84,7 +84,7 @@
           
           <code><a href="extract_hobo_sn.html">extract_hobo_sn()</a></code> 
         </dt>
-        <dd>Extract HOBO serial number from the data file</dd>
+        <dd>Extract hobo serial number from the data file</dd>
       </dl><dl><dt>
           
           <code><a href="extract_hobo_units.html">extract_hobo_units()</a></code> 
@@ -100,12 +100,6 @@
           <code><a href="filter_dat_to_plot.html">filter_dat_to_plot()</a></code> 
         </dt>
         <dd>Filter data before plotting to zoom in on interesting features</dd>
-      </dl><dl><dt>
-          
-          <code><a href="get_colour_palette.html">get_colour_palette()</a></code> 
-        </dt>
-        <dd>Returns colour palette based on the unique values of
-sensor_depth_at_low_tide_m</dd>
       </dl><dl><dt>
           
           <code><a href="make_column_names.html">make_column_names()</a></code> 
@@ -125,7 +119,8 @@ sensor_depth_at_low_tide_m</dd>
           
           <code><a href="ss_compile_deployment_data.html">ss_compile_deployment_data()</a></code> 
         </dt>
-        <dd>Compile aquameasure, hobo, and vemco data from a single deployment</dd>
+        <dd>Compile aquameasure, hobo, tidbit, and vemco data from a single
+  deployment</dd>
       </dl><dl><dt>
           
           <code><a href="ss_compile_hobo_data.html">ss_compile_hobo_data()</a></code> 
@@ -140,7 +135,7 @@ sensor_depth_at_low_tide_m</dd>
           
           <code><a href="ss_convert_depth_to_ordered_factor.html">ss_convert_depth_to_ordered_factor()</a></code> 
         </dt>
-        <dd>Converts values in the DEPTH column to an ordered factor</dd>
+        <dd>Converts values in the depth column to an ordered factor</dd>
       </dl><dl><dt>
           
           <code><a href="ss_create_variable_labels.html">ss_create_variable_labels()</a></code> 
@@ -150,12 +145,18 @@ sensor_depth_at_low_tide_m</dd>
           
           <code><a href="ss_download_data.html">ss_download_data()</a></code> 
         </dt>
-        <dd>Download deployment data from Google drive to the shared Perennia drive</dd>
+        <dd>Download deployment data from Google drive to the shared CMAR server</dd>
       </dl><dl><dt>
           
           <code><a href="ss_export_path.html">ss_export_path()</a></code> 
         </dt>
         <dd>Generate file path and name to export compiled sensor string data</dd>
+      </dl><dl><dt>
+          
+          <code><a href="ss_get_colour_palette.html">ss_get_colour_palette()</a></code> 
+        </dt>
+        <dd>Returns colour palette based on the unique values of
+sensor_depth_at_low_tide_m</dd>
       </dl><dl><dt>
           
           <code><a href="ss_ggplot_variables.html">ss_ggplot_variables()</a></code> 
@@ -205,12 +206,12 @@ sensor_depth_at_low_tide_m</dd>
           
           <code><a href="ss_read_vemco_data.html">ss_read_vemco_data()</a></code> 
         </dt>
-        <dd>Import data from Vemco csv files</dd>
+        <dd>Import data from vemco csv files</dd>
       </dl><dl><dt>
           
           <code><a href="ss_reformat_old_data.html">ss_reformat_old_data()</a></code> 
         </dt>
-        <dd>Convert old data structure to ss format</dd>
+        <dd>Convert old data structure to sensorstrings format</dd>
       </dl><dl><dt>
           
           <code><a href="ss_set_up_folders.html">ss_set_up_folders()</a></code> 

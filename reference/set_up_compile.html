@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">sensorstrings</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,8 +48,8 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>path</dt>
-<dd><p>File path to the folder with the aquameasure, hobo, or vemco
-folder.</p></dd>
+<dd><p>File path to the folder with the aquameasure, hobo, tidbit, or
+vemco folder.</p></dd>
 
 
 <dt>sn_table</dt>
@@ -67,7 +67,7 @@ month, day).</p></dd>
 
 <dt>sensor_make</dt>
 <dd><p>Make of the sensor to be compiled. Should match the name
-of the folder where the raw data files. Most common entries will be
+of the folder with the raw data files. Most common entries will be
 "aquameasure", "hobo", or "vemco".</p></dd>
 
 </dl></div>
@@ -77,14 +77,14 @@ of the folder where the raw data files. Most common entries will be
 
 <p>Returns a list of parameters used in the <code>compile_**</code> functions:
   final path to the folder of interest, deployment dates, vector of files in
-  the folder, <code>sn_table</code> filtered for <code>sensor_make</code>.</p>
+  the folder, and <code>sn_table</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>An extra column named <code>sensor_type</code> is added to
-  <code>sn_table</code>, with values of <code>sensor_make</code>. The <code>sensor_type</code>
-  column is what is used in the compiled data (e.g., "aquameasure", "hobo",
-  "vr2ar" vs "HOBO PRO V2" or "aquaMeasure DOT").</p>
+    <p>A column named <code>sensor_type</code> is added to <code>sn_table</code>, with
+  values of <code>sensor_make</code>. The <code>sensor_type</code> column is added to the
+  compiled data (e.g., "aquameasure", "hobo", "vr2ar" vs "HOBO PRO V2" or
+  "aquaMeasure DOT").</p>
 <p>Returns Errors and Warnings if the expected files are not found on the
   <code>path</code>.</p>
     </div>

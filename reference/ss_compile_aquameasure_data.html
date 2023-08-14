@@ -12,7 +12,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">sensorstrings</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,8 +79,8 @@ TRUE</code>.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>Returns a tibble with the data compiled from each of the aquameasure
-  files in path/aquameasure.</p>
+<p>Returns a tibble with the compiled data from each of the aquameasure
+  files saved in path/aquameasure.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -90,7 +90,6 @@ TRUE</code>.</p></dd>
   <code>Timestamp(UTC)</code> column are filtered out.</p>
 <p>The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
   HM", "Ymd HMS", "dmY HM", or "dmY HMS".</p>
-
 <p>"ERR" values are converted to <code>-111</code> (to distinguish from sensor error
   value of -101.5).</p>
     </div>

@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">sensorstrings</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.6</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,7 +74,7 @@
   frame with two columns: <code>start_date</code> (the date of deployment) and</p>
 <p></p>
 <p><code>end_date</code> (date of retrieval). <code>area_info</code> is a data frame with
-  five columns:<code>county</code>, <code>waterbody</code>, <code>latitude</code>,</p>
+  five columns: <code>county</code>, <code>waterbody</code>, <code>latitude</code>,</p>
 <p></p>
 <p><code>longitude</code>, <code>station</code>, and <code>lease</code>. <code>sn_table</code> is a
   data frame with three columns: <code>log_sensor</code> (sensor name as recorded
@@ -92,8 +92,8 @@
 <p><code>Location_Description</code>: the station name</p>
 <p><code>Lease#</code>: If located on an aquaculture site, the lease number (NA
   otherwise)</p>
-<p><code>Deployment</code>: The deployment date, in the order "Ymd"</p>
-<p><code>Retrieval</code>: The retrieval date, in the order "Ymd"</p>
+<p><code>Deployment</code>: deployment date, in the order "Ymd"</p>
+<p><code>Retrieval</code>: retrieval date, in the order "Ymd"</p>
 <p><code>Logger_Latitude</code>: The latitude at which the string was deployed</p>
 <p><code>Logger_Longitude</code> The longitude at which the string was deployed
   (must be a negative value)</p>
@@ -111,7 +111,7 @@
   recognize a sensor in the log.</p>
 <p>A message is printed to the console when hobo, aquameasure, or vemco
   sensors are not found in the log.</p>
-<p>A message will be printed to the console if there is more than one unique
+<p>A message is printed to the console if there is more than one unique
   entry in <code>Deployment_Waterbody</code>, <code>Location_Description</code>,
   <code>Deployment</code>, <code>Retrieval</code>, <code>Logger_Latitude</code>, or
   <code>Logger_Longitude</code>.</p>

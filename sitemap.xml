@@ -46,9 +46,6 @@
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/filter_dat_to_plot.html</loc>
   </url>
   <url>
-    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/get_colour_palette.html</loc>
-  </url>
-  <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/index.html</loc>
   </url>
   <url>
@@ -80,6 +77,9 @@
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_export_path.html</loc>
+  </url>
+  <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_get_colour_palette.html</loc>
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_ggplot_variables.html</loc>
