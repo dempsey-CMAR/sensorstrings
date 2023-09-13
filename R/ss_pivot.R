@@ -10,6 +10,7 @@
 #'
 #' @importFrom dplyr %>% arrange contains
 #' @importFrom tidyr pivot_longer
+#' @importFrom stringr str_remove
 #'
 #' @export
 
@@ -24,6 +25,7 @@ ss_pivot_longer <- function(dat_wide) {
       ),
       names_to = "variable",
       values_to = "value",
+      names_prefix = "value_",
       values_drop_na = TRUE
     )
 }
