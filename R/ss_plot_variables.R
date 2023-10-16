@@ -84,6 +84,13 @@ ss_ggplot_variables <- function(
     ss_create_variable_labels() %>%
     ss_convert_depth_to_ordered_factor()
 
+  if(!("sensor_type" %in% colnames(dat))) {
+    dat <- mutate(dat, sensor_type = "")
+  }
+  if(!("sensor_serial_number" %in% colnames(dat))) {
+    dat <- mutate(dat, sensor_serial_number = "")
+  }
+
 
   # plot --------------------------------------------------------------------
 

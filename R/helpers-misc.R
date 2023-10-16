@@ -42,7 +42,7 @@ extract_file_extension <- function(file_name) {
 ss_export_path <- function(
     dat, path = NULL, sub_folder = NULL, ext = "rds") {
   if (is.null(path)) {
-    path <- "Y:/coastal_monitoring_program/data_branches/water_quality/processed_data/deployment_data"
+    path <- "R:/data_branches/water_quality/processed_data/deployment_data"
   }
 
   if (is.null(sub_folder)) sub_folder <- "new"
@@ -90,7 +90,7 @@ ss_export_path <- function(
 
 ss_import_path <- function(station, depl_date, path = NULL) {
   if (is.null(path)) {
-    path <- "Y:/coastal_monitoring_program/data_branches/water_quality/station_folders"
+    path <- "R:/data_branches/water_quality/station_folders"
   }
 
   station <- tolower(station)

@@ -37,12 +37,9 @@ set_up_compile <- function(path,
   names(sn_table) <- c("log_sensor", "sensor_serial_number", "depth")
   sn_table <- sn_table %>%
     filter(str_detect(log_sensor, regex(sensor_make, ignore_case = TRUE))) %>%
-    mutate(
-      # this standardizes the sensor_type column,
-      ## e.g., replaces "HOBO PRO V2" with "hobo"
-      sensor_type = tolower(sensor_make)
-      # sensor_serial = glue("{sensor_type}-{serial_number}")
-    )
+    # this standardizes the sensor_type column,
+    ## e.g., replaces "HOBO PRO V2" with "hobo"
+    mutate(sensor_type = tolower(sensor_make))
 
   # extract the deployment start and end dates from deployment_dates
   dates <- extract_deployment_dates(deployment_dates)
@@ -65,7 +62,7 @@ set_up_compile <- function(path,
   # path to hobo files
   path <- glue("{path}/{folder}")
 
-  # list files in the Hobo folder
+  # list files in the sensor folder
   dat_files <- list.files(path, all.files = FALSE, pattern = "*csv")
 
   # check for excel files

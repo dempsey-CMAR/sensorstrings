@@ -291,7 +291,7 @@ ss_read_log <- function(path, path_config = NULL) {
   } else {
     if (is.null(path_config)) {
       path_config <- file.path(
-        "Y:/coastal_monitoring_program/tracking_sheets/water_quality_configuration_table.xlsx"
+        "R:/tracking_sheets/water_quality_configuration_table.xlsx"
       )
     }
 
