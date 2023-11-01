@@ -16,12 +16,22 @@ ss_read_log(path, path_config = NULL)
   be Waterbody, Station_Name, and Depl_Date. One and only one row must match
   the waterbody, station, and deployment date recorded in the Log. Options
   for the configuration column are sub-surface buoy, surface buoy, attached
-  to gear, attached to fixed structure, floating dock, and unknown. Use of
-  the "unknown" entry is discouraged. HINT: for optimal speed, make sure the
-  table is NOT filtered in the excel file.
+  to gear, attached to fixed structure, floating dock, unknown, and calval.
+  Use of the "unknown" entry is discouraged. HINT: for optimal speed, make
+  sure the table is NOT filtered in the excel file.
 
   The \code{path_config} argument is ignored for new deployment logs that
-  have an appropriate entry in the Configuration column.}
+  have an appropriate entry in the \code{Configuration} column.
+
+  Configurations recorded as \code{NA} will be converted to "unknown" with a
+  \code{Warning}.
+
+  When there is no \code{Configuration} in the log and the deployment is not
+  found in the configuration table, the configuration will berecoreded as
+  "unknown" with a \code{Warning}.
+
+  If more than one configuration is detected in the log or the configuration
+  table, the function will stop with an \code{Error}.}
 }
 \value{
 Returns a list with 4 elements. \code{deployment_dates} is a data
@@ -81,8 +91,8 @@ The log must be saved in a folder called Log in .csv, .xlsx or .xls
   A message is printed to the console when hobo, aquameasure, or vemco
   sensors are not found in the log.
 
-  A message is printed to the console if there is more than one unique
-  entry in \code{Deployment_Waterbody}, \code{Location_Description},
+  A message is printed to the console if there is more than one unique entry
+  in \code{Deployment_Waterbody}, \code{Location_Description},
   \code{Deployment}, \code{Retrieval}, \code{Logger_Latitude}, or
   \code{Logger_Longitude}.
 }

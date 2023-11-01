@@ -39,7 +39,7 @@ folders.}
   "unknown" with a \code{Warning}.
 
   If more than one configuration is detected in the log or the configuration
-  table, the function will stop with an \cide{Error}.}
+  table, the function will stop with an \code{Error}.}
 
 \item{trim}{Logical value indicating whether to trim the data to the dates
 specified in \code{deployment_dates}. (Note: four hours are added to the
