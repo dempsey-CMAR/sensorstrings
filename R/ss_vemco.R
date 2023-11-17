@@ -112,7 +112,7 @@ ss_compile_vemco_data <- function(path,
   }
 
   # serial number from data file
-  serial <- as.numeric(str_remove(unique(dat$Receiver), "VR2AR-"))
+  serial <- as.numeric(str_remove(unique(dat$Receiver), "VR2AR-X-|VR2AR-"))
 
   if (serial != sn_table$sensor_serial_number) {
     stop(glue("Serial number in sn_table ({sn_table$sensor_serial_number})
