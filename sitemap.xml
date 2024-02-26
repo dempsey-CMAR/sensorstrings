@@ -76,6 +76,9 @@
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_download_data.html</loc>
   </url>
   <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_export_county_files.html</loc>
+  </url>
+  <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_export_path.html</loc>
   </url>
   <url>
@@ -83,6 +86,9 @@
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_ggplot_variables.html</loc>
+  </url>
+  <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_import_data.html</loc>
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_import_path.html</loc>
@@ -116,6 +122,9 @@
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_set_up_folders.html</loc>
+  </url>
+  <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_write_report_table.html</loc>
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/trim_data.html</loc>
