@@ -94,6 +94,9 @@ utils::globalVariables(
     # ss_import_data
     "Notes",
 
+    # ss_export
+    "timestamp_utc",
+
     # reformat_old_data
     "COUNTY",
     "DEPLOYMENT_PERIOD",
@@ -109,6 +112,15 @@ utils::globalVariables(
     "VALUE",
     "VARIABLE",
     "WATERBODY",
-    "sensor"
+    "sensor",
+
+    # ss_write_report_table
+    "Deployment Date",
+    "Configuration",
+    "Latitude",
+    "Longitude",
+    "Station",
+    "Depth (m)"
+
   )
 )
