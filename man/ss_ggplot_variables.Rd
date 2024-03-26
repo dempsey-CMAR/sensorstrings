@@ -6,7 +6,6 @@
 \usage{
 ss_ggplot_variables(
   dat,
-  measured_depth = TRUE,
   superchill = NULL,
   color_palette = NULL,
   legend_name = "Depth (m)",
@@ -14,11 +13,7 @@ ss_ggplot_variables(
 )
 }
 \arguments{
-\item{dat}{Data frame of sensor string data in wide format, as exported from
-\code{ss_compile_deployment_data()}.}
-
-\item{measured_depth}{Logical argument indicating whether to include
-\code{sensor_depth_measured_m} as a plotted variable.}
+\item{dat}{Data frame of sensor string data in wide or long format.}
 
 \item{superchill}{Logical argument indicating whether to adding shading to
 indicate temperatures below the superchill threshold (<= - 0.7 degrees C).

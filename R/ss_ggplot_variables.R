@@ -1,10 +1,6 @@
 #' Plot variables at depth
 #'
-#' @param dat Data frame of sensor string data in wide format, as exported from
-#'   \code{ss_compile_deployment_data()}.
-#'
-#' @param measured_depth Logical argument indicating whether to include
-#'   \code{sensor_depth_measured_m} as a plotted variable.
+#' @param dat Data frame of sensor string data in wide or long format.
 #'
 #' @param superchill Logical argument indicating whether to adding shading to
 #'   indicate temperatures below the superchill threshold (<= - 0.7 degrees C).
@@ -43,7 +39,6 @@
 
 ss_ggplot_variables <- function(
     dat,
-    measured_depth = TRUE,
     superchill = NULL,
     color_palette = NULL,
     legend_name = "Depth (m)",
@@ -57,30 +52,26 @@ ss_ggplot_variables <- function(
     name = legend_name, values = color_palette, drop = FALSE
   )
 
-  if (isFALSE(measured_depth)) {
-    dat <- dat %>% select(-contains("sensor_depth_measured"))
-  }
+  # if (isFALSE(measured_depth)) {
+  #   dat <- dat %>% select(-contains("sensor_depth_measured"))
+  # }
 
-  if (is.null(superchill) && "temperature_degree_c" %in% colnames(dat)) {
-    if (min(na.omit(dat$temperature_degree_c)) <= -0.7) {
-      superchill <- TRUE
-    } else {
-      superchill <- FALSE
-    }
-  }
+#  format data -------------------------------------------------------------
 
-  #  format data -------------------------------------------------------------
+  if (!("variable" %in% colnames(dat))) {
+    dat <- dat %>%
+      select(
+        Date = contains("timestamp_"),
+        contains("dissolved_oxygen"),
+        contains("temperature"),
+        contains("salinity"),
+        contains("depth"),
+        contains("sensor")
+      ) %>%
+      ss_pivot_longer()
+  }
 
   dat <- dat %>%
-    select(
-      Date = contains("timestamp_"),
-      contains("dissolved_oxygen"),
-      contains("temperature"),
-      contains("salinity"),
-      contains("depth"),
-      contains("sensor")
-    ) %>%
-    ss_pivot_longer() %>% # maybe check if long or wide first
     ss_create_variable_labels() %>%
     ss_convert_depth_to_ordered_factor()
 
@@ -93,6 +84,19 @@ ss_ggplot_variables <- function(
 
 
   # plot --------------------------------------------------------------------
+
+  # superchill
+  if (is.null(superchill) && "temperature_degree_c" %in% unique(dat$variable)) {
+    min_temp <- (dat %>%
+                   filter(variable == "temperature_degree_c") %>%
+                   summarise(min_temp = min(value)))$min_temp
+
+    if (min_temp <= -0.7) {
+      superchill <- TRUE
+    } else {
+      superchill <- FALSE
+    }
+  }
 
   p <- ggplot(
     dat,
