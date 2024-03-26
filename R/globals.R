@@ -116,6 +116,7 @@ utils::globalVariables(
 
     # ss_write_report_table
     "Deployment Date",
+    "Retrieval Date",
     "Configuration",
     "Latitude",
     "Longitude",

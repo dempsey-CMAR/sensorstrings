@@ -13,7 +13,11 @@
 
 ss_write_report_table <- function(dat, keep_waterbody = FALSE){
 
-  dat <- suppressMessages(ss_import_data(county = "annapolis"))
+ # dat <- suppressMessages(ss_import_data(county = "antigonish"))
+
+  # drop columns that are all NA so that they aren't listed as a variable
+  # dat <- dat %>%
+  #   select_if(~ !all(is.na(.)))
 
   all_vars <- c(
     "dissolved_oxygen_percent_saturation",
@@ -30,7 +34,7 @@ ss_write_report_table <- function(dat, keep_waterbody = FALSE){
           "dissolved oxygen (% sat)",
         vars == "dissolved_oxygen_uncorrected_mg_per_l" ~
           "dissolved oxygen (mg/L)",
-        vars == "sensor_depth_measured_m" ~ "sensor depth",
+        vars == "sensor_depth_measured_m" ~ "depth",
         vars == "salinity_psu" ~ "salinity",
         vars == "temperature_degree_c" ~ "temperature"
       )
@@ -57,21 +61,23 @@ ss_write_report_table <- function(dat, keep_waterbody = FALSE){
     ) %>%
     mutate(
       `Deployment Date` = as_date(`Deployment Date`),
+      `Retrieval Date` = as_date(`Retrieval Date`),
       variable = case_when(
         variable == "dissolved_oxygen_percent_saturation" ~
           "dissolved oxygen (% sat)",
         variable == "dissolved_oxygen_uncorrected_mg_per_l" ~
           "dissolved oxygen (mg/L)",
-        variable == "sensor_depth_measured_m" ~ "sensor depth",
+        variable == "sensor_depth_measured_m" ~ "depth",
         variable == "salinity_psu" ~ "salinity",
         variable == "temperature_degree_c" ~ "temperature"
       ),
-      `Deployment Date` = format(`Deployment Date`, "%Y-%b-%d")
+      `Deployment Date` = format(`Deployment Date`, "%Y-%m-%d"),
+      `Retrieval Date` = format(`Retrieval Date`, "%Y-%m-%d")
     ) %>%
     pivot_wider(
       values_from = "variable", names_from = "variable",
       names_sort = TRUE) %>%
-    unite("Variables", all_of(vars), sep = ", ", na.rm = TRUE)
+    unite("Variables Measured", any_of(vars), sep = ", ", na.rm = TRUE)
 
 
   if(isTRUE(keep_waterbody)) {
