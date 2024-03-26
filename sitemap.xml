@@ -103,6 +103,9 @@
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_pivot_wider.html</loc>
   </url>
   <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_plot_variables.html</loc>
+  </url>
+  <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_read_aquameasure_data.html</loc>
   </url>
   <url>
@@ -125,6 +128,9 @@
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_write_report_table.html</loc>
+  </url>
+  <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_xaxis_breaks.html</loc>
   </url>
   <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/trim_data.html</loc>

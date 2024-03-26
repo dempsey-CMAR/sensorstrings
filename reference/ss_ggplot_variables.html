@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">sensorstrings</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.8</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +44,6 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ss_ggplot_variables</span><span class="op">(</span></span>
 <span>  <span class="va">dat</span>,</span>
-<span>  measured_depth <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  superchill <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  color_palette <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  legend_name <span class="op">=</span> <span class="st">"Depth (m)"</span>,</span>
@@ -55,13 +54,7 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>dat</dt>
-<dd><p>Data frame of sensor string data in wide format, as exported from
-<code><a href="ss_compile_deployment_data.html">ss_compile_deployment_data()</a></code>.</p></dd>
-
-
-<dt>measured_depth</dt>
-<dd><p>Logical argument indicating whether to include
-<code>sensor_depth_measured_m</code> as a plotted variable.</p></dd>
+<dd><p>Data frame of sensor string data in wide or long format.</p></dd>
 
 
 <dt>superchill</dt>
