@@ -4,10 +4,10 @@
 \alias{ss_create_variable_labels}
 \title{Create plot labels from variable names}
 \usage{
-ss_create_variable_labels(dat_long)
+ss_create_variable_labels(dat)
 }
 \arguments{
-\item{dat_long}{Data frame of Water Quality data with variables in long
+\item{dat}{Data frame of Water Quality data with variables in long
 format. Entries in \code{variable} column must be
 \code{dissolved_oxygen_percent_saturation},
 \code{dissolved_oxygen_uncorrected_mg_per_l}, \code{salinity_psu},

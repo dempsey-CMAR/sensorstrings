@@ -43,10 +43,78 @@ ss_get_colour_palette <- function(dat) {
   colour_palette
 }
 
+#' Returns nice major an
+#' d minor breaks and label format based on timespan
+#'  of the data
+#' @details If the timespan in the \code{timestamp_utc} column of \code{dat} is
+#'  less than or equal to 60 days, the major and minor breaks will be every 2
+#'  weeks; if time span is greater than 60 days and less than or equal to 120
+#'  days, the major and minor breaks will be every month; if time span is
+#'  greater than 120 days and less than or equal to 240 days, the major breaks
+#'  will be 2 months and the minor breaks will be 1 month; if the time span is
+#'  greater than 240 days, the major breaks will be 4 months and the minor
+#'  breaks will be 1 month.
+#'
+#' @param dat Data frame with at least one column: \code{timestamp_utc} (POSIXct).
+#'
+#' @return Returns a dataframe with 1 observation of 3 variables
+#'  \code{date_breaks_major}, \code{date_breaks_minor},
+#'  \code{date_labels_format}.
+#'
+
+ss_xaxis_breaks <- function(dat){
+
+  # timespan of the data
+  timespan <- difftime(max(dat$timestamp_utc), min(dat$timestamp_utc), units = "days")
+  timespan <- unclass(timespan)[1]
+
+  if(timespan <= 60){
+    date_breaks_major = "2 week"
+    date_breaks_minor = "2 week"
+    date_labels_format = "%Y-%m-%d"
+  }
+
+  if(60 < timespan & timespan <= 120){
+    date_breaks_major = "1 month"
+    date_breaks_minor = "1 month"
+    date_labels_format = "%Y-%m-%d"
+  }
+
+  if(timespan > 120 & timespan <= 240){
+    date_breaks_major = "2 month"
+    date_breaks_minor = "1 month"
+    date_labels_format = "%Y-%m-%d"
+  }
+
+  if(timespan > 240 & timespan <= 1095){
+    date_breaks_major = "4 month"
+    date_breaks_minor = "1 month"
+    date_labels_format = "%Y-%m-%d"
+  }
+
+  if(timespan > 1095 & timespan <= 2555){
+    date_breaks_major = "6 month"
+    date_breaks_minor = "1 month"
+    date_labels_format = "%Y-%m-%d"
+  }
+
+  if(timespan > 2555){
+    date_breaks_major = "1 year"
+    date_breaks_minor = "2 month"
+    date_labels_format = "%Y-%m-%d"
+  }
+
+  data.frame(
+    date_breaks_major = date_breaks_major,
+    date_breaks_minor = date_breaks_minor,
+    date_labels_format = date_labels_format
+  )
+
+}
 
 #' Create plot labels from variable names
 #'
-#' @param dat_long Data frame of Water Quality data with variables in long
+#' @param dat Data frame of Water Quality data with variables in long
 #'   format. Entries in \code{variable} column must be
 #'   \code{dissolved_oxygen_percent_saturation},
 #'   \code{dissolved_oxygen_uncorrected_mg_per_l}, \code{salinity_psu},
@@ -59,7 +127,7 @@ ss_get_colour_palette <- function(dat) {
 #'
 #' @export
 
-ss_create_variable_labels <- function(dat_long) {
+ss_create_variable_labels <- function(dat) {
   var_order <- c(
     "Temperature \n(\u00B0C)",
     "Dissolved Oxygen \n(% sat)",
@@ -69,7 +137,7 @@ ss_create_variable_labels <- function(dat_long) {
     "Sensor Depth \n(m)"
   )
 
-  dat_long %>%
+  dat %>%
     mutate(
       variable_label = case_when(
         variable == "dissolved_oxygen_percent_saturation" ~

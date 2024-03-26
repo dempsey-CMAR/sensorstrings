@@ -26,6 +26,10 @@ Returns a discrete colour scale palette from the viridis package
   there are more than 6 unique values of \code{sensor_depth_at_low_tide_m},
   there will be one colour for each depth.
 }
+\seealso{
+Other plot: 
+\code{\link{ss_plot_variables}()}
+}
 \author{
 Danielle Dempsey
 }
