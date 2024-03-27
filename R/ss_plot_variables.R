@@ -90,22 +90,22 @@ ss_plot_variables <- function(
 
   # Common plot elements ----------------------------------------------------
   #  x-axis
-  axis_breaks <- ss_xaxis_breaks(dat)
-
-  if(!is.null(date_breaks_major)) axis_breaks$date_breaks_major <- date_breaks_major
-  if(!is.null(date_breaks_minor)) axis_breaks$date_breaks_minor <- date_breaks_minor
-  if(!is.null(date_labels_format)) axis_breaks$date_labels_format <- date_labels_format
-
-  date_min = min(dat$timestamp_utc)
-  date_max = max(dat$timestamp_utc)
-
-  x_axis_date <- scale_x_datetime(
-    name = "Date",
-    date_breaks = axis_breaks$date_breaks_major,          # major breaks
-    date_minor_breaks = axis_breaks$date_breaks_minor,     # minor breaks
-    date_labels = axis_breaks$date_labels_format,         # format for showing date
-    limits = c(date_min, date_max)
-  )
+  # axis_breaks <- ss_xaxis_breaks(dat)
+  #
+  # if(!is.null(date_breaks_major)) axis_breaks$date_breaks_major <- date_breaks_major
+  # if(!is.null(date_breaks_minor)) axis_breaks$date_breaks_minor <- date_breaks_minor
+  # if(!is.null(date_labels_format)) axis_breaks$date_labels_format <- date_labels_format
+  #
+  # date_min = min(dat$timestamp_utc)
+  # date_max = max(dat$timestamp_utc)
+  #
+  # x_axis_date <- scale_x_datetime(
+  #   name = "Date",
+  #   date_breaks = axis_breaks$date_breaks_major,          # major breaks
+  #   date_minor_breaks = axis_breaks$date_breaks_minor,     # minor breaks
+  #   date_labels = axis_breaks$date_labels_format,         # format for showing date
+  #   limits = c(date_min, date_max)
+  # )
 
   # theme
   string_theme <- theme(
@@ -167,6 +167,13 @@ ss_plot_variables <- function(
       } else y_limits <- NULL
     } else y_limits <- NULL
 
+    if(isTRUE(standard_sal_ylims)) {
+      if(var_i == "salinity_psu") {
+        y_limits <- c(25, 34)
+      }
+    }
+
+
     # plot var.i
     plot_i <- ggplot(
       dat_i, aes(x = timestamp_utc, y = value, color = sensor_depth_at_low_tide_m)
@@ -196,7 +203,7 @@ ss_plot_variables <- function(
   }
 
   # arrange and export
-  p <- ggarrange(
+  ggarrange(
     plotlist = figs,
     ncol = 1, common.legend = TRUE, legend = legend_position
   )

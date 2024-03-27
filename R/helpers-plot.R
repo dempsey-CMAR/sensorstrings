@@ -87,7 +87,7 @@ ss_xaxis_breaks <- function(dat){
   }
 
   if(timespan > 240 & timespan <= 1095){
-    date_breaks_major = "4 month"
+    date_breaks_major = "5 month"
     date_breaks_minor = "1 month"
     date_labels_format = "%Y-%m-%d"
   }
