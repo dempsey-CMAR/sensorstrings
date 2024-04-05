@@ -15,8 +15,8 @@
 #' @param date_breaks_major Intervals for major breaks. Default is selected by
 #'   \code{get_xaxis_breaks()}.
 #'
-#' @param date_breaks_minor Intervals for minor breaks. Default is
-#'   \code{date_breaks_minor = "1 month"}.
+#' @param date_breaks_minor Intervals for minor breaks. Default selected by
+#'   \code{get_xaxis_breaks()}.
 #'
 #' @param date_labels_format Format for the date labels. Default is YYYY-mm-dd.
 #'
@@ -42,10 +42,12 @@
 #'
 #' @family plot
 #' @author Danielle Dempsey
-#' @importFrom viridis viridis
+
 #' @importFrom dplyr filter
 #' @importFrom ggpubr ggarrange
-#' @import ggplot2
+#' @importFrom ggplot2 aes geom_point ggplot guides labs scale_x_datetime
+#'   scale_y_continuous theme theme_set theme_light
+#' @importFrom viridis viridis
 #' @export
 
 ss_plot_variables <- function(
@@ -55,7 +57,7 @@ ss_plot_variables <- function(
 
     date_breaks_major = NULL,
     date_breaks_minor = NULL,
-    date_labels_format = NULL,
+    date_labels_format = "%Y-%m-%d",
 
     standard_do_ylims = TRUE,
     standard_sal_ylims = TRUE,
@@ -65,7 +67,6 @@ ss_plot_variables <- function(
     legend_name = "Depth (m)",
     legend_position = "right"
 ){
-
 
   theme_set(theme_light())
 
@@ -90,22 +91,19 @@ ss_plot_variables <- function(
 
   # Common plot elements ----------------------------------------------------
   #  x-axis
-  # axis_breaks <- ss_xaxis_breaks(dat)
-  #
-  # if(!is.null(date_breaks_major)) axis_breaks$date_breaks_major <- date_breaks_major
-  # if(!is.null(date_breaks_minor)) axis_breaks$date_breaks_minor <- date_breaks_minor
-  # if(!is.null(date_labels_format)) axis_breaks$date_labels_format <- date_labels_format
-  #
-  # date_min = min(dat$timestamp_utc)
-  # date_max = max(dat$timestamp_utc)
-  #
-  # x_axis_date <- scale_x_datetime(
-  #   name = "Date",
-  #   date_breaks = axis_breaks$date_breaks_major,          # major breaks
-  #   date_minor_breaks = axis_breaks$date_breaks_minor,     # minor breaks
-  #   date_labels = axis_breaks$date_labels_format,         # format for showing date
-  #   limits = c(date_min, date_max)
-  # )
+  axis_breaks <- ss_xaxis_breaks(dat)
+
+  if(!is.null(date_breaks_major)) axis_breaks$date_breaks_major <- date_breaks_major
+  if(!is.null(date_breaks_minor)) axis_breaks$date_breaks_minor <- date_breaks_minor
+  if(!is.null(date_labels_format)) axis_breaks$date_labels_format <- date_labels_format
+
+  x_axis_date <- scale_x_datetime(
+    name = "Date",
+    date_breaks = axis_breaks$date_breaks_major,          # major breaks
+    date_minor_breaks = axis_breaks$date_breaks_minor,     # minor breaks
+    date_labels = axis_breaks$date_labels_format,         # format for showing date
+    limits = c(min(dat$timestamp_utc),max(dat$timestamp_utc))
+  )
 
   # theme
   string_theme <- theme(
@@ -172,7 +170,6 @@ ss_plot_variables <- function(
         y_limits <- c(25, 34)
       }
     }
-
 
     # plot var.i
     plot_i <- ggplot(

@@ -10,7 +10,7 @@ ss_plot_variables(
   color_palette = NULL,
   date_breaks_major = NULL,
   date_breaks_minor = NULL,
-  date_labels_format = NULL,
+  date_labels_format = "\%Y-\%m-\%d",
   standard_do_ylims = TRUE,
   standard_sal_ylims = TRUE,
   alpha = 1,
@@ -31,8 +31,8 @@ more than 6 levels in \code{sensor_depth_at_low_tide_m}. Default is
 \item{date_breaks_major}{Intervals for major breaks. Default is selected by
 \code{get_xaxis_breaks()}.}
 
-\item{date_breaks_minor}{Intervals for minor breaks. Default is
-\code{date_breaks_minor = "1 month"}.}
+\item{date_breaks_minor}{Intervals for minor breaks. Default selected by
+\code{get_xaxis_breaks()}.}
 
 \item{date_labels_format}{Format for the date labels. Default is YYYY-mm-dd.}
 
