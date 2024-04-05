@@ -1,50 +1,53 @@
 #' @title Extract information from deployment log
-#' @details The log must be saved in a folder called Log in .csv, .xlsx or .xls
-#'   format, and must include the following columns:
 #'
-#'   \code{Deployment_Waterbody}: waterbody where string was deployed
+#' @details These columns are going to change with the new logs. Deprecate this
+#' function or save it as _old for backwards compatibility.
 #'
-#'   \code{Location_Description}: the station name
+#' The log must be saved in a folder called Log in .csv, .xlsx or .xls format,
+#' and must include the following columns:
 #'
-#'   \code{Lease#}: If located on an aquaculture site, the lease number (NA
-#'   otherwise)
+#' \code{Deployment_Waterbody}: waterbody where string was deployed
 #'
-#'   \code{Deployment}: deployment date, in the order "Ymd"
+#' \code{Location_Description}: the station name
 #'
-#'   \code{Retrieval}: retrieval date, in the order "Ymd"
+#' \code{Lease#}: If located on an aquaculture site, the lease number (NA
+#' otherwise)
 #'
-#'   \code{Logger_Latitude}: The latitude at which the string was deployed
+#' \code{Deployment}: deployment date, in the order "Ymd"
 #'
-#'   \code{Logger_Longitude} The longitude at which the string was deployed
-#'   (must be a negative value)
+#' \code{Retrieval}: retrieval date, in the order "Ymd"
 #'
-#'   \code{Logger_Model} The type of sensor; see below for options
+#' \code{Logger_Latitude}: The latitude at which the string was deployed
 #'
-#'   \code{Serial#} The sensor serial number
+#' \code{Logger_Longitude} The longitude at which the string was deployed (must
+#' be a negative value)
 #'
-#'   \code{Sensor_Depth}: Depth at which the sensor was deployed
+#' \code{Logger_Model} The type of sensor; see below for options
 #'
-#'   All other columns will be ignored.
+#' \code{Serial#} The sensor serial number
 #'
-#'   Entries in the \code{Logger_Model} column must include the string
-#'   "aquameasure", "hobo", "tidbit", or "vr2ar" (not case sensitive).
+#' \code{Sensor_Depth}: Depth at which the sensor was deployed
 #'
-#'   The function will stop with an Error if there is more than one eligible
-#'   file (csv, .xlsx or .xls) in the Log folder.
+#' All other columns will be ignored.
 #'
-#'   The function will stop with an Error if there if the
-#'   \code{Logger_Longitude} is a positive value.
+#' Entries in the \code{Logger_Model} column must include the string
+#' "aquameasure", "hobo", "tidbit", or "vr2ar" (not case sensitive).
 #'
-#'   A Warning message is printed to the console when the function does not
-#'   recognize a sensor in the log.
+#' The function will stop with an Error if there is more than one eligible file
+#' (csv, .xlsx or .xls) in the Log folder.
 #'
-#'   A message is printed to the console when hobo, aquameasure, or vemco
-#'   sensors are not found in the log.
+#' The function will stop with an Error if there if the \code{Logger_Longitude}
+#' is a positive value.
 #'
-#'   A message is printed to the console if there is more than one unique entry
-#'   in \code{Deployment_Waterbody}, \code{Location_Description},
-#'   \code{Deployment}, \code{Retrieval}, \code{Logger_Latitude}, or
-#'   \code{Logger_Longitude}.
+#' A Warning message is printed to the console when the function does not
+#' recognize a sensor in the log.
+#'
+#' A message is printed to the console when hobo, aquameasure, or vemco sensors
+#' are not found in the log.
+#'
+#' A message is printed to the console if there is more than one unique entry in
+#' \code{Deployment_Waterbody}, \code{Location_Description}, \code{Deployment},
+#' \code{Retrieval}, \code{Logger_Latitude}, or \code{Logger_Longitude}.
 #'
 #' @param path File path to the Log folder.
 #'
