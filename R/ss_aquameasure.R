@@ -56,13 +56,12 @@ ss_read_aquameasure_data <- function(path, file_name) {
 #' @family compile
 #' @author Danielle Dempsey
 #'
-#' @importFrom dplyr %>% distinct group_by if_else mutate n select slice
+#' @importFrom dplyr %>% all_of distinct group_by if_else mutate n select slice
 #'   summarise tibble
 #' @importFrom glue glue
 #' @importFrom lubridate parse_date_time
 #' @importFrom stringr str_detect str_replace
 #' @importFrom tidyr separate pivot_wider
-#' @importFrom tidyselect all_of
 #'
 #' @export
 
@@ -201,7 +200,7 @@ ss_compile_aquameasure_data <- function(path,
       filter(!(timestamp_ %in% bad_ts$timestamp_)) %>%
       tidyr::pivot_wider(
         id_cols = "timestamp_",
-        names_from = "Record Type", values_from = all_of(vars)
+        names_from = "Record Type", values_from = dplyr::all_of(vars)
       ) %>%
       select(
         timestamp_,
