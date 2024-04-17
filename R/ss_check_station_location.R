@@ -3,10 +3,13 @@
 #' @param log_coords Data frame with three columns: \code{station},
 #'   \code{latitude} and \code{longitude}, i.e., with the station coordinates as
 #'   recorded in the deployment log.
+#'
 #' @param log_crs The crs of the coordinates in \code{log_coords}.
+#'
 #' @param station_coords Data frame with two columns: \code{latitude} and
 #'   \code{longitude}, the "official" station coordinates. If \code{NULL}, the
 #'   station coordinates will be looked up in the AREA INFO tracking sheet.
+#'
 #' @param station_radius Acceptable radius around the official station
 #'   coordinates (in metres). Stations outside of this radius should be renamed.
 #'   Default is 500 m.
@@ -30,6 +33,8 @@ ss_check_station_radius <- function(
 ) {
 
   station_name <- log_coords$station
+
+ # browser()
 
   if(is.null(station_coords)) {
     # link to the "STRING TRACKING" google sheet -
@@ -126,18 +131,38 @@ ss_check_station_in_ocean <- function(
 }
 
 
+#' Check station deployment and retrieval locations are within acceptable
+#' distance
+#'
+#' @inheritParams ss_check_station_radius
+#'
+#' @param log_coords Data frame with five columns: \code{station},
+#'   \code{latitude} and \code{longitude} (the coordinates recorded at
+#'   deployment) and retrieval_latitude and retrieval_longitude (the coordinates
+#'   recorded during retrieval).
+#'
+#' @param max_drift The maximum acceptable distance between the deployment and
+#'   retrieval coordinates in metres.
+#'
+#' @param return_drift Logical argument indicating whether to return the drift
+#'   distance.
+#'
+#' @importFrom sf st_as_sf st_distance
+#' @importFrom glue glue
+#'
+#' @return Logical value. Returns \code{TRUE} if the distance between deployment
+#'   and retrieval coordinates is less than \code{max_drift}. Returns
+#'   \code{FALSE} and a Warning if the distance is greater.
+#' @export
 
-ss_check_station_depl_vs_retrieval <- function(
+ss_check_station_drift <- function(
     log_coords,
-    log_crs,
-    max_drift = 100
+    log_crs = 4617,
+    max_drift = 100,
+    return_drift = FALSE
 ) {
 
-  log_coords = data.frame(
-    station = "Birchy Head",
-    latitude = 44.56, longitude = -64.03,
-    retrieval_latitude = 44.54, retrieval_longitude = -64.05
-  )
+  station_name <- log_coords$station
 
   depl <- log_coords %>%
     select(latitude, longitude) %>%
@@ -147,24 +172,33 @@ ss_check_station_depl_vs_retrieval <- function(
     select(latitude = retrieval_latitude, longitude = retrieval_longitude) %>%
     st_as_sf(coords = c("longitude", "latitude"), crs = log_crs)
 
-
   drift_distance <- st_distance(depl, retrieval)
-  drift_distance <- drift_distance[[1]]
 
-
-  if(drift_distance  > max_drift) {
+  drift_units = units(drift_distance)$numerator
+  if(drift_units != "m") {
     warning(
-      glue("The deployment and retrieval coordinates for station << {station} >> are greater than
-           {max_drift} m apart.")
+      glue("Drift distance was calculated in units of {drift_units}, not metres")
     )
-    return(FALSE)
   }
 
-  return(TRUE)
+  drift_distance <- round(unclass(drift_distance)[1], digits = 2)
+
+  if(drift_distance > max_drift) {
+    warning(
+      glue(
+        "The deployment and retrieval coordinates for station << {station_name} >> are << {drift_distance} >> m apart.\nMaximum acceptable distance is {max_drift} m")
+    )
   }
 
+  if(isTRUE(return_drift)) return(drift_distance)
 
+  if(isFALSE(return_drift)) {
+    if(drift_distance  > max_drift) {
+      return(FALSE)
+    } else return(TRUE)
+  }
 
+}
 
 
 
@@ -180,7 +214,18 @@ if(FALSE) {
   station_coords = NULL
   log_crs = 4617
 
-  log_coords <- data.frame(latitude = 44.56975, longitude = -64.03448)
+  log_coords <- data.frame(
+    station = "Birchy Head",
+    latitude = 44.56975, longitude = -64.03448,
+    retrieval_latitude = 44.554320,
+    retrieval_longitude = -63.966073
+  )
+
+  log_coords = data.frame(
+    station = "Birchy Head",
+    latitude = 44.56, longitude = -64.03,
+    retrieval_latitude = 44.54, retrieval_longitude = -64.05
+  )
 
 
   station_coords_sf <- data.frame(latitude = 45.66, longitude =		-60.85) %>%
