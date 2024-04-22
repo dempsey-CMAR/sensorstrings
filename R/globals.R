@@ -121,7 +121,11 @@ utils::globalVariables(
     "Latitude",
     "Longitude",
     "Station",
-    "Depth (m)"
+    "Depth (m)",
+
+    # ss_check_station_locations
+    "retrieval_latitude",
+    "retrieval_longitude"
 
   )
 )
