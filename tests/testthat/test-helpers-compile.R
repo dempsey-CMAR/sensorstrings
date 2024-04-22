@@ -31,10 +31,14 @@ test_that("set_up_compile() returns Errors and Warnings", {
   )
 
   # when two csv files in vemco folder
-  expect_error(
+  expect_warning(
     set_up_compile(
       path = paste0(path, "/test4"),
-      sn_table = data.frame(sensor = "vemco", serial = 123456, depth = 1),
+      sn_table = data.frame(
+        sensor_type = c("vemco", "vemco"),
+        sensor_serieal_number = c(123456, 547109),
+        depth = c(10, 25)
+      ),
       deployment_dates = data.frame(START = "2019-05-30", END = "2019-10-19"),
       sensor_make = "vemco"
     )

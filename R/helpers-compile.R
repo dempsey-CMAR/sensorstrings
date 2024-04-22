@@ -74,8 +74,8 @@ set_up_compile <- function(path,
   }
 
   if (sensor_make == "vemco" && length(dat_files) > 1) {
-    stop(glue("There are {length(dat_files)} csv files in {path};
-                 expected 1 file"))
+    warning(glue("There are {length(dat_files)} csv files in {path}.
+                 Expect 1 file for a typical deployment"))
   }
 
   if (length(dat_files) != nrow(sn_table)) {

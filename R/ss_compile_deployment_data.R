@@ -116,8 +116,6 @@ ss_compile_deployment_data <- function(
       depth_override = depth_override
     )
 
-    # browser()
-
     depl_data <- bind_rows(depl_data, vemco)
   }
 
