@@ -55,6 +55,15 @@
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/set_up_compile.html</loc>
   </url>
   <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_check_station_drift.html</loc>
+  </url>
+  <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_check_station_in_ocean.html</loc>
+  </url>
+  <url>
+    <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_check_station_radius.html</loc>
+  </url>
+  <url>
     <loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_compile_aquameasure_data.html</loc>
   </url>
   <url>
