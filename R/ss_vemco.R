@@ -228,7 +228,7 @@ ss_compile_vemco_data <- function(path,
 
     vem_dat[[i]] <- dat_i
 
-    message(paste("vemco data from sensor, << ", sn_i, " >> compiled:",
+    message(paste("vemco data from sensor << ", sn_i, " >> compiled:",
                   temperature_var, "&", depth_var))
   }
 
