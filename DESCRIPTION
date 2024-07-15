@@ -5,10 +5,8 @@ Version: 1.0.0
 Authors@R: person("Danielle", "Dempsey", , "ddempsey@perennia.ca", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Maintainer: Danielle Dempsey <ddempsey@perennia.ca>
-Description: Facilitates wrangling and analysis of Water Quality data collected as part
-    of the Centre for Marine Applied Research's Coastal Monitoring
-    Program. (Compatiable sensors: HOBO Pro V2, TidbiT MX2303, TidbiT
-    MX2203, aquaMeasure DOT, aquaMeasure SAL, aquaMeasure SST, VR2AR.)
+Description: Facilitates wrangling and analysis of Water Quality data collected as part of the Centre for Marine Applied Research's Coastal Monitoring Program. Compatible sensors: HOBO Pro V2, TidbiT MX2303, TidbiT
+    MX2203, aquaMeasure DOT, aquaMeasure SAL, aquaMeasure SST, VR2AR.
 License: GPL (>= 3)
 Imports: 
     assertthat,
