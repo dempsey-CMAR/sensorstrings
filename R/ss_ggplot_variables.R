@@ -16,6 +16,11 @@
 #' @param legend_position Position for the depth legend. Default is
 #'   \code{legend.position = "right"}.
 #'
+#' @param axis_label_newline Logical argument indicating whether to put units on
+#'   a new line.
+#'
+#' @param point_size Numeric value indicating size of points.
+#'
 #' @return Returns a ggplot object of ocean variables plotted over time and
 #'   coloured by sensor depth.
 #'
@@ -42,7 +47,10 @@ ss_ggplot_variables <- function(
     superchill = NULL,
     color_palette = NULL,
     legend_name = "Depth (m)",
-    legend_position = "right") {
+    legend_position = "right",
+    axis_label_newline = TRUE,
+    point_size = 0.25
+    ) {
   theme_set(theme_light())
 
   if (is.null(color_palette)) {
@@ -71,8 +79,16 @@ ss_ggplot_variables <- function(
       ss_pivot_longer()
   }
 
+
+  if(isTRUE(axis_label_newline)) {
+    dat <- dat %>%
+      ss_create_variable_labels()
+  } else {
+    dat <- dat %>%
+      ss_create_variable_labels_no_newline()
+  }
+
   dat <- dat %>%
-    ss_create_variable_labels() %>%
     ss_convert_depth_to_ordered_factor()
 
   if(!("sensor_type" %in% colnames(dat))) {
@@ -112,7 +128,7 @@ ss_ggplot_variables <- function(
       )
     )
   ) +
-    geom_point(size = 0.25) +
+    geom_point(size = point_size) +
     scale_y_continuous(name = "") +
     scale_depth_colour +
     facet_wrap(~variable_label, scales = "free_y", ncol = 1, strip.position = "left") +
@@ -124,6 +140,12 @@ ss_ggplot_variables <- function(
     ) +
     guides(color = guide_legend(override.aes = list(size = 4)))
 
+  if(legend_position == "bottom") {
+    p <- p +
+      guides(
+        colour = guide_legend(nrow = 1, override.aes = list(size = 2))
+      )
+  }
 
   # add superchill shading --------------------------------------------------
 

@@ -170,6 +170,58 @@ ss_create_variable_labels <- function(dat) {
     )
 }
 
+#' Create plot labels from variable names
+#'
+#' @param dat Data frame of Water Quality data with variables in long
+#'   format. Entries in \code{variable} column must be
+#'   \code{dissolved_oxygen_percent_saturation},
+#'   \code{dissolved_oxygen_uncorrected_mg_per_l}, \code{salinity_psu},
+#'   \code{sensor_depth_measured_m}, or \code{temperature_degree_c}.
+#'
+#' @return Returns \code{dat_long} with an addition column
+#'   \code{variable_label}. \code{variable_label}
+#'
+#' @importFrom dplyr case_when mutate
+#'
+#' @export
+
+ss_create_variable_labels_no_newline <- function(dat) {
+  var_order <- c(
+    "Temperature (\u00B0C)",
+    "Dissolved Oxygen (% sat)",
+    "Uncorrected Dissolved Oxygen (mg/L)",
+    "Dissolved Oxygen (mg/L)",
+    "Salinity (PSU)",
+    "Sensor Depth (m)"
+  )
+
+  dat %>%
+    mutate(
+      variable_label = case_when(
+        variable == "dissolved_oxygen_percent_saturation" ~
+          "Dissolved Oxygen (% sat)",
+        variable == "dissolved_oxygen_uncorrected_mg_per_l" ~
+          "Uncorrected Dissolved Oxygen (mg / L)",
+        variable == "dissolved_oxygen_mg_per_l" ~
+          "Dissolved Oxygen (mg/L)",
+        variable == "salinity_psu" ~ "Salinity (PSU)",
+        variable == "sensor_depth_measured_m" ~ "Sensor Depth (m)",
+        variable == "temperature_degree_c" ~ "Temperature (\u00B0C)",
+        TRUE ~ variable
+      ),
+      variable_label = factor(
+        variable_label,
+        levels = var_order, ordered = TRUE
+      )
+    )
+}
+
+
+
+
+
+
+
 #' Filter data before plotting to zoom in on interesting features
 #'
 #' Called by \code{ss_open_trimdates_app()}.

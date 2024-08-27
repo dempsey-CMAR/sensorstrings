@@ -9,7 +9,9 @@ ss_ggplot_variables(
   superchill = NULL,
   color_palette = NULL,
   legend_name = "Depth (m)",
-  legend_position = "right"
+  legend_position = "right",
+  axis_label_newline = TRUE,
+  point_size = 0.25
 )
 }
 \arguments{
@@ -28,6 +30,11 @@ mapped.}
 
 \item{legend_position}{Position for the depth legend. Default is
 \code{legend.position = "right"}.}
+
+\item{axis_label_newline}{Logical argument indicating whether to put units on
+a new line.}
+
+\item{point_size}{Numeric value indicating size of points.}
 }
 \value{
 Returns a ggplot object of ocean variables plotted over time and
