@@ -10,3 +10,4 @@ man/figures/
 ^pkgdown$
 ^codecov\.yml$
 ^LICENSE\.md$
+dev
