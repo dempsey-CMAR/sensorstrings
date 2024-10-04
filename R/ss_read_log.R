@@ -187,8 +187,7 @@ ss_read_log <- function(path, path_config = NULL) {
   if (any(long > 0)) stop("Longitude must be a negative value")
 
   # link to the "STRING TRACKING" google sheet -
-  #googlesheets4::gs4_deauth()
-
+  googlesheets4::gs4_deauth()
   link <- "http://docs.google.com/spreadsheets/d/1a3QvJsvwr4dd64g3jxgewRtfutIpsKjT2yrMEAoxA3I/edit#gid=828367890"
 
   # read in the "Area Info" tab of the STRING TRACKING sheet

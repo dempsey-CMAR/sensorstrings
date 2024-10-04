@@ -34,11 +34,11 @@ ss_check_station_radius <- function(
 
   station_name <- log_coords$station
 
- # browser()
-
   if(is.null(station_coords)) {
     # link to the "STRING TRACKING" google sheet -
     #googlesheets4::gs4_deauth()
+
+    gs4_deauth()
 
     link <- "http://docs.google.com/spreadsheets/d/1a3QvJsvwr4dd64g3jxgewRtfutIpsKjT2yrMEAoxA3I/edit#gid=828367890"
 
