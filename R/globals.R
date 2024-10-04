@@ -125,7 +125,22 @@ utils::globalVariables(
 
     # ss_check_station_locations
     "retrieval_latitude",
-    "retrieval_longitude"
+    "retrieval_longitude",
+
+    # ss_create_log
+    "Deployment",
+    "Location_Description",
+    "Retrieval",
+    "Sounding",
+    "deployment_attendant",
+    "deployment_latitude",
+    "deployment_longitude",
+    "notes",
+    "retrieval_attendant",
+    "retrieval_date",
+    "sensor_depth_m",
+    "sounding_m",
+    "status"
 
   )
 )
