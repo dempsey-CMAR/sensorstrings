@@ -140,7 +140,16 @@ utils::globalVariables(
     "retrieval_date",
     "sensor_depth_m",
     "sounding_m",
-    "status"
+    "status",
 
+    #ss_coords_to_dd
+    "deployment_latitude_n_ddm",
+    "deployment_longitude_w_ddm",
+    ".",
+    "coord_deg",
+    "coord_dm",
+    "degree_decimal_minutes",
+    "retrieval_latitude_n_ddm",
+    "retrieval_longitude_w_ddm"
   )
 )
