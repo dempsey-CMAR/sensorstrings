@@ -50,7 +50,33 @@ create_log_from_metadata <- function(
     stop(paste0(station, " not found in metatdata tracking sheet"))
   }
 
- log <- dat_raw %>%
+  # convery coordinates where needed
+  dat <- dat_raw %>%
+    mutate(
+      deployment_latitude = if_else(
+        is.na(deployment_latitude),
+        ss_coords_from_ddm_to_dd(deployment_latitude_n_ddm),
+        deployment_latitude
+      ),
+      deployment_longitude = if_else(
+        is.na(deployment_longitude),
+        -ss_coords_from_ddm_to_dd(deployment_longitude_w_ddm),
+        deployment_longitude
+      ),
+      retrieval_latitude = if_else(
+        is.na(retrieval_latitude),
+        ss_coords_from_ddm_to_dd(retrieval_latitude_n_ddm),
+        retrieval_latitude
+      ),
+      retrieval_longitude = if_else(
+        is.na(retrieval_longitude),
+        -ss_coords_from_ddm_to_dd(retrieval_longitude_w_ddm),
+        retrieval_longitude
+      )
+    )
+
+  # make log
+  log <- dat %>%
     filter(
       station == !!station,
       deployment_date == !!as_date(deployment_date)
@@ -82,7 +108,7 @@ create_log_from_metadata <- function(
 
       Comments = notes,
 
-     # `Deployment Waypoint` = NA,
+      # `Deployment Waypoint` = NA,
       #`Retrieval Waypoint` = NA,
 
       `Retrieval Latitude`	= retrieval_latitude,
@@ -113,21 +139,23 @@ create_log_from_metadata <- function(
       Retrieval = format(as_date(Retrieval), "%Y-%b-%d"),
     )
 
+
   # if(suppressWarnings(is.numeric(as.numeric(LOG$Sensor_Depth)))){
   #   LOG <- LOG %>% mutate(Sensor_Depth = as.numeric(Sensor_Depth))
   # }
 
   # Format & Export ---------------------------------------------------------
- file_name <- paste(
-   station, format(as_date(deployment_date), "%Y-%m-%d"),
-   "Log.csv", sep = "_"
- )
+  file_name <- paste(
+    station, format(as_date(deployment_date), "%Y-%m-%d"),
+    "Log.csv", sep = "_"
+  )
 
- write.csv(log, file = paste(path_export, file_name, sep = "/"))
+  if (!dir.exists(file.path(paste0(path_export, "/log")))) {
+    dir.create(file.path(paste0(path_export, "/log")))
+  }
 
-  # LOG_OUT <- LOG %>%
-  #   format_deployment_log() %T>%
-  #   saveWorkbook(file = paste(path.export, file.name, sep = "/"))
+  write.csv(log, file = paste(path_export, file_name, sep = "/"))
+
 
   message(file_name, " exported to ", path_export)
 }
