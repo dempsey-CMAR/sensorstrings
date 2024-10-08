@@ -2,20 +2,21 @@
 % Please edit documentation in R/ss_coords_from_ddm_to_dd.R
 \name{ss_coords_from_ddm_to_dd}
 \alias{ss_coords_from_ddm_to_dd}
-\title{Convert coordinates from degree-minute-decimal to decimal degree
-#'}
+\title{Convert coordinates from degree-minute-decimal to decimal degree #'}
 \usage{
 ss_coords_from_ddm_to_dd(coords_ddm)
 }
 \arguments{
 \item{coords_ddm}{Vector of coordinate values in degree decimal minutes (xx
-xx.xxxx, e.g., 45 21.651 or 64 2.063). These will be converted to decimal
-degrees.}
+  xx.xxxx, e.g., 45 21.651 or 64 2.063). These will be converted to decimal
+  degrees.
+
+  the output by -1 (e.g., for latitude in the Southern hemisphere and
+  longitude in the Western hemisphere).}
 }
 \value{
 Returns a vector of coordinates in decimal-degree format.
 }
 \description{
-Convert coordinates from degree-minute-decimal to decimal degree
-#'
+Convert coordinates from degree-minute-decimal to decimal degree #'
 }
