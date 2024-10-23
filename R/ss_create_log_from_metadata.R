@@ -46,12 +46,13 @@ ss_create_log_from_metadata <- function(
     na = ""
   )
 
-  if(!(station %in% dat_raw$station)) {
+  station_title <- str_to_title(station)
+
+  if(!(station_title %in% dat_raw$station)) {
     stop(paste0(station, " not found in metatdata tracking sheet"))
   }
 
-  # convert coordinates where needed
-  dat <- dat_raw %>%
+ dat <- dat_raw %>%
     mutate(
       deployment_latitude = if_else(
         is.na(deployment_latitude),
@@ -78,7 +79,7 @@ ss_create_log_from_metadata <- function(
   # make log
   log <- dat %>%
     filter(
-      station == !!station,
+      station == !!station_title,
       deployment_date == !!as_date(deployment_date)
     ) %>%
     transmute(
@@ -95,6 +96,8 @@ ss_create_log_from_metadata <- function(
       Logger_Model = sensor_type,
       `Serial#` = sensor_serial_number,
       Sensor_Depth = sensor_depth_m,
+
+      Configuration = string_configuration,
 
       Sounding = sounding_m,
       Datum = NA,
@@ -152,14 +155,18 @@ ss_create_log_from_metadata <- function(
   # Format & Export ---------------------------------------------------------
   file_name <- paste(
     station, format(as_date(deployment_date), "%Y-%m-%d"),
-    "Log.csv", sep = "_"
+    "log.csv", sep = "_"
   )
 
   path_export <- file.path(paste0(path_export, "/log"))
 
   if (!dir.exists(path_export)) dir.create(path_export)
 
-  write.csv(log, file = paste(path_export, file_name, sep = "/"))
+  write.csv(
+    log,
+    file = paste(path_export, file_name, sep = "/"),
+    row.names = FALSE
+  )
 
   message(file_name, " exported to ", path_export)
 }
