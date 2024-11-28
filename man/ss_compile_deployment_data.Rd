@@ -7,6 +7,7 @@
 \usage{
 ss_compile_deployment_data(
   path,
+  use_config = TRUE,
   path_config = NULL,
   trim = TRUE,
   ignore_sensors = NULL,
@@ -16,6 +17,10 @@ ss_compile_deployment_data(
 \arguments{
 \item{path}{File path to the log, aquameasure, hobo, tidbit, and/or vemco
 folders.}
+
+\item{use_config}{Logical argument indicating whether to use a configuration
+table. Defaults to the water_quality_configuration_table.xslx on the CMAR R
+drive.}
 
 \item{path_config}{File path (including name and extension) of the water
   quality configuration table. Default is

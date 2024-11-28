@@ -4,10 +4,14 @@
 \alias{ss_read_log}
 \title{Extract information from deployment log}
 \usage{
-ss_read_log(path, path_config = NULL)
+ss_read_log(path, use_config = TRUE, path_config = NULL)
 }
 \arguments{
 \item{path}{File path to the Log folder.}
+
+\item{use_config}{Logical argument indicating whether to use a configuration
+table. Defaults to the water_quality_configuration_table.xslx on the CMAR R
+drive.}
 
 \item{path_config}{File path (including name and extension) of the water
   quality configuration table. Default is
@@ -50,53 +54,54 @@ Extract information from deployment log
 }
 \details{
 These columns are going to change with the new logs. Deprecate this
-function or save it as _old for backwards compatibility.
+  function or save it as _old for backwards compatibility.
 
-The log must be saved in a folder called Log in .csv, .xlsx or .xls format,
-and must include the following columns:
+  The log must be saved in a folder called Log in .csv, .xlsx or .xls format,
+  and must include the following columns:
 
-\code{Deployment_Waterbody}: waterbody where string was deployed
+  \code{Deployment_Waterbody}: waterbody where string was deployed
 
-\code{Location_Description}: the station name
+  \code{Location_Description}: the station name
 
-\code{Lease#}: If located on an aquaculture site, the lease number (NA
-otherwise)
+  \code{Lease#}: If located on an aquaculture site, the lease number (NA
+  otherwise)
 
-\code{Deployment}: deployment date, in the order "Ymd"
+  \code{Deployment}: deployment date, in the order "Ymd"
 
-\code{Retrieval}: retrieval date, in the order "Ymd"
+  \code{Retrieval}: retrieval date, in the order "Ymd"
 
-\code{Logger_Latitude}: The latitude at which the string was deployed
+  \code{Logger_Latitude}: The latitude at which the string was deployed
 
-\code{Logger_Longitude} The longitude at which the string was deployed (must
-be a negative value)
+  \code{Logger_Longitude} The longitude at which the string was deployed
+  (must be a negative value)
 
-\code{Logger_Model} The type of sensor; see below for options
+  \code{Logger_Model} The type of sensor; see below for options
 
-\code{Serial#} The sensor serial number
+  \code{Serial#} The sensor serial number
 
-\code{Sensor_Depth}: Depth at which the sensor was deployed
+  \code{Sensor_Depth}: Depth at which the sensor was deployed
 
-All other columns will be ignored.
+  All other columns will be ignored.
 
-Entries in the \code{Logger_Model} column must include the string
-"aquameasure", "hobo", "tidbit", or "vr2ar" (not case sensitive).
+  Entries in the \code{Logger_Model} column must include the string
+  "aquameasure", "hobo", "tidbit", or "vr2ar" (not case sensitive).
 
-The function will stop with an Error if there is more than one eligible file
-(csv, .xlsx or .xls) in the Log folder.
+  The function will stop with an Error if there is more than one eligible
+  file (csv, .xlsx or .xls) in the Log folder.
 
-The function will stop with an Error if there if the \code{Logger_Longitude}
-is a positive value.
+  The function will stop with an Error if there if the
+  \code{Logger_Longitude} is a positive value.
 
-A Warning message is printed to the console when the function does not
-recognize a sensor in the log.
+  A Warning message is printed to the console when the function does not
+  recognize a sensor in the log.
 
-A message is printed to the console when hobo, aquameasure, or vemco sensors
-are not found in the log.
+  A message is printed to the console when hobo, aquameasure, or vemco
+  sensors are not found in the log.
 
-A message is printed to the console if there is more than one unique entry in
-\code{Deployment_Waterbody}, \code{Location_Description}, \code{Deployment},
-\code{Retrieval}, \code{Logger_Latitude}, or \code{Logger_Longitude}.
+  A message is printed to the console if there is more than one unique entry
+  in \code{Deployment_Waterbody}, \code{Location_Description},
+  \code{Deployment}, \code{Retrieval}, \code{Logger_Latitude}, or
+  \code{Logger_Longitude}.
 }
 \seealso{
 Other compile: 

@@ -38,12 +38,15 @@
 
 ss_compile_deployment_data <- function(
     path,
+    use_config = TRUE,
     path_config = NULL,
     trim = TRUE,
     ignore_sensors = NULL,
     depth_override = NULL) {
   # read in log and add location columns ----------------------------------------------------
-  depl_log <- ss_read_log(path, path_config = path_config)
+  depl_log <- ss_read_log(
+    path, use_config = use_config, path_config = path_config
+  )
 
   deployment_dates <- depl_log$deployment_dates
 

@@ -1,55 +1,60 @@
 #' @title Extract information from deployment log
 #'
 #' @details These columns are going to change with the new logs. Deprecate this
-#' function or save it as _old for backwards compatibility.
+#'   function or save it as _old for backwards compatibility.
 #'
-#' The log must be saved in a folder called Log in .csv, .xlsx or .xls format,
-#' and must include the following columns:
+#'   The log must be saved in a folder called Log in .csv, .xlsx or .xls format,
+#'   and must include the following columns:
 #'
-#' \code{Deployment_Waterbody}: waterbody where string was deployed
+#'   \code{Deployment_Waterbody}: waterbody where string was deployed
 #'
-#' \code{Location_Description}: the station name
+#'   \code{Location_Description}: the station name
 #'
-#' \code{Lease#}: If located on an aquaculture site, the lease number (NA
-#' otherwise)
+#'   \code{Lease#}: If located on an aquaculture site, the lease number (NA
+#'   otherwise)
 #'
-#' \code{Deployment}: deployment date, in the order "Ymd"
+#'   \code{Deployment}: deployment date, in the order "Ymd"
 #'
-#' \code{Retrieval}: retrieval date, in the order "Ymd"
+#'   \code{Retrieval}: retrieval date, in the order "Ymd"
 #'
-#' \code{Logger_Latitude}: The latitude at which the string was deployed
+#'   \code{Logger_Latitude}: The latitude at which the string was deployed
 #'
-#' \code{Logger_Longitude} The longitude at which the string was deployed (must
-#' be a negative value)
+#'   \code{Logger_Longitude} The longitude at which the string was deployed
+#'   (must be a negative value)
 #'
-#' \code{Logger_Model} The type of sensor; see below for options
+#'   \code{Logger_Model} The type of sensor; see below for options
 #'
-#' \code{Serial#} The sensor serial number
+#'   \code{Serial#} The sensor serial number
 #'
-#' \code{Sensor_Depth}: Depth at which the sensor was deployed
+#'   \code{Sensor_Depth}: Depth at which the sensor was deployed
 #'
-#' All other columns will be ignored.
+#'   All other columns will be ignored.
 #'
-#' Entries in the \code{Logger_Model} column must include the string
-#' "aquameasure", "hobo", "tidbit", or "vr2ar" (not case sensitive).
+#'   Entries in the \code{Logger_Model} column must include the string
+#'   "aquameasure", "hobo", "tidbit", or "vr2ar" (not case sensitive).
 #'
-#' The function will stop with an Error if there is more than one eligible file
-#' (csv, .xlsx or .xls) in the Log folder.
+#'   The function will stop with an Error if there is more than one eligible
+#'   file (csv, .xlsx or .xls) in the Log folder.
 #'
-#' The function will stop with an Error if there if the \code{Logger_Longitude}
-#' is a positive value.
+#'   The function will stop with an Error if there if the
+#'   \code{Logger_Longitude} is a positive value.
 #'
-#' A Warning message is printed to the console when the function does not
-#' recognize a sensor in the log.
+#'   A Warning message is printed to the console when the function does not
+#'   recognize a sensor in the log.
 #'
-#' A message is printed to the console when hobo, aquameasure, or vemco sensors
-#' are not found in the log.
+#'   A message is printed to the console when hobo, aquameasure, or vemco
+#'   sensors are not found in the log.
 #'
-#' A message is printed to the console if there is more than one unique entry in
-#' \code{Deployment_Waterbody}, \code{Location_Description}, \code{Deployment},
-#' \code{Retrieval}, \code{Logger_Latitude}, or \code{Logger_Longitude}.
+#'   A message is printed to the console if there is more than one unique entry
+#'   in \code{Deployment_Waterbody}, \code{Location_Description},
+#'   \code{Deployment}, \code{Retrieval}, \code{Logger_Latitude}, or
+#'   \code{Logger_Longitude}.
 #'
 #' @param path File path to the Log folder.
+#'
+#' @param use_config Logical argument indicating whether to use a configuration
+#'   table. Defaults to the water_quality_configuration_table.xslx on the CMAR R
+#'   drive.
 #'
 #' @param path_config File path (including name and extension) of the water
 #'   quality configuration table. Default is
@@ -100,7 +105,7 @@
 #'
 #' @export
 
-ss_read_log <- function(path, path_config = NULL) {
+ss_read_log <- function(path, use_config = TRUE, path_config = NULL) {
   # Read in log -----------------------------------------------------------
   # extract the name of the log folder (e.g. Log, log, LOG)
   folder <- list.files(path) %>%
@@ -134,7 +139,6 @@ ss_read_log <- function(path, path_config = NULL) {
       na.strings = c("", "n/a", "N/A")
     )
   }
-
 
   # deployment dates ------------------------------------------------------------
 
@@ -284,68 +288,70 @@ ss_read_log <- function(path, path_config = NULL) {
 
   # configuration ------------------------------------------------------------
 
-  config_options <- c(
-    "sub-surface buoy", "surface buoy", "attached to gear",
-    "attached to fixed structure", "floating dock", "unknown", "calval"
-  )
+  if(isTRUE(use_config)) {
 
-  if ("configuration" %in% tolower(colnames(log))) {
+    config_options <- c(
+      "sub-surface buoy", "surface buoy", "attached to gear",
+      "attached to fixed structure", "floating dock", "unknown", "calval"
+    )
 
-    colnames(log) <- tolower(colnames(log))
-    config <- unique(log$configuration)
+    if ("configuration" %in% tolower(colnames(log))) {
 
-    if (is.na(config)) {
-      warning("Configuration is recorded as NA in the Log and will be converted to << unknown >>")
-      config <- "unknown"
-    }
+      colnames(log) <- tolower(colnames(log))
+      config <- unique(log$configuration)
 
-    if (length(config) > 1) {
-      stop("More than one configuration type entered in the Log.")
-    }
+      if (is.na(config)) {
+        warning("Configuration is recorded as NA in the Log and will be converted to << unknown >>")
+        config <- "unknown"
+      }
 
-  } else {
+      if (length(config) > 1) {
+        stop("More than one configuration type entered in the Log.")
+      }
 
-    if (is.null(path_config)) {
-      path_config <- file.path(
-        "R:/tracking_sheets/water_quality_configuration_table.xlsx"
-      )
-    }
+    } else {
 
-    config <- read_excel(path_config, sheet = "deployments") %>%
-      mutate(Deployment = as_date(Depl_Date)) %>%
-      filter(
-        Station_Name == area_info$station,
-        Waterbody == area_info$waterbody,
-        Depl_Date == deployment_dates$start_date[1]
-      )
+      if (is.null(path_config)) {
+        path_config <- file.path(
+          "R:/tracking_sheets/water_quality_configuration_table.xlsx"
+        )
+      }
 
-    if (nrow(config) == 0) {
+      config <- read_excel(path_config, sheet = "deployments") %>%
+        mutate(Deployment = as_date(Depl_Date)) %>%
+        filter(
+          Station_Name == area_info$station,
+          Waterbody == area_info$waterbody,
+          Depl_Date == deployment_dates$start_date[1]
+        )
 
-      warning("Deployment not found in Configuration table.
+      if (nrow(config) == 0) {
+
+        warning("Deployment not found in Configuration table.
        Configuration will be recorded as << unknown >>.
           \nHINT: check station, waterbody, and deployment date in log and Configuration table")
-      config$Configuration <- "unknown"
+        config$Configuration <- "unknown"
+      }
+
+      config <- config$Configuration
+
+      if (is.na(config)) {
+        warning("Configuration is recorded as NA in the Configuration table and will be converted to << unknown >>")
+        config$Configuration <- "unknown"
+      }
+
+      if (length(config) > 1) {
+        stop(
+          "More than one Configuration for << ", area_info$station, " >> deployed on << ",
+          deployment_dates$start_date, " >> recorded in the Configuration table"
+        )
+      }
     }
 
-    config <- config$Configuration
-
-    if (is.na(config)) {
-      warning("Configuration is recorded as NA in the Configuration table and will be converted to << unknown >>")
-      config$Configuration <- "unknown"
+    if (!(config %in% config_options)) {
+      warning("<< ", config, " >> is not an accepted sensor string configuration")
     }
-
-    if (length(config) > 1) {
-      stop(
-        "More than one Configuration for << ", area_info$station, " >> deployed on << ",
-        deployment_dates$start_date, " >> recorded in the Configuration table"
-      )
-    }
-  }
-
-  if (!(config %in% config_options)) {
-    warning("<< ", config, " >> is not an accepted sensor string configuration")
-  }
-
+  } else config <- "unknown"
 
   # return list of deployment info -------------------------------------------
   list(
