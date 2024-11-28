@@ -9,7 +9,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sensorstrings</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,6 +42,7 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ss_compile_deployment_data</span><span class="op">(</span></span>
 <span>  <span class="va">path</span>,</span>
+<span>  use_config <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  path_config <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  trim <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ignore_sensors <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -56,6 +57,12 @@
 <dl><dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
 <dd><p>File path to the log, aquameasure, hobo, tidbit, and/or vemco
 folders.</p></dd>
+
+
+<dt id="arg-use-config">use_config<a class="anchor" aria-label="anchor" href="#arg-use-config"></a></dt>
+<dd><p>Logical argument indicating whether to use a configuration
+table. Defaults to the water_quality_configuration_table.xslx on the CMAR R
+drive.</p></dd>
 
 
 <dt id="arg-path-config">path_config<a class="anchor" aria-label="anchor" href="#arg-path-config"></a></dt>

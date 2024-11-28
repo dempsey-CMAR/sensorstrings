@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sensorstrings</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ss_read_log</span><span class="op">(</span><span class="va">path</span>, path_config <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ss_read_log</span><span class="op">(</span><span class="va">path</span>, use_config <span class="op">=</span> <span class="cn">TRUE</span>, path_config <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -46,6 +46,12 @@
 
 <dl><dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
 <dd><p>File path to the Log folder.</p></dd>
+
+
+<dt id="arg-use-config">use_config<a class="anchor" aria-label="anchor" href="#arg-use-config"></a></dt>
+<dd><p>Logical argument indicating whether to use a configuration
+table. Defaults to the water_quality_configuration_table.xslx on the CMAR R
+drive.</p></dd>
 
 
 <dt id="arg-path-config">path_config<a class="anchor" aria-label="anchor" href="#arg-path-config"></a></dt>
@@ -86,35 +92,36 @@
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>These columns are going to change with the new logs. Deprecate this
-function or save it as _old for backwards compatibility.</p>
+  function or save it as _old for backwards compatibility.</p>
 <p>The log must be saved in a folder called Log in .csv, .xlsx or .xls format,
-and must include the following columns:</p>
+  and must include the following columns:</p>
 <p><code>Deployment_Waterbody</code>: waterbody where string was deployed</p>
 <p><code>Location_Description</code>: the station name</p>
 <p><code>Lease#</code>: If located on an aquaculture site, the lease number (NA
-otherwise)</p>
+  otherwise)</p>
 <p><code>Deployment</code>: deployment date, in the order "Ymd"</p>
 <p><code>Retrieval</code>: retrieval date, in the order "Ymd"</p>
 <p><code>Logger_Latitude</code>: The latitude at which the string was deployed</p>
-<p><code>Logger_Longitude</code> The longitude at which the string was deployed (must
-be a negative value)</p>
+<p><code>Logger_Longitude</code> The longitude at which the string was deployed
+  (must be a negative value)</p>
 <p><code>Logger_Model</code> The type of sensor; see below for options</p>
 <p><code>Serial#</code> The sensor serial number</p>
 <p><code>Sensor_Depth</code>: Depth at which the sensor was deployed</p>
 <p>All other columns will be ignored.</p>
 <p>Entries in the <code>Logger_Model</code> column must include the string
-"aquameasure", "hobo", "tidbit", or "vr2ar" (not case sensitive).</p>
-<p>The function will stop with an Error if there is more than one eligible file
-(csv, .xlsx or .xls) in the Log folder.</p>
-<p>The function will stop with an Error if there if the <code>Logger_Longitude</code>
-is a positive value.</p>
+  "aquameasure", "hobo", "tidbit", or "vr2ar" (not case sensitive).</p>
+<p>The function will stop with an Error if there is more than one eligible
+  file (csv, .xlsx or .xls) in the Log folder.</p>
+<p>The function will stop with an Error if there if the
+  <code>Logger_Longitude</code> is a positive value.</p>
 <p>A Warning message is printed to the console when the function does not
-recognize a sensor in the log.</p>
-<p>A message is printed to the console when hobo, aquameasure, or vemco sensors
-are not found in the log.</p>
-<p>A message is printed to the console if there is more than one unique entry in
-<code>Deployment_Waterbody</code>, <code>Location_Description</code>, <code>Deployment</code>,
-<code>Retrieval</code>, <code>Logger_Latitude</code>, or <code>Logger_Longitude</code>.</p>
+  recognize a sensor in the log.</p>
+<p>A message is printed to the console when hobo, aquameasure, or vemco
+  sensors are not found in the log.</p>
+<p>A message is printed to the console if there is more than one unique entry
+  in <code>Deployment_Waterbody</code>, <code>Location_Description</code>,
+  <code>Deployment</code>, <code>Retrieval</code>, <code>Logger_Latitude</code>, or
+  <code>Logger_Longitude</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
