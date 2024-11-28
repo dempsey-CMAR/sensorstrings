@@ -79,7 +79,6 @@ ss_ggplot_variables <- function(
       ss_pivot_longer()
   }
 
-
   if(isTRUE(axis_label_newline)) {
     dat <- dat %>%
       ss_create_variable_labels()
@@ -129,10 +128,11 @@ ss_ggplot_variables <- function(
     )
   ) +
     geom_point(size = point_size) +
-    scale_y_continuous(name = "") +
+  #  scale_y_continuous(name = "") +
     scale_depth_colour +
     facet_wrap(~variable_label, scales = "free_y", ncol = 1, strip.position = "left") +
     theme(
+      axis.title.y = element_blank(),
       strip.placement = "outside",
       strip.background = element_blank(),
       strip.text = element_text(colour = "black", size = 10),
