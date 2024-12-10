@@ -9,7 +9,7 @@ ss_ggplot_variables() to work with those functions."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">sensorstrings</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,6 +49,7 @@ ss_ggplot_variables() to work with those functions."></head><body>
 <span>  date_labels_format <span class="op">=</span> <span class="st">"%Y-%m-%d"</span>,</span>
 <span>  standard_do_ylims <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  standard_sal_ylims <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  yaxis_newline <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  legend_name <span class="op">=</span> <span class="st">"Depth (m)"</span>,</span>
 <span>  legend_position <span class="op">=</span> <span class="st">"right"</span></span>
@@ -98,6 +99,11 @@ are set to the <code>ggplot</code> default.</p></dd>
 <dd><p>If <code>TRUE</code>, the y-limits for salinity are set
 to c(0, 35) PSU. If <code>FALSE</code>, the y-limits are set to the <code>ggplot</code>
 default.</p></dd>
+
+
+<dt id="arg-yaxis-newline">yaxis_newline<a class="anchor" aria-label="anchor" href="#arg-yaxis-newline"></a></dt>
+<dd><p>Logical argument indicating whether the units in the
+y-axis label should be on a new line. Default is <code>TRUE</code>.</p></dd>
 
 
 <dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
