@@ -1,11 +1,11 @@
 #' @title Writes a deployment log from the metadata tracking sheet
 #'
-#' @details Imports the NSDFA tracking sheet, filters for the station and date of
-#'  interest, re-formats into the deployment log format, and exports to the Log
-#'  folder.
+#' @details Imports the NSDFA tracking sheet, filters for the station and date
+#'   of interest, re-formats into the deployment log format, and exports to the
+#'   Log folder.
 #'
-#' @param path_metadata Path to the metadata tracking sheet (including
-#'  the file name and extension). This must be a .xlsx file.
+#' @param path_metadata Path to the metadata tracking sheet (including the file
+#'   name and extension). This must be a .xlsx file.
 #'
 #' @param sheet Name of the tab with the deployment information.
 #'
@@ -14,7 +14,11 @@
 #' @param station Station name.
 #'
 #' @param deployment_date Date of deployment as a character string in the format
-#'  "YYYY-mm-dd"
+#'   "YYYY-mm-dd"
+#'
+#' @param to_title Logical argument indicating whether to convert the station
+#'   name to title case. Default is \code{TRUE}. Set to \code{FALSE} for
+#'   stations with capital letters within a word, e.g., McNabs Island.
 #'
 #' @return Returns deployment log in .csv format.
 #'
@@ -31,7 +35,8 @@ ss_create_log_from_metadata <- function(
     sheet = "tracker",
     path_export,
     station,
-    deployment_date
+    deployment_date,
+    to_title = TRUE
 ){
 
   if(is.null(path_metadata)) {
@@ -46,10 +51,12 @@ ss_create_log_from_metadata <- function(
     na = ""
   )
 
-  station_title <- str_to_title(station)
+  if(isTRUE(to_title)) {
+    station_title <- str_to_title(station)
+  } else station_title <- station
 
   if(!(station_title %in% dat_raw$station)) {
-    stop(paste0(station, " not found in metatdata tracking sheet"))
+    stop(paste0(station_title, " not found in metatdata tracking sheet"))
   }
 
  dat <- dat_raw %>%
@@ -84,7 +91,7 @@ ss_create_log_from_metadata <- function(
     ) %>%
     transmute(
       Deployment_Waterbody = waterbody,
-      Location_Description = station,
+      Location_Description = station_title,
       `Lease#` = lease,
       Status = status,
 
@@ -134,7 +141,7 @@ ss_create_log_from_metadata <- function(
       #`distance from top of float to origin (first sensor)` = NA
     ) %>%
     dplyr::mutate(
-      Location_Description = str_to_title(Location_Description),
+      #Location_Description = str_to_title(Location_Description),
       `Serial#` = as.numeric(`Serial#`),
       Sensor_Depth = as.numeric(Sensor_Depth),
       Sounding = as.numeric(Sounding),

@@ -9,12 +9,13 @@ ss_create_log_from_metadata(
   sheet = "tracker",
   path_export,
   station,
-  deployment_date
+  deployment_date,
+  to_title = TRUE
 )
 }
 \arguments{
-\item{path_metadata}{Path to the metadata tracking sheet (including
-the file name and extension). This must be a .xlsx file.}
+\item{path_metadata}{Path to the metadata tracking sheet (including the file
+name and extension). This must be a .xlsx file.}
 
 \item{sheet}{Name of the tab with the deployment information.}
 
@@ -24,6 +25,10 @@ the file name and extension). This must be a .xlsx file.}
 
 \item{deployment_date}{Date of deployment as a character string in the format
 "YYYY-mm-dd"}
+
+\item{to_title}{Logical argument indicating whether to convert the station
+name to title case. Default is \code{TRUE}. Set to \code{FALSE} for
+stations with capital letters within a word, e.g., McNabs Island.}
 }
 \value{
 Returns deployment log in .csv format.
@@ -32,7 +37,7 @@ Returns deployment log in .csv format.
 Writes a deployment log from the metadata tracking sheet
 }
 \details{
-Imports the NSDFA tracking sheet, filters for the station and date of
- interest, re-formats into the deployment log format, and exports to the Log
- folder.
+Imports the NSDFA tracking sheet, filters for the station and date
+  of interest, re-formats into the deployment log format, and exports to the
+  Log folder.
 }
