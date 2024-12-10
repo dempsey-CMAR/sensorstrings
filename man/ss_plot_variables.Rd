@@ -13,6 +13,7 @@ ss_plot_variables(
   date_labels_format = "\%Y-\%m-\%d",
   standard_do_ylims = TRUE,
   standard_sal_ylims = TRUE,
+  yaxis_newline = TRUE,
   alpha = 1,
   legend_name = "Depth (m)",
   legend_position = "right"
@@ -43,6 +44,9 @@ are set to the \code{ggplot} default.}
 \item{standard_sal_ylims}{If \code{TRUE}, the y-limits for salinity are set
 to c(0, 35) PSU. If \code{FALSE}, the y-limits are set to the \code{ggplot}
 default.}
+
+\item{yaxis_newline}{Logical argument indicating whether the units in the
+y-axis label should be on a new line. Default is \code{TRUE}.}
 
 \item{alpha}{Value indicating the transparency of the points. 0 is most
 transparent; 1 is opaque.}

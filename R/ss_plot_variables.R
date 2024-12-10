@@ -28,6 +28,9 @@
 #'   to c(0, 35) PSU. If \code{FALSE}, the y-limits are set to the \code{ggplot}
 #'   default.
 #'
+#' @param yaxis_newline Logical argument indicating whether the units in the
+#'   y-axis label should be on a new line. Default is \code{TRUE}.
+#'
 #' @param alpha Value indicating the transparency of the points. 0 is most
 #'   transparent; 1 is opaque.
 #'
@@ -62,6 +65,8 @@ ss_plot_variables <- function(
     standard_do_ylims = TRUE,
     standard_sal_ylims = TRUE,
 
+    yaxis_newline = TRUE,
+
     alpha = 1,
 
     legend_name = "Depth (m)",
@@ -85,9 +90,17 @@ ss_plot_variables <- function(
       ss_pivot_longer()
   }
 
-  dat <- dat %>%
-    ss_create_variable_labels() %>%
-    ss_convert_depth_to_ordered_factor()
+   #%>%
+
+  if(isTRUE(yaxis_newline)) {
+    dat <- dat %>%
+      ss_create_variable_labels()
+  } else {
+    dat <- dat %>%
+      ss_create_variable_labels_no_newline()
+  }
+
+  dat <- dat %>% ss_convert_depth_to_ordered_factor()
 
   # Common plot elements ----------------------------------------------------
   #  x-axis
