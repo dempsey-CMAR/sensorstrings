@@ -217,11 +217,6 @@ ss_create_variable_labels_no_newline <- function(dat) {
 }
 
 
-
-
-
-
-
 #' Filter data before plotting to zoom in on interesting features
 #'
 #' Called by \code{ss_open_trimdates_app()}.
@@ -234,6 +229,8 @@ ss_create_variable_labels_no_newline <- function(dat) {
 #' @importFrom lubridate period is.POSIXct  %m+% %m-%
 #' @importFrom plotly ggplotly
 #' @importFrom dplyr %>% filter
+#'
+#' @export
 
 filter_dat_to_plot <- function(
     dat,
