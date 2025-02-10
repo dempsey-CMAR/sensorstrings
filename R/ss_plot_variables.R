@@ -90,8 +90,6 @@ ss_plot_variables <- function(
       ss_pivot_longer()
   }
 
-   #%>%
-
   if(isTRUE(yaxis_newline)) {
     dat <- dat %>%
       ss_create_variable_labels()
