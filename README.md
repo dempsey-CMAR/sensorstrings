@@ -3,13 +3,13 @@
 
 # sensorstrings
 
-<img src="man/figures/hex_sensorstrings.png" width="25%" style="display: block; margin: auto;" />
+<img src="man/figures/2025_hex_sensorstrings.png" width="25%" style="display: block; margin: auto;" />
 
 <!-- badges: start -->
 
 [![License: GPL
 v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![](https://img.shields.io/badge/devel%20version-0.4.0-blue.svg)](https://github.com/dempsey-cmar/sensorstrings)
+[![](https://img.shields.io/badge/devel%20version-1.0.3-blue.svg)](https://github.com/dempsey-cmar/sensorstrings)
 [![CodeFactor](https://www.codefactor.io/repository/github/dempsey-cmar/sensorstrings/badge)](https://www.codefactor.io/repository/github/dempsey-cmar/sensorstrings)
 [![R build
 status](https://github.com/dempsey-cmar/sensorstrings/workflows/R-CMD-check/badge.svg)](https://github.com/dempsey-cmar/sensorstrings/actions)
@@ -60,26 +60,40 @@ Variables](https://www.goosocean.org/index.php?option=com_content&view=article&i
 from around the coast of Nova Scotia, Canada. There are three main
 branches of the program: *Water Quality*, *Currents*, and *Waves*.
 Processed data for each branch can be viewed and downloaded from several
-sources, as outlined in the [CMAR Report & Data Access Cheat
-Sheet](https://github.com/Centre-for-Marine-Applied-Research/strings/blob/master/man/figures/README-access-cheatsheet.pdf)
-(download for clickable links).
+sources, as outlined in the [CMAR Report & Data Access Reference
+Sheet](https://cmar.ca/wp-content/uploads/sites/22/2024/07/Report-Data-Access-2024-07-30.pdf).
 
 The `sensorstrings` package is the backbone of the data pipeline for the
 *Water Quality* branch of the Coastal Monitoring Program. It is used to
 organize, compile, format, and visualize data *Water Quality* data.
 
 *Water Quality* data (temperature, dissolved oxygen, and salinity) is
-collected using “sensor strings”. Each sensor string is attached to the
-seafloor by an anchor and suspended by a sub-surface buoy, with
-autonomous sensors attached at various depths (Figure 1). A string
-typically includes three sensor models: Hobo, aquaMeasure, and VR2AR
-(Table 1). Strings are deployed at a station for several months and data
-are measured every 1 minute to 1 hour, depending on the sensor.
+collected using stationary moorings referred to as “sensor strings”. A
+typical sensor string configuration consists of a rope attached to the
+seafloor by an anchor and suspended by a sub-surface buoy, with sensors
+attached at various depths (Figure 1). Alternatively, sensors may be
+attached to surface buoys, equipment, floating docks, or fixed
+structures (Figure 1).
 
-<img src="man/figures/figure1.png" width="55%" style="display: block; margin: auto;" />
-Figure 1: Typical sensor string configuration (not to scale).
+<img src="man/figures/sensor_configurations.png" width="2304" style="display: block; margin: auto;" />
+Figure 1: Sensor string configurations (not to scale).
 
 <br> <br>
+
+All sensor strings have at least one sensor that measures temperature,
+and most strings also have one dissolved oxygen sensor. Some strings
+also have a salinity sensor, typically upon request from shellfish
+aquaculture operators (Table 1). Strings are deployed at a station for
+several months and data are typically measured every 10 minutes to 1
+hour, depending on the sensor.
+
+| Sensor                                                                                                                                  | Variable(s) Measured          |
+|:----------------------------------------------------------------------------------------------------------------------------------------|:------------------------------|
+| [HOBO Pro V2](https://www.onsetcomp.com/products/data-loggers/u22-001?srsltid=AfmBOoriI8QowHkQCbiLdFMNA12Lsbf-lYXC9vMDXgyhcHsibbLfWXDQ) | Temperature                   |
+| [HOBO DO](https://www.onsetcomp.com/products/data-loggers/u26-001?srsltid=AfmBOoqXHvl-Em6Y01MSXAGDPh8dYywwhD25xynKzm1GtEffJrl4ws8x)     | Temperature, Dissolved Oxygen |
+| [aquaMeasure DOT](https://www.innovasea.com/wp-content/uploads/2021/06/Innovasea-Aquaculture-Intelligence-Spec-Sheet-060721.pdf)        | Temperature, Dissolved Oxygen |
+| [aquaMeasure SAL](https://www.innovasea.com/wp-content/uploads/2021/06/Innovasea-Aquaculture-Intelligence-Spec-Sheet-060721.pdf)        | Temperature, Salinity         |
+| [VR2AR](https://www.innovasea.com/wp-content/uploads/2021/06/Innovasea-Fish-Tracking-vr2ar-data-sheet-0621.pdf)                         | Temperature                   |
 
 After retrieval, data from each sensor is exported to a separate csv
 file using manufacturer-specific software. Each type of sensor generates
@@ -92,20 +106,11 @@ units, and visualize sensor string data.
 
 `sensorstrings` was developed specifically to streamline CMAR’s
 workflow, but is flexible enough that other users can apply it to
-process data from the accepted sensors (Table 1). **Vignettes to come**
-
-| Sensor                                                                                                                           | Variable(s) Measured          |
-|:---------------------------------------------------------------------------------------------------------------------------------|:------------------------------|
-| [HOBO Pro V2](https://www.onsetcomp.com/datasheet/U22-001)                                                                       | Temperature                   |
-| [HOBO DO](https://www.onsetcomp.com/datasheet/U26-001)                                                                           | Temperature, Dissolved Oxygen |
-| [aquaMeasure DOT](https://www.innovasea.com/wp-content/uploads/2021/07/Innovasea-Aquaculture-Intelligence-Spec-Sheet-062221.pdf) | Temperature, Dissolved Oxygen |
-| [aquaMeasure SAL](https://www.innovasea.com/wp-content/uploads/2021/07/Innovasea-Aquaculture-Intelligence-Spec-Sheet-062221.pdf) | Temperature, Salinity         |
-| [VR2AR](https://www.innovasea.com/wp-content/uploads/2021/06/Innovasea-Fish-Tracking-vr2ar-data-sheet-0621.pdf)                  | Temperature                   |
+process data from the accepted sensors (Table 1).
 
 For more information on *Water Quality* data collection and processing,
-visit the [CMAR Water Quality Data Collection & Processing Cheat
-Sheet](man/figures/README-workflow-cheatsheet.pdf) (download for
-clickable links).
+visit the [CMAR Water Quality Data Collection & Processing Reference
+Sheet](https://cmar.ca/wp-content/uploads/sites/22/2024/06/2024-06-17_CMAR_CMP_Workflow.pdf).
 
 ## Example
 
@@ -123,7 +128,7 @@ three sensors:
 Sensor
 </th>
 <th style="text-align:center;">
-Serial \#
+Serial Number
 </th>
 <th style="text-align:center;">
 Depth
@@ -317,7 +322,7 @@ dat <- ss_compile_deployment_data(path)
 #> ✔ Range ''Area Info''.
 #> aquameasure data compiled
 #> hobo data compiled
-#> vemco data compiled: Temperature & Seawater depth
+#> vemco data from sensor <<  547109  >> compiled: Temperature & Seawater depth
 
 kable(dat[1:10, ])
 ```

@@ -27,7 +27,7 @@ repo <- "dempsey-cmar/sensorstrings"
 
 
 ```{r, echo=FALSE, out.width="25%", fig.align='center'}
-knitr::include_graphics("man/figures/hex_sensorstrings.png")
+knitr::include_graphics("man/figures/2025_hex_sensorstrings.png")
 ```
 
 
@@ -72,25 +72,22 @@ knitr::include_graphics("man/figures/2022-10-18_ss_structure.png")
 
 ## Background
 
-The Centre for Marine Applied Research ([CMAR](https://cmar.ca/)) coordinates an extensive [Coastal Monitoring Program](https://cmar.ca/coastal-monitoring-program/) to measure [Essential Ocean Variables](https://www.goosocean.org/index.php?option=com_content&view=article&id=14&Itemid=114) from around the coast of Nova Scotia, Canada. There are three main branches of the program: _Water Quality_, _Currents_, and _Waves_. Processed data for each branch can be viewed and downloaded from several sources, as outlined in the [CMAR Report & Data Access Cheat Sheet](https://github.com/Centre-for-Marine-Applied-Research/strings/blob/master/man/figures/README-access-cheatsheet.pdf) (download for clickable links).
+The Centre for Marine Applied Research ([CMAR](https://cmar.ca/)) coordinates an extensive [Coastal Monitoring Program](https://cmar.ca/coastal-monitoring-program/) to measure [Essential Ocean Variables](https://www.goosocean.org/index.php?option=com_content&view=article&id=14&Itemid=114) from around the coast of Nova Scotia, Canada. There are three main branches of the program: _Water Quality_, _Currents_, and _Waves_. Processed data for each branch can be viewed and downloaded from several sources, as outlined in the [CMAR Report & Data Access Reference Sheet](https://cmar.ca/wp-content/uploads/sites/22/2024/07/Report-Data-Access-2024-07-30.pdf).
 
 The `sensorstrings` package is the backbone of the data pipeline for the _Water Quality_ branch of the Coastal Monitoring Program. It is used to organize, compile, format, and visualize data _Water Quality_ data. 
 
-_Water Quality_ data (temperature, dissolved oxygen, and salinity) is collected using “sensor strings”. Each sensor string is attached to the seafloor by an anchor and suspended by a sub-surface buoy, with autonomous sensors attached at various depths (Figure 1). A string typically includes three sensor models: Hobo, aquaMeasure, and VR2AR (Table 1). Strings are deployed at a station for several months and data are measured every 1 minute to 1 hour, depending on the sensor.
+_Water Quality_ data (temperature, dissolved oxygen, and salinity) is collected using stationary moorings referred to as “sensor strings”. A typical sensor string configuration consists of a rope attached to the seafloor by an anchor and suspended by a sub-surface buoy, with sensors attached at various depths (Figure 1). Alternatively, sensors may be attached to surface buoys, equipment, floating docks, or fixed structures (Figure 1). 
 
-```{r, echo=FALSE, out.width="55%", fig.align="center"}
-knitr::include_graphics("man/figures/figure1.png")
+
+```{r, echo=FALSE, fig.align="center"}
+knitr::include_graphics("man/figures/sensor_configurations.png")
 ```
-Figure 1: Typical sensor string configuration (not to scale).
+Figure 1: Sensor string configurations (not to scale).
 
 <br>
 <br>
 
-After retrieval, data from each sensor is exported to a separate csv file using manufacturer-specific software. Each type of sensor generates a data file with unique columns and header fields, which poses a significant challenge for compiling all data from a deployment into a single format for analysis.
-
-The `sensorstrings` package offers functions to compile, format, convert units, and visualize sensor string data.
-
-`sensorstrings` was developed specifically to streamline CMAR’s workflow, but is flexible enough that other users can apply it to process data from the accepted sensors (Table 1). **Vignettes to come**
+All sensor strings have at least one sensor that measures temperature, and most strings also have one dissolved oxygen sensor. Some strings also have a salinity sensor, typically upon request from shellfish aquaculture operators (Table 1). Strings are deployed at a station for several months and data are typically measured every 10 minutes to 1 hour, depending on the sensor.
 
 ```{r, echo=FALSE,caption= "Sensor Models included"}
 tibble(
@@ -100,10 +97,10 @@ tibble(
     "VR2AR"
   ),
   urls = c(
-    "https://www.onsetcomp.com/datasheet/U22-001",
-    "https://www.onsetcomp.com/datasheet/U26-001",
-    "https://www.innovasea.com/wp-content/uploads/2021/07/Innovasea-Aquaculture-Intelligence-Spec-Sheet-062221.pdf",
-    "https://www.innovasea.com/wp-content/uploads/2021/07/Innovasea-Aquaculture-Intelligence-Spec-Sheet-062221.pdf",
+    "https://www.onsetcomp.com/products/data-loggers/u22-001?srsltid=AfmBOoriI8QowHkQCbiLdFMNA12Lsbf-lYXC9vMDXgyhcHsibbLfWXDQ",
+    "https://www.onsetcomp.com/products/data-loggers/u26-001?srsltid=AfmBOoqXHvl-Em6Y01MSXAGDPh8dYywwhD25xynKzm1GtEffJrl4ws8x",
+    "https://www.innovasea.com/wp-content/uploads/2021/06/Innovasea-Aquaculture-Intelligence-Spec-Sheet-060721.pdf",
+    "https://www.innovasea.com/wp-content/uploads/2021/06/Innovasea-Aquaculture-Intelligence-Spec-Sheet-060721.pdf",
     "https://www.innovasea.com/wp-content/uploads/2021/06/Innovasea-Fish-Tracking-vr2ar-data-sheet-0621.pdf"
   ),
   `Variable(s) Measured` = c(
@@ -117,7 +114,15 @@ tibble(
   kable(align = "ll", format = "pipe")
 ```
 
-For more information on _Water Quality_ data collection and processing, visit the [CMAR Water Quality Data Collection & Processing Cheat Sheet](man/figures/README-workflow-cheatsheet.pdf) (download for clickable links).
+
+After retrieval, data from each sensor is exported to a separate csv file using manufacturer-specific software. Each type of sensor generates a data file with unique columns and header fields, which poses a significant challenge for compiling all data from a deployment into a single format for analysis.
+
+The `sensorstrings` package offers functions to compile, format, convert units, and visualize sensor string data.
+
+`sensorstrings` was developed specifically to streamline CMAR’s workflow, but is flexible enough that other users can apply it to process data from the accepted sensors (Table 1). 
+
+
+For more information on _Water Quality_ data collection and processing, visit the [CMAR Water Quality Data Collection & Processing Reference Sheet](https://cmar.ca/wp-content/uploads/sites/22/2024/06/2024-06-17_CMAR_CMP_Workflow.pdf).
 
 
 ## Example
@@ -131,7 +136,7 @@ Consider a string deployed from May 31, 2019 to October 19, 2019 with three sens
 ```{r, echo=FALSE}
 tibble(
   "Sensor" = c("HOBO Pro V2", "aquaMeasure DOT", "VR2AR"),
-  "Serial #" = c("10755220", "670364", "547109"),
+  "Serial Number" = c("10755220", "670364", "547109"),
   "Depth" = c("2", "5", "15")
 ) %>%
   kable(align = "lcc")
