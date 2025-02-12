@@ -46,7 +46,7 @@
 #' @family plot
 #' @author Danielle Dempsey
 
-#' @importFrom dplyr filter
+#' @importFrom dplyr any_of filter
 #' @importFrom ggpubr ggarrange
 #' @importFrom ggplot2 aes geom_point ggplot guides labs scale_x_datetime
 #'   scale_y_continuous theme theme_set theme_light
@@ -78,15 +78,17 @@ ss_plot_variables <- function(
   dat <- dat %>% select(-contains("flag"))
 
   if (!("variable" %in% colnames(dat))) {
+    vars_ss <- c(
+      "chlorophyll_blue_ug_per_l",
+      "chlorophyll_red_ug_per_l",
+      "dissolved_oxygen_percent_saturation",
+      "salinity_psu",
+      "sensor_depth_measured_m",
+      "temperature_degree_c"
+    )
+
     dat <- dat %>%
-      select(
-        contains("timestamp_"),
-        contains("dissolved_oxygen"),
-        contains("temperature"),
-        contains("salinity"),
-        contains("depth"),
-        contains("sensor")
-      ) %>%
+      select(contains("timestamp_"), any_of(vars_ss)) %>%
       ss_pivot_longer()
   }
 

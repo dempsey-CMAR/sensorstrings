@@ -142,6 +142,8 @@ ss_compile_deployment_data <- function(
       contains("timestamp"),
       contains("low_tide"),
       # variables in alphabetical order
+      contains("chlorophyll_blue"),
+      contains("chlorophyll_red"),
       contains("dissolved_oxygen_percent"),
       contains("dissolved_oxygen_uncorrected"),
       contains("salinity"),

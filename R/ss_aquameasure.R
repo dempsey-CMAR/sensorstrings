@@ -56,8 +56,8 @@ ss_read_aquameasure_data <- function(path, file_name) {
 #' @family compile
 #' @author Danielle Dempsey
 #'
-#' @importFrom dplyr %>% all_of distinct group_by if_else mutate n select slice
-#'   summarise tibble
+#' @importFrom dplyr %>% across all_of any_of bind_rows distinct group_by mutate
+#'   n select slice summarise tibble
 #' @importFrom glue glue
 #' @importFrom lubridate parse_date_time
 #' @importFrom stringr str_detect str_replace
@@ -88,6 +88,8 @@ ss_compile_aquameasure_data <- function(path,
 
   # initialize list for storing the output
   am_dat <- list(NULL)
+
+  #browser()
 
   # Import data -------------------------------------------------------------
 
@@ -147,8 +149,7 @@ ss_compile_aquameasure_data <- function(path,
     # use serial number to identify the depth from sn_table
     sensor_info_i <- dplyr::filter(sn_table, sensor_serial_number == sn_i)
 
-    # don't use the am_colnames variable here in case the name of the temperature
-    # column was changed
+    # variables to process
     vars <- extract_aquameasure_vars(colnames(am_i))
 
     # during start-up, aquameasure sensors sometimes record the same timestamp
@@ -156,20 +157,31 @@ ss_compile_aquameasure_data <- function(path,
     # will try trimming BEFORE pivoting to see if this helps.
     # if not, will group_by, summarise, and filter to remove duplicates
 
+    # records_to_keep <- c(
+    #   "Dissolved Oxygen",
+    #   "Temperature",
+    #   "Salinity",
+    #   "Device Depth",
+    #   "Chlorophyll Blue",
+    #   "Chlorophyll Red"
+    # )
+
     am_i <- am_i %>%
       select(
         timestamp_ = contains("stamp"),
         `Record Type`,
-        contains("Dissolved Oxygen"),
-        contains("Temperature"),
-        contains("Salinity"),
-        contains("Depth")
+        all_of(vars)
+        # contains("Dissolved Oxygen"),
+        # contains("Temperature"),
+        # contains("Salinity"),
+        # contains("Depth"),
+        # contains("Chlorophyll Blue"),
+        # contains("Chlorophyll Red")
       ) %>%
       filter(
         !str_detect(timestamp_, "after"),
         !str_detect(timestamp_, "undefined"),
-        `Record Type` %in%
-          c("Dissolved Oxygen", "Temperature", "Salinity", "Device Depth")
+        `Record Type` %in% vars
       ) %>%
       convert_timestamp_to_datetime()
 
@@ -207,7 +219,9 @@ ss_compile_aquameasure_data <- function(path,
         do_percent_saturation = contains("Dissolved Oxygen_Dissolved Oxygen"),
         temperature_degree_c = contains("Temperature_Temperature"),
         salinity_psu = contains("Salinity_Salinity"),
-        sensor_depth_measured_m = contains("Device Depth_Device Depth")
+        sensor_depth_measured_m = contains("Device Depth_Device Depth"),
+        chlorophyll_blue_ug_per_l = contains("Chlorophyll Blue_Chlorophyll Blue"),
+        chlorophyll_red_ug_per_l = contains("Chlorophyll Red_Chlorophyll Red")
       ) %>%
       add_deployment_columns(start_date, end_date, sensor_info_i)
 
@@ -215,52 +229,88 @@ ss_compile_aquameasure_data <- function(path,
 
 
     # convert ERR to -111 so that column can be saved as numeric --------------
-    if ("sensor_depth_measured_m" %in% colnames(am_i)) {
-      am_i <- am_i %>%
-        mutate(
-          sensor_depth_measured_m = if_else(
-            sensor_depth_measured_m == "ERR",
-            "-111", as.character(sensor_depth_measured_m)
-          ),
-          sensor_depth_measured_m = as.numeric(sensor_depth_measured_m)
-        )
-    }
+    vars_ss <- c(
+      "chlorophyll_blue_ug_per_l",
+      "chlorophyll_red_ug_per_l",
+      "dissolved_oxygen_percent_saturation",
+      "salinity_psu",
+      "sensor_depth_measured_m",
+      "temperature_degree_c"
+    )
 
-    if ("dissolved_oxygen_percent_saturation" %in% colnames(am_i)) {
-      am_i <- am_i %>%
-        mutate(
-          dissolved_oxygen_percent_saturation = if_else(
-            dissolved_oxygen_percent_saturation == "ERR",
-            "-111", as.character(dissolved_oxygen_percent_saturation)
-          ),
-          dissolved_oxygen_percent_saturation = as.numeric(
-            dissolved_oxygen_percent_saturation
-          )
-        )
-    }
+    am_i <- am_i %>%
+      mutate(
+        across(.cols = any_of(vars_ss),
+               .fns = ~str_replace_all(.x, pattern = "ERR", replacement = "-111")),
 
-    if ("salinity_psu" %in% colnames(am_i)) {
-      am_i <- am_i %>%
-        mutate(
-          salinity_psu = if_else(
-            salinity_psu == "ERR", "-111", as.character(salinity_psu)
-          ),
-          salinity_psu = as.numeric(salinity_psu)
-        )
-    }
+        across(.cols = any_of(vars_ss), .fns = ~as.numeric(.x))
+      )
 
-
-    if ("temperature_degree_c" %in% colnames(am_i)) {
-      am_i <- am_i %>%
-        mutate(temperature_degree_c = as.numeric(temperature_degree_c))
-    }
-
+#
+#     if ("sensor_depth_measured_m" %in% colnames(am_i)) {
+#       am_i <- am_i %>%
+#         mutate(
+#           sensor_depth_measured_m = if_else(
+#             sensor_depth_measured_m == "ERR",
+#             "-111", as.character(sensor_depth_measured_m)
+#           ),
+#           sensor_depth_measured_m = as.numeric(sensor_depth_measured_m)
+#         )
+#     }
+#
+#     if ("dissolved_oxygen_percent_saturation" %in% colnames(am_i)) {
+#       am_i <- am_i %>%
+#         mutate(
+#           dissolved_oxygen_percent_saturation = if_else(
+#             dissolved_oxygen_percent_saturation == "ERR",
+#             "-111", as.character(dissolved_oxygen_percent_saturation)
+#           ),
+#           dissolved_oxygen_percent_saturation = as.numeric(
+#             dissolved_oxygen_percent_saturation
+#           )
+#         )
+#     }
+#
+#     if ("salinity_psu" %in% colnames(am_i)) {
+#       am_i <- am_i %>%
+#         mutate(
+#           salinity_psu = if_else(
+#             salinity_psu == "ERR", "-111", as.character(salinity_psu)
+#           ),
+#           salinity_psu = as.numeric(salinity_psu)
+#         )
+#     }
+#
+#     if ("temperature_degree_c" %in% colnames(am_i)) {
+#       am_i <- am_i %>%
+#         mutate(temperature_degree_c = as.numeric(temperature_degree_c))
+#     }
+#
+#     if ("chlorophyll_blue_ug_per_l" %in% colnames(am_i)) {
+#       am_i <- am_i %>%
+#         mutate(
+#           chlorophyll_blue_ug_per_l = if_else(
+#             chlorophyll_blue_ug_per_l == "ERR", "-111", as.character(chlorophyll_blue_ug_per_l)
+#           ),
+#           chlorophyll_blue_ug_per_l = as.numeric(chlorophyll_blue_ug_per_l)
+#         )
+#     }
+#
+#     if ("chlorophyll_blue_ug_per_l" %in% colnames(am_i)) {
+#       am_i <- am_i %>%
+#         mutate(
+#           chlorophyll_red_ug_per_l = if_else(
+#             chlorophyll_red_ug_per_l == "ERR", "-111", as.character(chlorophyll_red_ug_per_l)
+#           ),
+#           chlorophyll_red_ug_per_l = as.numeric(chlorophyll_red_ug_per_l)
+#         )
+#     }
 
     am_dat[[i]] <- am_i
   } # end loop over files
 
   am_out <- am_dat %>%
-    map_df(rbind)
+    map_df(bind_rows)
 
   message("aquameasure data compiled")
 

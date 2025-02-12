@@ -18,10 +18,11 @@ ss_pivot_longer <- function(dat_wide) {
   dat_wide %>%
     pivot_longer(
       cols = c(
-        contains("temperature"),
+        contains("chlorophyll"),
+        contains("depth_measured"),
         contains("dissolved_oxygen"),
         contains("salinity"),
-        contains("depth_measured")
+        contains("temperature")
       ),
       names_to = "variable",
       values_to = "value",

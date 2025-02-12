@@ -12,7 +12,7 @@
 #' @return Returns data frame of NSDFA tracking sheet sensor string metadata.
 #'
 #' @importFrom readxl read_excel
-#' @importFrom dplyr case_when contains filter mutate select tibble
+#' @importFrom dplyr case_when contains if_else filter mutate select tibble
 #' @importFrom lubridate as_date
 #' @importFrom janitor convert_to_date
 #'
