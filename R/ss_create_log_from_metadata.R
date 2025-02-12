@@ -25,7 +25,7 @@
 #' @importFrom readxl read_excel
 #' @importFrom lubridate as_date
 #' @importFrom stringr str_to_title
-#' @importFrom dplyr %>% filter mutate transmute
+#' @importFrom dplyr %>% if_else filter mutate transmute
 #' @importFrom utils write.csv
 #'
 #' @export

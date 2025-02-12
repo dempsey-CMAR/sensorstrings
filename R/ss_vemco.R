@@ -12,7 +12,7 @@
 #' @author Danielle Dempsey
 #'
 #' @importFrom data.table fread
-#' @importFrom dplyr %>%  as_tibble
+#' @importFrom dplyr %>%  as_tibble if_else
 #' @importFrom janitor convert_to_datetime
 #' @importFrom lubridate parse_date_time
 #' @importFrom readxl read_excel

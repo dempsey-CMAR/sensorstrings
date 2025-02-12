@@ -66,16 +66,21 @@ ss_ggplot_variables <- function(
 
 #  format data -------------------------------------------------------------
 
+  dat <- dat %>% rename(Date = contains("timestamp_"))
+
   if (!("variable" %in% colnames(dat))) {
+
+    vars_ss <- c(
+      "chlorophyll_blue_ug_per_l",
+      "chlorophyll_red_ug_per_l",
+      "dissolved_oxygen_percent_saturation",
+      "salinity_psu",
+      "sensor_depth_measured_m",
+      "temperature_degree_c"
+    )
+
     dat <- dat %>%
-      select(
-        Date = contains("timestamp_"),
-        contains("dissolved_oxygen"),
-        contains("temperature"),
-        contains("salinity"),
-        contains("depth"),
-        contains("sensor")
-      ) %>%
+      select(Date, sensor_depth_at_low_tide_m, any_of(vars_ss)) %>%
       ss_pivot_longer()
   }
 

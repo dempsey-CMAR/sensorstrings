@@ -146,12 +146,20 @@ ss_create_variable_labels <- function(dat) {
     "Uncorrected \nDissolved Oxygen \n(mg / L)",
     "Dissolved Oxygen \n(mg / L)",
     "Salinity \n(PSU)",
+    "Chlorophyll Blue \n(\u03BCg/L)",
+    "Chlorophyll Red \n(\u03BCg/L)",
     "Sensor Depth \n(m)"
   )
 
   dat %>%
     mutate(
       variable_label = case_when(
+        variable == "chlorophyll_blue_ug_per_l" ~
+          "Chlorophyll Blue \n(\u03BCg/L)",
+
+        variable == "chlorophyll_red_ug_per_l" ~
+          "Chlorophyll Red \n(\u03BCg/L)",
+
         variable == "dissolved_oxygen_percent_saturation" ~
           "Dissolved Oxygen \n(% sat)",
         variable == "dissolved_oxygen_uncorrected_mg_per_l" ~
@@ -192,12 +200,18 @@ ss_create_variable_labels_no_newline <- function(dat) {
     "Uncorrected Dissolved Oxygen (mg/L)",
     "Dissolved Oxygen (mg/L)",
     "Salinity (PSU)",
+    "Chlorophyll Blue (\u03BCg / L)",
+    "Chlorophyll Red (\u03BCg / L)",
     "Sensor Depth (m)"
   )
 
   dat %>%
     mutate(
       variable_label = case_when(
+        variable == "chlorophyll_blue_ug_per_l" ~ "Chlorophyll Blue (\u03BCg / L)",
+
+        variable == "chlorophyll_red_ug_per_l" ~ "Chlorophyll Red (\u03BCg / L)",
+
         variable == "dissolved_oxygen_percent_saturation" ~
           "Dissolved Oxygen (% sat)",
         variable == "dissolved_oxygen_uncorrected_mg_per_l" ~
