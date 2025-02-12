@@ -47,7 +47,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="sensorstrings">sensorstrings<a class="anchor" aria-label="anchor" href="#sensorstrings"></a>
 </h1></div>
-<p><img src="reference/figures/hex_sensorstrings.png" width="25%" style="display: block; margin: auto;"></p>
+<p><img src="reference/figures/2025_hex_sensorstrings.png" width="25%" style="display: block; margin: auto;"></p>
 <!-- badges: start -->
 
 <p><strong>This package replaces the <a href="https://github.com/Centre-for-Marine-Applied-Research/strings" class="external-link">strings</a> package.</strong></p>
@@ -83,18 +83,16 @@
 <div class="section level2">
 <h2 id="background">Background<a class="anchor" aria-label="anchor" href="#background"></a>
 </h2>
-<p>The Centre for Marine Applied Research (<a href="https://cmar.ca/" class="external-link">CMAR</a>) coordinates an extensive <a href="https://cmar.ca/coastal-monitoring-program/" class="external-link">Coastal Monitoring Program</a> to measure <a href="https://www.goosocean.org/index.php?option=com_content&amp;view=article&amp;id=14&amp;Itemid=114" class="external-link">Essential Ocean Variables</a> from around the coast of Nova Scotia, Canada. There are three main branches of the program: <em>Water Quality</em>, <em>Currents</em>, and <em>Waves</em>. Processed data for each branch can be viewed and downloaded from several sources, as outlined in the <a href="https://github.com/Centre-for-Marine-Applied-Research/strings/blob/master/man/figures/README-access-cheatsheet.pdf" class="external-link">CMAR Report &amp; Data Access Cheat Sheet</a> (download for clickable links).</p>
+<p>The Centre for Marine Applied Research (<a href="https://cmar.ca/" class="external-link">CMAR</a>) coordinates an extensive <a href="https://cmar.ca/coastal-monitoring-program/" class="external-link">Coastal Monitoring Program</a> to measure <a href="https://www.goosocean.org/index.php?option=com_content&amp;view=article&amp;id=14&amp;Itemid=114" class="external-link">Essential Ocean Variables</a> from around the coast of Nova Scotia, Canada. There are three main branches of the program: <em>Water Quality</em>, <em>Currents</em>, and <em>Waves</em>. Processed data for each branch can be viewed and downloaded from several sources, as outlined in the <a href="https://cmar.ca/wp-content/uploads/sites/22/2024/07/Report-Data-Access-2024-07-30.pdf" class="external-link">CMAR Report &amp; Data Access Reference Sheet</a>.</p>
 <p>The <code>sensorstrings</code> package is the backbone of the data pipeline for the <em>Water Quality</em> branch of the Coastal Monitoring Program. It is used to organize, compile, format, and visualize data <em>Water Quality</em> data.</p>
-<p><em>Water Quality</em> data (temperature, dissolved oxygen, and salinity) is collected using “sensor strings”. Each sensor string is attached to the seafloor by an anchor and suspended by a sub-surface buoy, with autonomous sensors attached at various depths (Figure 1). A string typically includes three sensor models: Hobo, aquaMeasure, and VR2AR (Table 1). Strings are deployed at a station for several months and data are measured every 1 minute to 1 hour, depending on the sensor.</p>
-<p><img src="reference/figures/figure1.png" width="55%" style="display: block; margin: auto;"> Figure 1: Typical sensor string configuration (not to scale).</p>
+<p><em>Water Quality</em> data (temperature, dissolved oxygen, and salinity) is collected using stationary moorings referred to as “sensor strings”. A typical sensor string configuration consists of a rope attached to the seafloor by an anchor and suspended by a sub-surface buoy, with sensors attached at various depths (Figure 1). Alternatively, sensors may be attached to surface buoys, equipment, floating docks, or fixed structures (Figure 1).</p>
+<p><img src="reference/figures/sensor_configurations.png" width="2304" style="display: block; margin: auto;"> Figure 1: Sensor string configurations (not to scale).</p>
 <p><br><br></p>
-<p>After retrieval, data from each sensor is exported to a separate csv file using manufacturer-specific software. Each type of sensor generates a data file with unique columns and header fields, which poses a significant challenge for compiling all data from a deployment into a single format for analysis.</p>
-<p>The <code>sensorstrings</code> package offers functions to compile, format, convert units, and visualize sensor string data.</p>
-<p><code>sensorstrings</code> was developed specifically to streamline CMAR’s workflow, but is flexible enough that other users can apply it to process data from the accepted sensors (Table 1). <strong>Vignettes to come</strong></p>
+<p>All sensor strings have at least one sensor that measures temperature, and most strings also have one dissolved oxygen sensor. Some strings also have a salinity sensor, typically upon request from shellfish aquaculture operators (Table 1). Strings are deployed at a station for several months and data are typically measured every 10 minutes to 1 hour, depending on the sensor.</p>
 <table class="table">
 <colgroup>
-<col width="80%">
-<col width="19%">
+<col width="81%">
+<col width="18%">
 </colgroup>
 <thead><tr class="header">
 <th align="left">Sensor</th>
@@ -102,19 +100,19 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left"><a href="https://www.onsetcomp.com/datasheet/U22-001" class="external-link">HOBO Pro V2</a></td>
+<td align="left"><a href="https://www.onsetcomp.com/products/data-loggers/u22-001?srsltid=AfmBOoriI8QowHkQCbiLdFMNA12Lsbf-lYXC9vMDXgyhcHsibbLfWXDQ" class="external-link">HOBO Pro V2</a></td>
 <td align="left">Temperature</td>
 </tr>
 <tr class="even">
-<td align="left"><a href="https://www.onsetcomp.com/datasheet/U26-001" class="external-link">HOBO DO</a></td>
+<td align="left"><a href="https://www.onsetcomp.com/products/data-loggers/u26-001?srsltid=AfmBOoqXHvl-Em6Y01MSXAGDPh8dYywwhD25xynKzm1GtEffJrl4ws8x" class="external-link">HOBO DO</a></td>
 <td align="left">Temperature, Dissolved Oxygen</td>
 </tr>
 <tr class="odd">
-<td align="left"><a href="https://www.innovasea.com/wp-content/uploads/2021/07/Innovasea-Aquaculture-Intelligence-Spec-Sheet-062221.pdf" class="external-link">aquaMeasure DOT</a></td>
+<td align="left"><a href="https://www.innovasea.com/wp-content/uploads/2021/06/Innovasea-Aquaculture-Intelligence-Spec-Sheet-060721.pdf" class="external-link">aquaMeasure DOT</a></td>
 <td align="left">Temperature, Dissolved Oxygen</td>
 </tr>
 <tr class="even">
-<td align="left"><a href="https://www.innovasea.com/wp-content/uploads/2021/07/Innovasea-Aquaculture-Intelligence-Spec-Sheet-062221.pdf" class="external-link">aquaMeasure SAL</a></td>
+<td align="left"><a href="https://www.innovasea.com/wp-content/uploads/2021/06/Innovasea-Aquaculture-Intelligence-Spec-Sheet-060721.pdf" class="external-link">aquaMeasure SAL</a></td>
 <td align="left">Temperature, Salinity</td>
 </tr>
 <tr class="odd">
@@ -123,7 +121,10 @@
 </tr>
 </tbody>
 </table>
-<p>For more information on <em>Water Quality</em> data collection and processing, visit the <a href="man/figures/README-workflow-cheatsheet.pdf">CMAR Water Quality Data Collection &amp; Processing Cheat Sheet</a> (download for clickable links).</p>
+<p>After retrieval, data from each sensor is exported to a separate csv file using manufacturer-specific software. Each type of sensor generates a data file with unique columns and header fields, which poses a significant challenge for compiling all data from a deployment into a single format for analysis.</p>
+<p>The <code>sensorstrings</code> package offers functions to compile, format, convert units, and visualize sensor string data.</p>
+<p><code>sensorstrings</code> was developed specifically to streamline CMAR’s workflow, but is flexible enough that other users can apply it to process data from the accepted sensors (Table 1).</p>
+<p>For more information on <em>Water Quality</em> data collection and processing, visit the <a href="https://cmar.ca/wp-content/uploads/sites/22/2024/06/2024-06-17_CMAR_CMP_Workflow.pdf" class="external-link">CMAR Water Quality Data Collection &amp; Processing Reference Sheet</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
@@ -137,7 +138,7 @@
 Sensor
 </th>
 <th style="text-align:center;">
-Serial #
+Serial Number
 </th>
 <th style="text-align:center;">
 Depth
@@ -311,7 +312,7 @@ VR2AR
 <span><span class="co">#&gt; ✔ Range ''Area Info''.</span></span>
 <span><span class="co">#&gt; aquameasure data compiled</span></span>
 <span><span class="co">#&gt; hobo data compiled</span></span>
-<span><span class="co">#&gt; vemco data compiled: Temperature &amp; Seawater depth</span></span>
+<span><span class="co">#&gt; vemco data from sensor &lt;&lt;  547109  &gt;&gt; compiled: Temperature &amp; Seawater depth</span></span>
 <span></span>
 <span><span class="fu">kable</span><span class="op">(</span><span class="va">dat</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <table class="table">
@@ -873,7 +874,7 @@ NA
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.gnu.org/licenses/gpl-3.0" class="external-link"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a></li>
-<li><a href="https://github.com/dempsey-cmar/sensorstrings" class="external-link"><img src="https://img.shields.io/badge/devel%20version-0.4.0-blue.svg"></a></li>
+<li><a href="https://github.com/dempsey-cmar/sensorstrings" class="external-link"><img src="https://img.shields.io/badge/devel%20version-1.0.3-blue.svg"></a></li>
 <li><a href="https://www.codefactor.io/repository/github/dempsey-cmar/sensorstrings" class="external-link"><img src="https://www.codefactor.io/repository/github/dempsey-cmar/sensorstrings/badge" alt="CodeFactor"></a></li>
 <li><a href="https://github.com/dempsey-cmar/sensorstrings/actions" class="external-link"><img src="https://github.com/dempsey-cmar/sensorstrings/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 </ul>
