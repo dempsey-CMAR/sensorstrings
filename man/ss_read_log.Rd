@@ -7,7 +7,8 @@
 ss_read_log(path, use_config = TRUE, path_config = NULL)
 }
 \arguments{
-\item{path}{File path to the Log folder.}
+\item{path}{File path to the Log folder, or full path to the log file,
+include file name and extension.}
 
 \item{use_config}{Logical argument indicating whether to use a configuration
 table. Defaults to the water_quality_configuration_table.xslx on the CMAR R

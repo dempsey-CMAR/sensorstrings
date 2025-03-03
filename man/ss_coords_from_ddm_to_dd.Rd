@@ -26,7 +26,7 @@ coords_ddm <- c("deployment_latitude_n_ddm", "deployment_longitude_w_ddm",
 2. Use the .names argument to specify new column names so that the original
 columns are not over-written:
 
-dat <- dat_raw %>% mutate( across(any_of(coords_ddm),
+\code{dat <- dat_raw %>% mutate( across(any_of(coords_ddm),
 ~ss_coords_from_ddm_to_dd(.x), .names = "{str_remove(.col, '_w_ddm|_n_ddm')}"
-))
+))}
 }

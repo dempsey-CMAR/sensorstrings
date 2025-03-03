@@ -50,7 +50,8 @@
 #'   \code{Deployment}, \code{Retrieval}, \code{Logger_Latitude}, or
 #'   \code{Logger_Longitude}.
 #'
-#' @param path File path to the Log folder.
+#' @param path File path to the Log folder, or full path to the log file,
+#'   include file name and extension.
 #'
 #' @param use_config Logical argument indicating whether to use a configuration
 #'   table. Defaults to the water_quality_configuration_table.xslx on the CMAR R
@@ -102,39 +103,54 @@
 #' @importFrom readxl read_excel
 #' @importFrom stringr str_replace str_detect
 #' @importFrom tidyr separate
+#' @importFrom utils file_test
 #'
 #' @export
 
-ss_read_log <- function(path, use_config = TRUE, path_config = NULL) {
+ss_read_log <- function(
+    path,
+    use_config = TRUE,
+    path_config = NULL
+) {
   # Read in log -----------------------------------------------------------
   # extract the name of the log folder (e.g. Log, log, LOG)
-  folder <- list.files(path) %>%
-    str_extract(regex("log", ignore_case = TRUE)) %>%
-    na.omit()
 
-  path <- glue("{path}/{folder}")
-
-  dat_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|*xls|*csv")
-
-  # remove files that start with "~"
-  if (any(substring(dat_files, 1, 1) == "~")) {
-    dat_files <- dat_files[-which(substring(dat_files, 1, 1) == "~")]
+  if (length(path) > 1) {
+    stop("More than one file path detected")
   }
 
-  if (length(dat_files) > 1) {
-    stop("More than one file found in the Log folder")
+  # if path goes to the deployment folder, finish with log folder + file name + extenstion
+  # for cmar folder structure
+  if (isFALSE(utils::file_test("-f", path))) {
+
+    folder <- list.files(path) %>%
+      str_extract(regex("log", ignore_case = TRUE)) %>%
+      na.omit()
+
+    path <- glue("{path}/{folder}")
+
+    dat_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|*xls|*csv")
+
+    # remove files that start with "~"
+    if (any(substring(dat_files, 1, 1) == "~")) {
+      dat_files <- dat_files[-which(substring(dat_files, 1, 1) == "~")]
+    }
+    if (length(dat_files) > 1) {
+      stop("More than one file found in the log folder")
+    }
+    path <- paste(path, dat_files, sep = "/")
   }
 
   # file extension
-  file_type <- extract_file_extension(dat_files)
+  file_type <- extract_file_extension(path)
 
   if (file_type == "xls" | file_type == "xlsx") {
-    log <- read_excel(paste(path, dat_files, sep = "/"), na = c("", "n/a", "N/A"))
+    log <- read_excel(path, na = c("", "n/a", "N/A"))
   }
 
   if (file_type == "csv") {
     log <- fread(
-      paste(path, dat_files, sep = "/"),
+      path,
       data.table = FALSE,
       na.strings = c("", "n/a", "N/A")
     )

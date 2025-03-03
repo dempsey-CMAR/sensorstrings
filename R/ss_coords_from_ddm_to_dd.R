@@ -10,9 +10,9 @@
 #' 2. Use the .names argument to specify new column names so that the original
 #' columns are not over-written:
 #'
-#' dat <- dat_raw %>% mutate( across(any_of(coords_ddm),
+#' \code{dat <- dat_raw %>% mutate( across(any_of(coords_ddm),
 #' ~ss_coords_from_ddm_to_dd(.x), .names = "{str_remove(.col, '_w_ddm|_n_ddm')}"
-#' ))
+#' ))}
 #'
 #' @param coords_ddm Vector of coordinate values in degree decimal minutes (xx
 #'   xx.xxxx, e.g., 45 21.651 or 64 2.063). These will be converted to decimal
