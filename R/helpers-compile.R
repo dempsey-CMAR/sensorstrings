@@ -51,27 +51,34 @@ set_up_compile <- function(path,
   # name of folder (case-insensitive)
   if (sensor_make == "VR2AR") sensor_make <- "vemco"
 
-  folder <- list.files(path) %>%
-    str_extract(regex(sensor_make, ignore_case = TRUE)) %>%
-    na.omit()
+  # if file path already includes file names
+  if (all(utils::file_test("-f", path))) {
+    dat_files <- path
+    excel_files <- dat_files[grep("xlsx|xls", dat_files)]
+  } else{
+    folder <- list.files(path) %>%
+      str_extract(regex(sensor_make, ignore_case = TRUE)) %>%
+      na.omit()
 
-  if (length(folder) == 0) {
-    stop("There is no folder named << ", sensor_make, " >> in path << ", path, " >>")
+    if (length(folder) == 0) {
+      stop("There is no folder named << ", sensor_make, " >> in path << ", path, " >>")
+    }
+
+    path <- glue("{path}/{folder}")
+
+    # list files in the sensor folder
+    dat_files <- list.files(path, all.files = FALSE, pattern = "*csv")
+    # check for excel files
+    excel_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|xls")
+
+    dat_files <- glue("{path}/{dat_files}")
   }
-
-  # path to hobo files
-  path <- glue("{path}/{folder}")
-
-  # list files in the sensor folder
-  dat_files <- list.files(path, all.files = FALSE, pattern = "*csv")
-
-  # check for excel files
-  excel_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|xls")
 
   # check for surprises in dat_files
   if (length(dat_files) == 0) {
     stop(glue("Can't find csv files in {path}"))
   }
+
 
   if (sensor_make == "vemco" && length(dat_files) > 1) {
     warning(glue("There are {length(dat_files)} csv files in {path}.
@@ -85,7 +92,7 @@ set_up_compile <- function(path,
 
   if (length(excel_files) > 0) {
     warning(glue("Can't compile excel files.
-    {length(excel_files)} excel files found in {sensor_make} folder.
+    {length(excel_files)} excel files found.
     \nHINT: Please re-export in csv format."))
   }
 

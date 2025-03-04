@@ -4,7 +4,8 @@
 #'
 #' @inheritParams ss_read_hobo_data
 #'
-#' @param path File path to the vemco folder.
+#' @param path File path to the vemco folder, or full path to the data
+#'   file including file name and extension.
 #'
 #' @return Returns a data frame of vemco data, with the same columns as in the
 #'   original file.
@@ -22,10 +23,13 @@
 
 
 ss_read_vemco_data <- function(path, file_name) {
-  assert_that(has_extension(file_name, "csv"))
 
-  # finish path
-  path <- file.path(str_glue("{path}/{file_name}"))
+  # finish path if needed
+  if (isFALSE(utils::file_test("-f", path))) {
+    path <- file.path(str_glue("{path}/{file_name}"))
+  }
+
+  assert_that(has_extension(path, "csv"))
 
   data.table::fread(
     path,
@@ -93,13 +97,11 @@ ss_compile_vemco_data <- function(path,
   )
 
   path <- setup$path
-
+  dat_files <- setup$dat_files
   sn_table <- setup$sn_table
 
   start_date <- setup$dates$start
   end_date <- setup$dates$end
-
-  dat_files <- setup$dat_files
 
   # initialize list for storing the output
   vem_dat <- list(NULL)
@@ -108,10 +110,12 @@ ss_compile_vemco_data <- function(path,
 
   # loop over each aM file
   for (i in seq_along(dat_files)) {
-    file_name <- dat_files[i]
+    #file_name <- dat_files[i]
+    file_i <- dat_files[i]
+    file_name <- sub(".csv", "", sub(".*/", "", file_i, perl = TRUE))
 
     # Extract metadata --------------------------------------------------------
-    dat_i <- ss_read_vemco_data(path, file_name)
+    dat_i <- ss_read_vemco_data(file_i)
 
     dat_colnames <- colnames(dat_i)
 

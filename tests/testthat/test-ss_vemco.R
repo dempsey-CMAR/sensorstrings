@@ -14,10 +14,17 @@ test_that("ss_read_vemco_data() reads in all observations", {
   expect_equal(nrow(vemco1), 124)
 })
 
+test_that("ss_read_vemco_data() reads data when path includes file name", {
+  expect_equal(vemco1, vemco2)
+})
+
 
 test_that("ss_read_vemco_data() report error for excel files", {
   expect_error(ss_read_vemco_data(path, "error.xls"))
   expect_error(ss_read_vemco_data(path, "error.xlsx"))
+
+  expect_error(ss_read_vemco_data(path, "1234567"))
+  expect_error(ss_read_vemco_data(paste0(path_vemco, "/12345678")))
 })
 
 
@@ -35,6 +42,7 @@ test_that("ss_compile_vemco_data() returns correct classes", {
 
 test_that("ss_compile_vemco_data() reads in all observations", {
   expect_equal(nrow(vem_all), 16)
+  expect_equal(nrow(vem_all2), 16)
   expect_equal(nrow(vem_trim), 15)
   expect_equal(nrow(vem_trim2), 15)
 })

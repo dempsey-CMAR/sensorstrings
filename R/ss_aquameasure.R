@@ -4,7 +4,8 @@
 #'
 #' @inheritParams ss_read_hobo_data
 #'
-#' @param path File path to the aquameasure file.
+#' @param path File path to the aquameasure folder, or full path to the data
+#'   file including file name and extension.
 #'
 #' @return Returns a data frame of aquameasure data, with the same columns as in
 #'   the original file.
@@ -17,11 +18,14 @@
 #'
 #' @export
 
-ss_read_aquameasure_data <- function(path, file_name) {
-  assert_that(has_extension(file_name, "csv"))
+ss_read_aquameasure_data <- function(path, file_name = NULL) {
 
-  # finish path
-  path <- file.path(str_glue("{path}/{file_name}"))
+  # finish path if needed
+  if (isFALSE(utils::file_test("-f", path))) {
+    path <- file.path(str_glue("{path}/{file_name}"))
+  }
+
+  assert_that(has_extension(path, "csv"))
 
   data.table::fread(
     path,
@@ -78,26 +82,25 @@ ss_compile_aquameasure_data <- function(path,
   )
 
   path <- setup$path
-
+  dat_files <- setup$dat_files
   sn_table <- setup$sn_table
 
   start_date <- setup$dates$start
   end_date <- setup$dates$end
 
-  dat_files <- setup$dat_files
-
   # initialize list for storing the output
   am_dat <- list(NULL)
-
-  #browser()
 
   # Import data -------------------------------------------------------------
 
   # loop over each aM file
   for (i in seq_along(dat_files)) {
-    file_name <- dat_files[i]
+    #file_name <- dat_files[i]
 
-    am_i <- ss_read_aquameasure_data(path, file_name)
+    file_i <- dat_files[i]
+    file_name <- sub(".csv", "", sub(".*/", "", file_i, perl = TRUE))
+
+    am_i <- ss_read_aquameasure_data(file_i)
 
     am_colnames <- colnames(am_i)
 
@@ -152,31 +155,11 @@ ss_compile_aquameasure_data <- function(path,
     # variables to process
     vars <- extract_aquameasure_vars(colnames(am_i))
 
-    # during start-up, aquameasure sensors sometimes record the same timestamp
-    # twice, which give an error in pivot_wider (values are not uniquely identified)
-    # will try trimming BEFORE pivoting to see if this helps.
-    # if not, will group_by, summarise, and filter to remove duplicates
-
-    # records_to_keep <- c(
-    #   "Dissolved Oxygen",
-    #   "Temperature",
-    #   "Salinity",
-    #   "Device Depth",
-    #   "Chlorophyll Blue",
-    #   "Chlorophyll Red"
-    # )
-
     am_i <- am_i %>%
       select(
         timestamp_ = contains("stamp"),
         `Record Type`,
         all_of(vars)
-        # contains("Dissolved Oxygen"),
-        # contains("Temperature"),
-        # contains("Salinity"),
-        # contains("Depth"),
-        # contains("Chlorophyll Blue"),
-        # contains("Chlorophyll Red")
       ) %>%
       filter(
         !str_detect(timestamp_, "after"),
@@ -245,66 +228,6 @@ ss_compile_aquameasure_data <- function(path,
 
         across(.cols = any_of(vars_ss), .fns = ~as.numeric(.x))
       )
-
-#
-#     if ("sensor_depth_measured_m" %in% colnames(am_i)) {
-#       am_i <- am_i %>%
-#         mutate(
-#           sensor_depth_measured_m = if_else(
-#             sensor_depth_measured_m == "ERR",
-#             "-111", as.character(sensor_depth_measured_m)
-#           ),
-#           sensor_depth_measured_m = as.numeric(sensor_depth_measured_m)
-#         )
-#     }
-#
-#     if ("dissolved_oxygen_percent_saturation" %in% colnames(am_i)) {
-#       am_i <- am_i %>%
-#         mutate(
-#           dissolved_oxygen_percent_saturation = if_else(
-#             dissolved_oxygen_percent_saturation == "ERR",
-#             "-111", as.character(dissolved_oxygen_percent_saturation)
-#           ),
-#           dissolved_oxygen_percent_saturation = as.numeric(
-#             dissolved_oxygen_percent_saturation
-#           )
-#         )
-#     }
-#
-#     if ("salinity_psu" %in% colnames(am_i)) {
-#       am_i <- am_i %>%
-#         mutate(
-#           salinity_psu = if_else(
-#             salinity_psu == "ERR", "-111", as.character(salinity_psu)
-#           ),
-#           salinity_psu = as.numeric(salinity_psu)
-#         )
-#     }
-#
-#     if ("temperature_degree_c" %in% colnames(am_i)) {
-#       am_i <- am_i %>%
-#         mutate(temperature_degree_c = as.numeric(temperature_degree_c))
-#     }
-#
-#     if ("chlorophyll_blue_ug_per_l" %in% colnames(am_i)) {
-#       am_i <- am_i %>%
-#         mutate(
-#           chlorophyll_blue_ug_per_l = if_else(
-#             chlorophyll_blue_ug_per_l == "ERR", "-111", as.character(chlorophyll_blue_ug_per_l)
-#           ),
-#           chlorophyll_blue_ug_per_l = as.numeric(chlorophyll_blue_ug_per_l)
-#         )
-#     }
-#
-#     if ("chlorophyll_blue_ug_per_l" %in% colnames(am_i)) {
-#       am_i <- am_i %>%
-#         mutate(
-#           chlorophyll_red_ug_per_l = if_else(
-#             chlorophyll_red_ug_per_l == "ERR", "-111", as.character(chlorophyll_red_ug_per_l)
-#           ),
-#           chlorophyll_red_ug_per_l = as.numeric(chlorophyll_red_ug_per_l)
-#         )
-#     }
 
     am_dat[[i]] <- am_i
   } # end loop over files

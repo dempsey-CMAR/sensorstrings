@@ -15,10 +15,14 @@ test_that("ss_read_aquameasure_data() reads in all observations", {
   expect_equal(nrow(am1), 47)
 })
 
-test_that("ss_read_aquameasure_data() gives an error when file extension is not csv", {
-  expect_error(ss_read_aquameasure_data(path, "1234567"))
+test_that("ss_read_aquameasure_data() reads data when path includes file name", {
+  expect_equal(am1, am2)
 })
 
+test_that("ss_read_aquameasure_data() gives an error when file extension is not csv", {
+  expect_error(ss_read_aquameasure_data(path, "1234567"))
+  expect_error(ss_read_aquameasure_data(paste0(path_am, "/aquaMeasure-670364")))
+})
 
 # ss_compile_aquameasure_data ---------------------------------------------
 
@@ -36,6 +40,7 @@ test_that("ss_compile_aquameasure_data() returns correct classes", {
 
 test_that("ss_compile_aquameasure_data() reads in all observations", {
   expect_equal(nrow(am_all), 64)
+  expect_equal(nrow(am_all2), 64)
   expect_equal(nrow(am_trim), 55)
 })
 

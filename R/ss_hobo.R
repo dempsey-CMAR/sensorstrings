@@ -2,9 +2,11 @@
 #'
 #' @details The data must be saved in csv format.
 #'
-#' @param path File path to the hobo or tidbit file.
+#' @param path File path to the hobo folder, or full path to the data
+#'   file including file name and extension.
 #'
-#' @param file_name Name of the file to import, including file extension.
+#' @param file_name Name of the file to import, including file extension. Should
+#'   be \code{NULL} if the file name is included in the \code{path} argument.
 #'
 #' @return Returns a data frame of hobo or tidbit data, with the same columns as
 #'   in the original file.
@@ -17,11 +19,14 @@
 #'
 #' @export
 
-ss_read_hobo_data <- function(path, file_name) {
-  assert_that(has_extension(file_name, "csv"))
+ss_read_hobo_data <- function(path, file_name = NULL) {
 
-  # finish path
-  path <- file.path(str_glue("{path}/{file_name}"))
+  # finish path if needed
+  if (isFALSE(utils::file_test("-f", path))) {
+    path <- file.path(str_glue("{path}/{file_name}"))
+  }
+
+  assert_that(has_extension(path, "csv"))
 
   # read in data
   # start with row that includes the "Date" header
@@ -102,13 +107,11 @@ ss_compile_hobo_data <- function(path,
   )
 
   path <- setup$path
-
+  dat_files <- setup$dat_files
   sn_table <- setup$sn_table
 
   start_date <- setup$dates$start
   end_date <- setup$dates$end
-
-  dat_files <- setup$dat_files
 
   # initialize list for storing the output
   hobo_dat <- list(NULL)
@@ -116,9 +119,12 @@ ss_compile_hobo_data <- function(path,
   # loop over each HOBO file
   for (i in seq_along(dat_files)) {
     # Import Data -------------------------------------------------------------
-    file_name <- dat_files[i]
 
-    hobo_i <- ss_read_hobo_data(path, file_name) %>%
+    # if(!is.null(file_name)) file_name <- dat_files[i]
+    file_i <- dat_files[i]
+    file_name <- sub(".csv", "", sub(".*/", "", file_i, perl = TRUE))
+
+    hobo_i <- ss_read_hobo_data(file_i) %>%
       # to avoid deprecation Warning from GitHub Actions check
       filter(if_all(everything(), ~ !grepl("Logged", .)))
 
@@ -127,7 +133,7 @@ ss_compile_hobo_data <- function(path,
     new_col_names <- make_column_names(hobo_units)
 
     # sn and timezone checks --------------------------------------------------
-    file_name <- str_remove(file_name, ".csv")
+
     sn_i <- extract_hobo_sn(colnames(hobo_i))
 
     tz_i <- filter(hobo_units, str_detect(variable, pattern = "Date"))

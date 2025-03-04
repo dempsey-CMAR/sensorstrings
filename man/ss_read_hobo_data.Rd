@@ -4,12 +4,14 @@
 \alias{ss_read_hobo_data}
 \title{Import data from hobo or tidbit csv file}
 \usage{
-ss_read_hobo_data(path, file_name)
+ss_read_hobo_data(path, file_name = NULL)
 }
 \arguments{
-\item{path}{File path to the hobo or tidbit file.}
+\item{path}{File path to the hobo folder, or full path to the data
+file including file name and extension.}
 
-\item{file_name}{Name of the file to import, including file extension.}
+\item{file_name}{Name of the file to import, including file extension. Should
+be \code{NULL} if the file name is included in the \code{path} argument.}
 }
 \value{
 Returns a data frame of hobo or tidbit data, with the same columns as

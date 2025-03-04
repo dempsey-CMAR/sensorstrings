@@ -7,9 +7,11 @@
 ss_read_vemco_data(path, file_name)
 }
 \arguments{
-\item{path}{File path to the vemco folder.}
+\item{path}{File path to the vemco folder, or full path to the data
+file including file name and extension.}
 
-\item{file_name}{Name of the file to import, including file extension.}
+\item{file_name}{Name of the file to import, including file extension. Should
+be \code{NULL} if the file name is included in the \code{path} argument.}
 }
 \value{
 Returns a data frame of vemco data, with the same columns as in the
