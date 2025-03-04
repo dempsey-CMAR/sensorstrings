@@ -19,6 +19,8 @@ path_am <- system.file("testdata/aquameasure", package = "sensorstrings")
 
 am1 <- ss_read_aquameasure_data(path_am, "aquaMeasure-670364.csv")
 
+am2 <- ss_read_aquameasure_data(paste0(path_am, "/aquaMeasure-670364.csv"))
+
 # ss_compile_aquameasure_data ---------------------------------------------
 
 sn_am <- data.frame(
@@ -29,6 +31,16 @@ sn_am <- data.frame(
 
 am_all <- ss_compile_aquameasure_data(
   path,
+  sn_table = sn_am,
+  deployment_dates = deployment_dates,
+  trim = FALSE
+)
+
+## paths needed for dashboard
+am_all2 <- ss_compile_aquameasure_data(
+  path = c(paste0(path_am, "/aquaMeasure-670364.csv"),
+           paste0(path_am, "/aquaMeasure-675008.csv"),
+           paste0(path_am, "/aquaMeasure-680154.csv")),
   sn_table = sn_am,
   deployment_dates = deployment_dates,
   trim = FALSE
@@ -56,6 +68,9 @@ hobo2 <- ss_read_hobo_data(path_hobo, "20827226.csv") %>%
   # the degree symbol was causing a problem
   dplyr::rename(temperature = 4)
 
+hobo3 <- ss_read_hobo_data(paste0(path_hobo, "/20827226.csv")) %>%
+  dplyr::rename(temperature = 4)
+
 # # ss_compile_hobo_data ----------------------------------------------------
 
 sn_hobo <- data.frame(
@@ -66,6 +81,15 @@ sn_hobo <- data.frame(
 
 hobo_all <- ss_compile_hobo_data(
   path,
+  sn_table = sn_hobo,
+  deployment_dates = deployment_dates,
+  trim = FALSE
+)
+
+## paths needed for dashboard
+hobo_all2 <- ss_compile_hobo_data(
+  path = c(paste0(path_hobo, "/10755220.csv"),
+           paste0(path_hobo, "/20827226.csv")),
   sn_table = sn_hobo,
   deployment_dates = deployment_dates,
   trim = FALSE
@@ -85,6 +109,8 @@ path_vem1 <- system.file("testdata/vemco", package = "sensorstrings")
 
 vemco1 <- ss_read_vemco_data(path_vem1, "vemco-547109.csv")
 
+vemco2 <- ss_read_vemco_data(paste0(path_vem1, "/vemco-547109.csv"))
+
 # ss_compile_vemco_data ---------------------------------------------
 
 sn_vem <- data.frame(
@@ -95,6 +121,13 @@ sn_vem <- data.frame(
 
 vem_all <- ss_compile_vemco_data(
   path,
+  sn_table = sn_vem,
+  deployment_dates = deployment_dates,
+  trim = FALSE
+)
+
+vem_all2 <- ss_compile_vemco_data(
+  path = paste0(path_vem1, "/vemco-547109.csv"),
   sn_table = sn_vem,
   deployment_dates = deployment_dates,
   trim = FALSE

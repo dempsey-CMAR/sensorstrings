@@ -4,12 +4,14 @@
 \alias{ss_read_aquameasure_data}
 \title{Import data from aquameasure csv files}
 \usage{
-ss_read_aquameasure_data(path, file_name)
+ss_read_aquameasure_data(path, file_name = NULL)
 }
 \arguments{
-\item{path}{File path to the aquameasure file.}
+\item{path}{File path to the aquameasure folder, or full path to the data
+file including file name and extension.}
 
-\item{file_name}{Name of the file to import, including file extension.}
+\item{file_name}{Name of the file to import, including file extension. Should
+be \code{NULL} if the file name is included in the \code{path} argument.}
 }
 \value{
 Returns a data frame of aquameasure data, with the same columns as in

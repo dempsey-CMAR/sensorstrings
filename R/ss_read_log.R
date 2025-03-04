@@ -51,7 +51,7 @@
 #'   \code{Logger_Longitude}.
 #'
 #' @param path File path to the Log folder, or full path to the log file,
-#'   include file name and extension.
+#'   including file name and extension.
 #'
 #' @param use_config Logical argument indicating whether to use a configuration
 #'   table. Defaults to the water_quality_configuration_table.xslx on the CMAR R
