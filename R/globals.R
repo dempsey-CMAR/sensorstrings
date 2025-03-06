@@ -150,6 +150,12 @@ utils::globalVariables(
     "coord_dm",
     "degree_decimal_minutes",
     "retrieval_latitude_n_ddm",
-    "retrieval_longitude_w_ddm"
+    "retrieval_longitude_w_ddm",
+
+    # ss_convert_old_log
+    "Deployment_Waterbody",
+    "Lease#",
+    "Logger_Latitude",
+    "Logger_Longitude"
   )
 )

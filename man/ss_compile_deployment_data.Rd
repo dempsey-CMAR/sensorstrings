@@ -7,8 +7,6 @@
 \usage{
 ss_compile_deployment_data(
   path,
-  use_config = TRUE,
-  path_config = NULL,
   trim = TRUE,
   ignore_sensors = NULL,
   depth_override = NULL
@@ -17,34 +15,6 @@ ss_compile_deployment_data(
 \arguments{
 \item{path}{File path to the log, aquameasure, hobo, tidbit, and/or vemco
 folders.}
-
-\item{use_config}{Logical argument indicating whether to use a configuration
-table. Defaults to the water_quality_configuration_table.xslx on the CMAR R
-drive.}
-
-\item{path_config}{File path (including name and extension) of the water
-  quality configuration table. Default is
-  water_quality_configuration_table.xlsx in the tracking_sheets folder. Data
-  must be stored in an xlsx file in a tab named "deployments". Columns must
-  be Waterbody, Station_Name, and Depl_Date. One and only one row must match
-  the waterbody, station, and deployment date recorded in the Log. Options
-  for the configuration column are sub-surface buoy, surface buoy, attached
-  to gear, attached to fixed structure, floating dock, unknown, and calval.
-  Use of the "unknown" entry is discouraged. HINT: for optimal speed, make
-  sure the table is NOT filtered in the excel file.
-
-  The \code{path_config} argument is ignored for new deployment logs that
-  have an appropriate entry in the \code{Configuration} column.
-
-  Configurations recorded as \code{NA} will be converted to "unknown" with a
-  \code{Warning}.
-
-  When there is no \code{Configuration} in the log and the deployment is not
-  found in the configuration table, the configuration will berecoreded as
-  "unknown" with a \code{Warning}.
-
-  If more than one configuration is detected in the log or the configuration
-  table, the function will stop with an \code{Error}.}
 
 \item{trim}{Logical value indicating whether to trim the data to the dates
 specified in \code{deployment_dates}. (Note: four hours are added to the
@@ -88,7 +58,7 @@ Other compile:
 \code{\link{ss_compile_aquameasure_data}()},
 \code{\link{ss_compile_hobo_data}()},
 \code{\link{ss_compile_vemco_data}()},
-\code{\link{ss_read_log}()}
+\code{\link{ss_read_log_old}()}
 }
 \author{
 Danielle Dempsey

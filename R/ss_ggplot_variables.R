@@ -10,6 +10,9 @@
 #' @param color_palette Optional vector of hex colors onto which depth will be
 #'   mapped.
 #'
+#' @param color_col Character string indicating the column to use to colour the
+#'   observations.
+#'
 #' @param legend_name Name for the depth legend. Default is \code{legend_name =
 #'   "Depth (m)"}.
 #'
@@ -29,23 +32,16 @@
 #'   geom_rect ggplot guides guide_legend scale_colour_manual scale_y_continuous
 #'   theme theme_set theme_light
 #' @importFrom lubridate as_datetime
-#'
+#' @importFrom RColorBrewer brewer.pal
+#' @importFrom rlang sym
 #'
 #' @export
-
-
-# path <- system.file("extdata", package = "sensorstrings")
-#
-# dat <- ss_compile_deployment_data(path, trim = TRUE)
-# dat[17, "temperature_degree_c"] <- -0.8
-#
-# ss_plot_variables_at_depth(dat, measured_depth = TRUE)
-
 
 ss_ggplot_variables <- function(
     dat,
     superchill = NULL,
     color_palette = NULL,
+    color_col = "sensor_depth_at_low_tide_m",
     legend_name = "Depth (m)",
     legend_position = "right",
     axis_label_newline = TRUE,
@@ -56,13 +52,19 @@ ss_ggplot_variables <- function(
   if (is.null(color_palette)) {
     color_palette <- ss_get_colour_palette(dat)
   }
+
+  if (color_col == "sensor_type") {
+    n_sensor_type <- length(unique(dat$sensor_type))
+    if(n_sensor_type < 3) {
+      n_col <- 3
+    } else n_col <- n_sensor_type
+
+    color_palette <- brewer.pal(n_col, "Dark2")
+  }
+
   scale_depth_colour <- scale_colour_manual(
     name = legend_name, values = color_palette, drop = FALSE
   )
-
-  # if (isFALSE(measured_depth)) {
-  #   dat <- dat %>% select(-contains("sensor_depth_measured"))
-  # }
 
 #  format data -------------------------------------------------------------
 
@@ -80,7 +82,9 @@ ss_ggplot_variables <- function(
     )
 
     dat <- dat %>%
-      select(Date, sensor_depth_at_low_tide_m, any_of(vars_ss)) %>%
+      # change sensor_depth_at_low_tide_m to color_col
+     # select(Date, sensor_depth_at_low_tide_m, any_of(vars_ss)) %>%
+      select(Date, contains(color_col), any_of(vars_ss)) %>%
       ss_pivot_longer()
   }
 
@@ -92,16 +96,18 @@ ss_ggplot_variables <- function(
       ss_create_variable_labels_no_newline()
   }
 
-  dat <- dat %>%
-    ss_convert_depth_to_ordered_factor()
-
   if(!("sensor_type" %in% colnames(dat))) {
     dat <- mutate(dat, sensor_type = "")
   }
   if(!("sensor_serial_number" %in% colnames(dat))) {
     dat <- mutate(dat, sensor_serial_number = "")
   }
-
+  if(!("sensor_depth_at_low_tide_m" %in% colnames(dat))) {
+    dat <- mutate(dat, sensor_depth_at_low_tide_m = "")
+  } else {
+    dat <- dat %>%
+      ss_convert_depth_to_ordered_factor()
+  }
 
   # plot --------------------------------------------------------------------
 
@@ -122,7 +128,7 @@ ss_ggplot_variables <- function(
     dat,
     aes(
       Date, value,
-      colour = sensor_depth_at_low_tide_m,
+      colour = !!sym(color_col),
       text = paste(
         "date: ", Date, "\n",
         "value: ", value, "\n",
@@ -133,7 +139,6 @@ ss_ggplot_variables <- function(
     )
   ) +
     geom_point(size = point_size) +
-  #  scale_y_continuous(name = "") +
     scale_depth_colour +
     facet_wrap(~variable_label, scales = "free_y", ncol = 1, strip.position = "left") +
     theme(

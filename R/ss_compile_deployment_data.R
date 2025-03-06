@@ -38,15 +38,11 @@
 
 ss_compile_deployment_data <- function(
     path,
-    use_config = TRUE,
-    path_config = NULL,
     trim = TRUE,
     ignore_sensors = NULL,
     depth_override = NULL) {
   # read in log and add location columns ----------------------------------------------------
-  depl_log <- ss_read_log(
-    path, use_config = use_config, path_config = path_config
-  )
+  depl_log <- ss_read_log(path)
 
   deployment_dates <- depl_log$deployment_dates
 
@@ -68,10 +64,8 @@ ss_compile_deployment_data <- function(
       deployment_dates = deployment_dates,
       trim = trim
     )
-
     depl_data <- bind_rows(depl_data, am)
   }
-
 
   # hobo --------------------------------------------------------------------
   sn_hobo <- sn_table %>%
@@ -85,7 +79,6 @@ ss_compile_deployment_data <- function(
       trim = trim,
       sensor_make = "hobo"
     )
-
     depl_data <- bind_rows(depl_data, hobo)
   }
 
@@ -101,10 +94,8 @@ ss_compile_deployment_data <- function(
       trim = trim,
       sensor_make = "tidbit"
     )
-
     depl_data <- bind_rows(depl_data, tidbit)
   }
-
 
   # vemco -------------------------------------------------------------------
   sn_vem <- sn_table %>%
@@ -118,7 +109,6 @@ ss_compile_deployment_data <- function(
       trim = trim,
       depth_override = depth_override
     )
-
     depl_data <- bind_rows(depl_data, vemco)
   }
 

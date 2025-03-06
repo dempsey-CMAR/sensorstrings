@@ -60,7 +60,7 @@ Other compile:
 \code{\link{ss_compile_aquameasure_data}()},
 \code{\link{ss_compile_deployment_data}()},
 \code{\link{ss_compile_vemco_data}()},
-\code{\link{ss_read_log}()}
+\code{\link{ss_read_log_old}()}
 }
 \author{
 Danielle Dempsey

@@ -11,7 +11,7 @@ test_that("ss_read_vemco_data() reads in correct classes", {
 
 
 test_that("ss_read_vemco_data() reads in all observations", {
-  expect_equal(nrow(vemco1), 124)
+  expect_equal(nrow(vemco1), 129)
 })
 
 test_that("ss_read_vemco_data() reads data when path includes file name", {
@@ -41,9 +41,9 @@ test_that("ss_compile_vemco_data() returns correct classes", {
 })
 
 test_that("ss_compile_vemco_data() reads in all observations", {
-  expect_equal(nrow(vem_all), 16)
-  expect_equal(nrow(vem_all2), 16)
-  expect_equal(nrow(vem_trim), 15)
+  expect_equal(nrow(vem_all), 17)
+  expect_equal(nrow(vem_all2), 17)
+  expect_equal(nrow(vem_trim), 16)
   expect_equal(nrow(vem_trim2), 15)
 })
 
@@ -69,3 +69,4 @@ test_that("ss_compile_vemco_data() returns Error and Warnings", {
     )
   )
 })
+

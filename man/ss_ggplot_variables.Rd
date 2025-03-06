@@ -8,6 +8,7 @@ ss_ggplot_variables(
   dat,
   superchill = NULL,
   color_palette = NULL,
+  color_col = "sensor_depth_at_low_tide_m",
   legend_name = "Depth (m)",
   legend_position = "right",
   axis_label_newline = TRUE,
@@ -24,6 +25,9 @@ temperature values are less than or equal to the threshold.}
 
 \item{color_palette}{Optional vector of hex colors onto which depth will be
 mapped.}
+
+\item{color_col}{Character string indicating the column to use to colour the
+observations.}
 
 \item{legend_name}{Name for the depth legend. Default is \code{legend_name =
 "Depth (m)"}.}

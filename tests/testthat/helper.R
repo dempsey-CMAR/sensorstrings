@@ -6,9 +6,25 @@
 
 path <- system.file("testdata", package = "sensorstrings")
 
-path_config <- paste0(system.file("testdata", package = "sensorstrings"), "/water_quality_configuration_table.xlsx")
+#path_config <- paste0(system.file("testdata", package = "sensorstrings"), "/water_quality_configuration_table.xlsx")
 
 deployment_dates <- data.frame(START = "2019-05-30", END = "2019-10-19")
+
+
+# log ---------------------------------------------------------------------
+
+# old log
+log_old <- ss_read_log(path, parse = FALSE)
+log_old2 <- ss_read_log(
+  paste0(path, "/Log/Borgles_Island_2019-05-30_Log.xls" ), parse = FALSE
+)
+
+log_old_parse <- log_old %>% ss_parse_log()
+
+# new log
+log_new <- ss_read_log(paste0(path, "/new/new_log1.csv" ), parse = FALSE)
+
+log_new_parse <- log_new %>% ss_parse_log(verbose = FALSE)
 
 
 # aquameasure -------------------------------------------------------------
@@ -152,9 +168,9 @@ vem_trim2 <- ss_compile_vemco_data(
 
 # ALL deployment data -----------------------------------------------------
 
-depl_all <- ss_compile_deployment_data(path, path_config, trim = FALSE)
+depl_all <- ss_compile_deployment_data(path, trim = FALSE)
 
-depl_trim <- ss_compile_deployment_data(path, path_config, trim = TRUE)
+depl_trim <- ss_compile_deployment_data(path, trim = TRUE)
 
 # helpers-compile ---------------------------------------------------------
 
@@ -203,7 +219,6 @@ hobo_units <- ss_read_hobo_data(
 
 new_hobo_colnames <- make_column_names(hobo_units)
 
-
 # ss_pivot ----------------------------------------------------------------
 
 long_all <- ss_pivot_longer(depl_all)
@@ -213,13 +228,6 @@ long_all2 <- ss_pivot_longer(wide_all)
 long_trim <- ss_pivot_longer(depl_trim)
 wide_trim <- ss_pivot_wider(long_trim)
 long_trim2 <- ss_pivot_longer(depl_trim)
-
-
-# nsdfa tracking sheet ----------------------------------------------------
-
-#nsdfa <- ss_read_nsdfa_metadata(paste0(path, "/nsdfa_tracking_sheet.xlsx"))
-
-
 
 # convert coordinates -----------------------------------------------------
 
