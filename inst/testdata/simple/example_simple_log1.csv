@@ -1,8 +1,0 @@
-﻿station,waterbody,lease,status,deployment_date,deployment_time_utc,retrieval_date,retrieval_time_utc,deployment_latitude,deployment_longitude,sensor_type,sensor_serial_number,sensor_depth_m,string_configuration
-Birchy Head,St. Margarets Bay,,retrieved,2024-05-02,16:37:00,2024-11-21,16:36:00,44.57010000,-64.03438300,HOBO Pro V2,20763553,2.0,sub-surface buoy
-Birchy Head,St. Margarets Bay,,retrieved,2024-05-02,16:37:00,2024-11-21,16:36:00,44.57010000,-64.03438300,HOBO DO,21429532,5.0,sub-surface buoy
-Birchy Head,St. Margarets Bay,,retrieved,2024-05-02,16:37:00,2024-11-21,16:36:00,44.57010000,-64.03438300,HOBO Pro V2,21434535,10.0,sub-surface buoy
-Birchy Head,St. Margarets Bay,,retrieved,2024-05-02,16:37:00,2024-11-21,16:36:00,44.57010000,-64.03438300,HOBO Pro V2,20308042,15.0,sub-surface buoy
-Birchy Head,St. Margarets Bay,,retrieved,2024-05-02,16:37:00,2024-11-21,16:36:00,44.57010000,-64.03438300,HOBO Pro V2,21465806,20.0,sub-surface buoy
-Birchy Head,St. Margarets Bay,,retrieved,2024-05-02,16:37:00,2024-11-21,16:36:00,44.57010000,-64.03438300,HOBO Pro V2,21082892,30.0,sub-surface buoy
-Birchy Head,St. Margarets Bay,,retrieved,2024-05-02,16:37:00,2024-11-21,16:36:00,44.57010000,-64.03438300,VR2AR,548564,40.0,sub-surface buoy
