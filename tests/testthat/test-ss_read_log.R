@@ -8,16 +8,16 @@ test_that("ss_read_log() reads data when path includes file name", {
 })
 
 
-test_that("ss_read_log() reads in old columns", {
-  expect_true(
-    all(colnames(log_old) %in%
-          c("County",
-            "Deployment_Waterbody",
-            "Location_Description",
-            "Lease#", "Status", "Deployment", "Retrieval",
-            "Duration", "Logger_Latitude", "Logger_Longitude",
-            "Logger_Model", "Serial#", "Sensor_Depth", "Configuration")))
-})
+# test_that("ss_read_log() reads in old columns", {
+#   expect_true(
+#     all(colnames(log_old) %in%
+#           c("County",
+#             "Deployment_Waterbody",
+#             "Location_Description",
+#             "Lease#", "Status", "Deployment", "Retrieval",
+#             "Duration", "Logger_Latitude", "Logger_Longitude",
+#             "Logger_Model", "Serial#", "Sensor_Depth", "Configuration")))
+# })
 
 test_that("ss_read_log() reads in new columns", {
   expect_true(

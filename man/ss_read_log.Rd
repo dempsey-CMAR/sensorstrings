@@ -26,3 +26,7 @@ Returns a a data frame of the deployment metadata. Option to parse
 The log must be saved in .csv, .xlsx or .xls format. Value checks are applied
 in \code{ss_parse_log()}.
 }
+\details{
+"Old" log column names will be converted to the new standard (.e.,g
+"Location_Description" will be replaced with "station").
+}

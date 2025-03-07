@@ -4,22 +4,25 @@
 #'
 #' @returns Returns log with columns names matching those as if it head been
 #'   read in from
+#'
+#' @importFrom dplyr contains rename
+#'
 #' @export
 
 ss_convert_old_log <- function(log) {
 
   log <- log %>%
     rename(
-      waterbody = Deployment_Waterbody,
-      station = Location_Description,
-      lease = `Lease#`,
+      waterbody = contains("Deployment_Waterbody"),
+      station = contains("Location_Description"),
+      lease = contains("Lease#"),
       deployment_date = Deployment,
       retrieval_date = Retrieval,
-      deployment_latitude = Logger_Latitude,
-      deployment_longitude = Logger_Longitude,
-      sensor_type = Logger_Model,
-      sensor_serial_number = `Serial#`,
-      sensor_depth_m = Sensor_Depth
+      deployment_latitude = contains("Logger_Latitude"),
+      deployment_longitude = contains("Logger_Longitude"),
+      sensor_type = contains("Logger_Model"),
+      sensor_serial_number = contains("Serial#"),
+      sensor_depth_m = contains("Sensor_Depth")
     )
 
   colnames(log) <- tolower(colnames(log))
@@ -32,6 +35,9 @@ ss_convert_old_log <- function(log) {
 #'
 #' The log must be saved in .csv, .xlsx or .xls format. Value checks are applied
 #' in \code{ss_parse_log()}.
+#'
+#' "Old" log column names will be converted to the new standard (.e.,g
+#' "Location_Description" will be replaced with "station").
 #'
 #' @inheritParams ss_parse_log
 #'
@@ -87,15 +93,20 @@ ss_read_log <- function(path, parse = TRUE, verbose = TRUE) {
   file_type <- extract_file_extension(path)
 
   if (file_type == "xls" | file_type == "xlsx") {
-    log <- read_excel(path, na = c("", "n/a", "N/A"))
+    log <- read_excel(path, na = c("", "n/a", "N/A", "NA"))
   }
 
   if (file_type == "csv") {
     log <- fread(
       path,
       data.table = FALSE,
-      na.strings = c("", "n/a", "N/A")
+      na.strings = c("", "n/a", "N/A", "NA")
     )
+  }
+
+  old_col_names <- c("Location_Description", "Logger_Model", "Serial#")
+  if(any(old_col_names %in% colnames(log))) {
+    log <- ss_convert_old_log(log)
   }
 
   if(isTRUE(parse)) log <- ss_parse_log(log, verbose = verbose)
@@ -170,10 +181,6 @@ ss_parse_log <- function(
     config = TRUE,
     verbose = TRUE
 ) {
-
-  if("Location_Description" %in% colnames(log)) {
-    log <- ss_convert_old_log(log)
-  }
 
   cols <- tolower(colnames(log))
 
@@ -319,6 +326,10 @@ ss_parse_log <- function(
   # depth -------------------------------------------------------------------
 
   if(isTRUE(sn_table)) {
+    # so that validation log doesn't need depth
+    if(!("sensor_depth_m" %in% cols)) {
+      log <- mutate(log, sensor_depth_m = NA_real_)
+    }
     depth <- log %>%
       select(sensor_type, sensor_serial_number, sensor_depth_m) %>%
       mutate(numeric_depth = suppressWarnings(as.numeric(sensor_depth_m)))
