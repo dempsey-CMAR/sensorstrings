@@ -25,7 +25,6 @@ ss_convert_old_log <- function(log) {
   colnames(log) <- tolower(colnames(log))
 
   log
-
 }
 
 
