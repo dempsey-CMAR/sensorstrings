@@ -31,6 +31,7 @@
 #' @importFrom ggplot2 aes element_blank element_text facet_wrap geom_point
 #'   geom_rect ggplot guides guide_legend scale_colour_manual scale_y_continuous
 #'   theme theme_set theme_light
+#' @importFrom grDevices colorRampPalette
 #' @importFrom lubridate as_datetime
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom rlang sym
@@ -53,16 +54,20 @@ ss_ggplot_variables <- function(
     color_palette <- ss_get_colour_palette(dat)
   }
 
-  if (color_col == "sensor_type") {
-    n_sensor_type <- length(unique(dat$sensor_type))
-    if(n_sensor_type < 3) {
-      n_col <- 3
-    } else n_col <- n_sensor_type
+  if (color_col == "sensor_serial_number") {
+    dat <- dat %>%
+      mutate(sensor_serial_number = factor(sensor_serial_number))
 
-    color_palette <- brewer.pal(n_col, "Dark2")
+    n_sensor_sn <- length(unique(dat$sensor_serial_number))
+
+    if(n_sensor_sn <= 8) {
+      color_palette <- brewer.pal(8, "Dark2")
+    } else {
+      color_palette <- colorRampPalette(brewer.pal(8, "Dark2"))(n_sensor_sn)
+    }
   }
 
-  scale_depth_colour <- scale_colour_manual(
+  scale_colour <- scale_colour_manual(
     name = legend_name, values = color_palette, drop = FALSE
   )
 
@@ -72,19 +77,17 @@ ss_ggplot_variables <- function(
 
   if (!("variable" %in% colnames(dat))) {
 
-    vars_ss <- c(
-      "chlorophyll_blue_ug_per_l",
-      "chlorophyll_red_ug_per_l",
-      "dissolved_oxygen_percent_saturation",
-      "salinity_psu",
-      "sensor_depth_measured_m",
-      "temperature_degree_c"
-    )
+    # vars_ss <- c(
+    #   "chlorophyll_blue_ug_per_l",
+    #   "chlorophyll_red_ug_per_l",
+    #   "dissolved_oxygen_percent_saturation",
+    #   "salinity_psu",
+    #   "sensor_depth_measured_m",
+    #   "temperature_degree_c"
+    # )
 
     dat <- dat %>%
-      # change sensor_depth_at_low_tide_m to color_col
-     # select(Date, sensor_depth_at_low_tide_m, any_of(vars_ss)) %>%
-      select(Date, contains(color_col), any_of(vars_ss)) %>%
+     # select(Date, contains(color_col), any_of(vars_ss)) %>%
       ss_pivot_longer()
   }
 
@@ -139,7 +142,7 @@ ss_ggplot_variables <- function(
     )
   ) +
     geom_point(size = point_size) +
-    scale_depth_colour +
+    scale_colour +
     facet_wrap(~variable_label, scales = "free_y", ncol = 1, strip.position = "left") +
     theme(
       axis.title.y = element_blank(),
@@ -152,16 +155,21 @@ ss_ggplot_variables <- function(
 
   if(legend_position == "bottom") {
     p <- p +
-      guides(
-        colour = guide_legend(nrow = 1, override.aes = list(size = 2))
-      )
+      guides(colour = guide_legend(nrow = 1, override.aes = list(size = 2)))
   }
 
   # add superchill shading --------------------------------------------------
 
   if (isTRUE(superchill)) {
-    facet_panel <- data.frame(variable = "temperature_degree_c") %>%
-      ss_create_variable_labels()
+    facet_panel <- data.frame(variable = "temperature_degree_c")
+
+    if(isTRUE(axis_label_newline)) {
+      facet_panel <- facet_panel %>%
+        ss_create_variable_labels()
+    } else {
+      facet_panel <- facet_panel %>%
+        ss_create_variable_labels_no_newline()
+    }
 
     p <- p +
       geom_rect(
