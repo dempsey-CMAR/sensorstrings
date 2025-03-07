@@ -25,6 +25,7 @@
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_compile_hobo_data.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_compile_vemco_data.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_convert_depth_to_ordered_factor.html</loc></url>
+<url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_convert_old_log.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_coords_from_ddm_to_dd.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_create_log_from_metadata.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_create_variable_labels.html</loc></url>
@@ -44,7 +45,7 @@
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_read_aquameasure_data.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_read_hobo_data.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_read_log.html</loc></url>
-<url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_read_log_simple.html</loc></url>
+<url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_read_log_old.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_read_nsdfa_metadata.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_read_vemco_data.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_reformat_old_data.html</loc></url>
