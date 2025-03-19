@@ -61,7 +61,7 @@ degrees.</p></dd>
 "retrieval_latitude_n_ddm", "retrieval_longitude_w_ddm")</p>
 <p>2. Use the .names argument to specify new column names so that the original
 columns are not over-written:</p>
-<p><code>dat &lt;- dat_raw <!-- %&gt;% mutate( across(any_of(coords_ddm), -->
+<p><code>dat &lt;- dat_raw <!-- %&gt;% mutate(across(any_of(coords_ddm), -->
 ~ss_coords_from_ddm_to_dd(.x), .names = "{str_remove(.col, '_w_ddm|_n_ddm')}"
 ))</code></p>
     </div>
