@@ -11,6 +11,9 @@ ss_ggplot_variables(
   color_col = "sensor_depth_at_low_tide_m",
   legend_name = "Depth (m)",
   legend_position = "right",
+  date_breaks_major = NULL,
+  date_breaks_minor = NULL,
+  date_labels_format = "\%Y-\%m-\%d",
   axis_label_newline = TRUE,
   point_size = 0.25
 )
@@ -34,6 +37,14 @@ observations.}
 
 \item{legend_position}{Position for the depth legend. Default is
 \code{legend.position = "right"}.}
+
+\item{date_breaks_major}{Intervals for major breaks. Default is selected by
+\code{get_xaxis_breaks()}.}
+
+\item{date_breaks_minor}{Intervals for minor breaks. Default selected by
+\code{get_xaxis_breaks()}.}
+
+\item{date_labels_format}{Format for the date labels. Default is YYYY-mm-dd.}
 
 \item{axis_label_newline}{Logical argument indicating whether to put units on
 a new line.}

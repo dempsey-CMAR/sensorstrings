@@ -1,5 +1,7 @@
 #' Plot variables at depth
 #'
+#' @inheritParams ss_plot_variables
+#'
 #' @param dat Data frame of sensor string data in wide or long format.
 #'
 #' @param superchill Logical argument indicating whether to adding shading to
@@ -29,8 +31,8 @@
 #'
 #' @importFrom dplyr %>% contains select mutate
 #' @importFrom ggplot2 aes element_blank element_text facet_wrap geom_point
-#'   geom_rect ggplot guides guide_legend scale_colour_manual scale_y_continuous
-#'   theme theme_set theme_light
+#'   geom_rect ggplot guides guide_legend scale_colour_manual scale_x_datetime
+#'   scale_y_continuous theme theme_set theme_light
 #' @importFrom grDevices colorRampPalette
 #' @importFrom lubridate as_datetime
 #' @importFrom RColorBrewer brewer.pal
@@ -45,6 +47,9 @@ ss_ggplot_variables <- function(
     color_col = "sensor_depth_at_low_tide_m",
     legend_name = "Depth (m)",
     legend_position = "right",
+    date_breaks_major = NULL,
+    date_breaks_minor = NULL,
+    date_labels_format = "%Y-%m-%d",
     axis_label_newline = TRUE,
     point_size = 0.25
     ) {
@@ -71,23 +76,27 @@ ss_ggplot_variables <- function(
     name = legend_name, values = color_palette, drop = FALSE
   )
 
+  #  x-axis
+  axis_breaks <- ss_xaxis_breaks(dat)
+
+  if(!is.null(date_breaks_major)) axis_breaks$date_breaks_major <- date_breaks_major
+  if(!is.null(date_breaks_minor)) axis_breaks$date_breaks_minor <- date_breaks_minor
+  if(!is.null(date_labels_format)) axis_breaks$date_labels_format <- date_labels_format
+
+  x_axis_date <- scale_x_datetime(
+    name = "Date",
+    date_breaks = axis_breaks$date_breaks_major,          # major breaks
+    date_minor_breaks = axis_breaks$date_breaks_minor,    # minor breaks
+    date_labels = axis_breaks$date_labels_format,         # format for showing date
+    limits = c(min(dat$timestamp_utc),max(dat$timestamp_utc))
+  )
+
 #  format data -------------------------------------------------------------
 
   dat <- dat %>% rename(Date = contains("timestamp_"))
 
   if (!("variable" %in% colnames(dat))) {
-
-    # vars_ss <- c(
-    #   "chlorophyll_blue_ug_per_l",
-    #   "chlorophyll_red_ug_per_l",
-    #   "dissolved_oxygen_percent_saturation",
-    #   "salinity_psu",
-    #   "sensor_depth_measured_m",
-    #   "temperature_degree_c"
-    # )
-
     dat <- dat %>%
-     # select(Date, contains(color_col), any_of(vars_ss)) %>%
       ss_pivot_longer()
   }
 
@@ -143,6 +152,7 @@ ss_ggplot_variables <- function(
   ) +
     geom_point(size = point_size) +
     scale_colour +
+    x_axis_date +
     facet_wrap(~variable_label, scales = "free_y", ncol = 1, strip.position = "left") +
     theme(
       axis.title.y = element_blank(),
