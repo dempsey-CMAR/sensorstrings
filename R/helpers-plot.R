@@ -197,8 +197,8 @@ ss_create_variable_labels_no_newline <- function(dat) {
   var_order <- c(
     "Temperature (\u00B0C)",
     "Dissolved Oxygen (% sat)",
-    "Uncorrected Dissolved Oxygen (mg / L)",
-    "Dissolved Oxygen (mg/L)",
+    "Uncorrected\nDissolved Oxygen (mg / L)",
+    "Dissolved Oxygen (mg / L)",
     "Salinity (PSU)",
     "Chlorophyll Blue (\u03BCg / L)",
     "Chlorophyll Red (\u03BCg / L)",
@@ -215,9 +215,9 @@ ss_create_variable_labels_no_newline <- function(dat) {
         variable == "dissolved_oxygen_percent_saturation" ~
           "Dissolved Oxygen (% sat)",
         variable == "dissolved_oxygen_uncorrected_mg_per_l" ~
-          "Uncorrected Dissolved Oxygen (mg / L)",
+          "Uncorrected\nDissolved Oxygen (mg / L)",
         variable == "dissolved_oxygen_mg_per_l" ~
-          "Dissolved Oxygen (mg/L)",
+          "Dissolved Oxygen (mg / L)",
         variable == "salinity_psu" ~ "Salinity (PSU)",
         variable == "sensor_depth_measured_m" ~ "Sensor Depth (m)",
         variable == "temperature_degree_c" ~ "Temperature (\u00B0C)",
