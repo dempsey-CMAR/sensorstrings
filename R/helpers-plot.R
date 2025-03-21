@@ -178,7 +178,7 @@ ss_create_variable_labels <- function(dat) {
     )
 }
 
-#' Create plot labels from variable names
+#' Create plot labels from variable names without new lines
 #'
 #' @param dat Data frame of Water Quality data with variables in long
 #'   format. Entries in \code{variable} column must be
@@ -197,7 +197,7 @@ ss_create_variable_labels_no_newline <- function(dat) {
   var_order <- c(
     "Temperature (\u00B0C)",
     "Dissolved Oxygen (% sat)",
-    "Uncorrected Dissolved Oxygen (mg/L)",
+    "Uncorrected Dissolved Oxygen (mg / L)",
     "Dissolved Oxygen (mg/L)",
     "Salinity (PSU)",
     "Chlorophyll Blue (\u03BCg / L)",

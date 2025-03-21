@@ -2,7 +2,7 @@
 % Please edit documentation in R/helpers-plot.R
 \name{ss_create_variable_labels_no_newline}
 \alias{ss_create_variable_labels_no_newline}
-\title{Create plot labels from variable names}
+\title{Create plot labels from variable names without new lines}
 \usage{
 ss_create_variable_labels_no_newline(dat)
 }
@@ -18,5 +18,5 @@ Returns \code{dat_long} with an addition column
   \code{variable_label}. \code{variable_label}
 }
 \description{
-Create plot labels from variable names
+Create plot labels from variable names without new lines
 }
