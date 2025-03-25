@@ -88,7 +88,9 @@ ss_plot_variables <- function(
     )
 
     dat <- dat %>%
-      select(contains("timestamp_"), any_of(vars_ss)) %>%
+      select(
+        contains("timestamp_"), sensor_depth_at_low_tide_m, any_of(vars_ss)
+      ) %>%
       ss_pivot_longer()
   }
 
@@ -154,6 +156,8 @@ ss_plot_variables <- function(
         "dissolved_oxygen_uncorrected_mg_per_l",
         "dissolved_oxygen_mg_per_l",
         "salinity_psu",
+        "chlorophyll_blue_ug_per_l",
+        "chlorophyll_red_ug_per_l",
         "sensor_depth_measured_m"))
     ) %>%
     arrange(variable)
