@@ -43,8 +43,8 @@ extract_file_extension <- function(file_name) {
 
 ss_export_path <- function(dat, prov = "ns", sub_folder = NULL, ext = "rds") {
 
-  if (prov == "ns")  path <- "R:/data_branches/water_quality/station_folders"
-  if (prov == "nb") path <- "R:/data_branches/nb_water_quality/station_folders"
+  if (prov == "ns")  path <- "R:/data_branches/water_quality/processed_data/deployment_data"
+  if (prov == "nb") path <- "R:/data_branches/nb_water_quality/processed_data/deployment_data"
 
   if (is.null(sub_folder)) sub_folder <- "new"
 
