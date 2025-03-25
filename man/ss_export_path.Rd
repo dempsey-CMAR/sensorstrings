@@ -4,13 +4,15 @@
 \alias{ss_export_path}
 \title{Generate file path and name to export compiled sensor string data}
 \usage{
-ss_export_path(dat, path = NULL, sub_folder = NULL, ext = "rds")
+ss_export_path(dat, prov = "ns", sub_folder = NULL, ext = "rds")
 }
 \arguments{
 \item{dat}{Data frame of sensor string data in wide or long format. Must
 include columns \code{county}, \code{station}, and \code{deployment_range}.}
 
-\item{path}{File path to a folder named \code{county}.}
+\item{prov}{Character string indicating which province the deployment is
+from. Options are "ns" (the default) and "nb". This dicates the file path
+for where the data will be exported on the CMAR R drive.}
 
 \item{sub_folder}{Character string of the sub-folder name (inside county
 folder) where \code{dat} should be exported. Default is \code{sub-folder =

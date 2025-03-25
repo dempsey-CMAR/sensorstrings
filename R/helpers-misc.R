@@ -22,7 +22,9 @@ extract_file_extension <- function(file_name) {
 #' @param dat Data frame of sensor string data in wide or long format. Must
 #'   include columns \code{county}, \code{station}, and \code{deployment_range}.
 #'
-#' @param path File path to a folder named \code{county}.
+#' @param prov Character string indicating which province the deployment is
+#'   from. Options are "ns" (the default) and "nb". This dicates the file path
+#'   for where the data will be exported on the CMAR R drive.
 #'
 #' @param sub_folder Character string of the sub-folder name (inside county
 #'   folder) where \code{dat} should be exported. Default is \code{sub-folder =
@@ -39,11 +41,10 @@ extract_file_extension <- function(file_name) {
 #'
 #' @export
 
-ss_export_path <- function(
-    dat, path = NULL, sub_folder = NULL, ext = "rds") {
-  if (is.null(path)) {
-    path <- "R:/data_branches/water_quality/processed_data/deployment_data"
-  }
+ss_export_path <- function(dat, prov = "ns", sub_folder = NULL, ext = "rds") {
+
+  if (prov == "ns")  path <- "R:/data_branches/water_quality/station_folders"
+  if (prov == "nb") path <- "R:/data_branches/nb_water_quality/station_folders"
 
   if (is.null(sub_folder)) sub_folder <- "new"
 
@@ -73,8 +74,9 @@ ss_export_path <- function(
 #'
 #' Raw data must be saved in a folder path/station/station_yyyy-mm-dd.
 #'
-#' @param path File path to the station_folders folder on the Coastal Monitoring
-#'   Program server.
+#' @param prov Character string indicating which province the deployment is
+#'   from. Options are "ns" (the default) and "nb". This dicates the file path
+#'   for where the data will be imported from on the CMAR R drive.
 #'
 #' @param station Character string of the station name. Will be converted to
 #'   lower case, and all spaces will be replaced with an underscore.
@@ -88,10 +90,9 @@ ss_export_path <- function(
 #'
 #' @export
 
-ss_import_path <- function(station, depl_date, path = NULL) {
-  if (is.null(path)) {
-    path <- "R:/data_branches/water_quality/station_folders"
-  }
+ss_import_path <- function(station, depl_date, prov = "ns") {
+  if (prov == "ns") path <- "R:/data_branches/water_quality/station_folders"
+  if (prov == "nb") path <- "R:/data_branches/nb_water_quality/station_folders"
 
   station <- tolower(station)
   station <- str_replace_all(station, " ", "_")
