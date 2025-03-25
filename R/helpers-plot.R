@@ -254,21 +254,21 @@ filter_dat_to_plot <- function(
     custom_end = NULL) {
   assert_that(filter_to %in% c("start", "end", "custom"))
 
-  dat <- dat %>% rename(timestamp_ = contains("timestamp_"))
+  #dat <- dat %>% rename(timestamp_ = contains("timestamp_"))
 
   if (filter_to == "start") {
     dat <- dat %>%
       filter(
-        timestamp_ <=
-          (na.omit(min(dat$timestamp_)) %m+% lubridate::period(period))
+        timestamp_utc <=
+          (na.omit(min(dat$timestamp_utc)) %m+% lubridate::period(period))
       )
   }
 
   if (filter_to == "end") {
     dat <- dat %>%
       filter(
-        timestamp_ >=
-          (na.omit(max(dat$timestamp_)) %m-% lubridate::period(period))
+        timestamp_utc >=
+          (na.omit(max(dat$timestamp_utc)) %m-% lubridate::period(period))
       )
   }
 
@@ -278,7 +278,7 @@ filter_dat_to_plot <- function(
 
     dat <- dat %>%
       filter(
-        timestamp_ >= custom_start & timestamp_ <= custom_end
+        timestamp_utc >= custom_start & timestamp_utc <= custom_end
       )
   }
 
