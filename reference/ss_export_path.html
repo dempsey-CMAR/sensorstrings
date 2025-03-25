@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">sensorstrings</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ss_export_path</span><span class="op">(</span><span class="va">dat</span>, path <span class="op">=</span> <span class="cn">NULL</span>, sub_folder <span class="op">=</span> <span class="cn">NULL</span>, ext <span class="op">=</span> <span class="st">"rds"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ss_export_path</span><span class="op">(</span><span class="va">dat</span>, prov <span class="op">=</span> <span class="st">"ns"</span>, sub_folder <span class="op">=</span> <span class="cn">NULL</span>, ext <span class="op">=</span> <span class="st">"rds"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -49,8 +49,10 @@
 include columns <code>county</code>, <code>station</code>, and <code>deployment_range</code>.</p></dd>
 
 
-<dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
-<dd><p>File path to a folder named <code>county</code>.</p></dd>
+<dt id="arg-prov">prov<a class="anchor" aria-label="anchor" href="#arg-prov"></a></dt>
+<dd><p>Character string indicating which province the deployment is
+from. Options are "ns" (the default) and "nb". This dicates the file path
+for where the data will be exported on the CMAR R drive.</p></dd>
 
 
 <dt id="arg-sub-folder">sub_folder<a class="anchor" aria-label="anchor" href="#arg-sub-folder"></a></dt>
