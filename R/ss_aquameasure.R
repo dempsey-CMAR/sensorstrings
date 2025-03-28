@@ -100,7 +100,8 @@ ss_compile_aquameasure_data <- function(path,
     file_i <- dat_files[i]
     file_name <- sub(".csv", "", sub(".*/", "", file_i, perl = TRUE))
 
-    am_i <- ss_read_aquameasure_data(file_i)
+    am_i <- ss_read_aquameasure_data(file_i) %>%
+      filter(!str_detect(`Record Type`, "aquaMeasure-"))
 
     am_colnames <- colnames(am_i)
 
