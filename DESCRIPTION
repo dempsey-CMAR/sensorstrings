@@ -1,7 +1,7 @@
 Type: Package
 Package: sensorstrings
 Title: Compile, Format, and Visualize Sensor String Data
-Version: 1.2.0
+Version: 1.2.1
 Authors@R: person("Danielle", "Dempsey", email = "ddempsey@perennia.ca", role = c("aut", "cre"))
 Description: Facilitates wrangling and analysis of Water Quality data collected as part of the Centre for Marine Applied Research's Coastal Monitoring Program. Compatible sensors: HOBO Pro V2, TidbiT MX2303, TidbiT
     MX2203, aquaMeasure DOT, aquaMeasure SAL, aquaMeasure SST, VR2AR.

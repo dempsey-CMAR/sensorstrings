@@ -104,6 +104,8 @@ ss_compile_aquameasure_data <- function(path,
 
     am_colnames <- colnames(am_i)
 
+    if("Record Number" %in% am_colnames) am_i <- select(am_i, -`Record Number`)
+
     # sn and timezone checks --------------------------------------------------
 
     # serial number

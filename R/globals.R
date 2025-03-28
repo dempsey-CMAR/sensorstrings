@@ -22,6 +22,7 @@ utils::globalVariables(
     "Sensor",
     "Temp(Water)",
     "Record Type",
+    "Record Number",
     #  "do_percent_saturation",
     "dissolved_oxygen_percent_saturation",
     "temperature_degree_c",
