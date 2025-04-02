@@ -44,15 +44,13 @@ ss_read_hobo_data <- function(path, file_name = NULL) {
 #'
 #' @details This code does not correct dissolved oxygen data for salinity.
 #'
-#' Exported hobo data must be saved in a folder named hobo in csv format.
-#' Exported tidbit data must be saved in a folder named tidbit in csv format.
-#' Folder name is not case-sensitive.
+#'   Exported hobo and tidbit data must be saved in a folder named hobo in csv
+#'   format.
 #'
-#' All of the csv files in the hobo or tidbit folder will be compiled. The name
-#' of each file must be the serial number of the sensor.
+#'   All of the csv files in the hobo or tidbit folder will be compiled.
 #'
-#' The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
-#' HM", "Ymd HMS", "dmY HM", or "dmY HMS".
+#'   The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
+#'   HM", "Ymd HMS", "dmY HM", or "dmY HMS".
 #'
 #' @param path File path to the hobo or tidbit folder.
 #'
@@ -138,13 +136,13 @@ ss_compile_hobo_data <- function(path,
 
     tz_i <- filter(hobo_units, str_detect(variable, pattern = "Date"))
 
-    if (file_name != sn_i) {
-      stop(glue("The name of file {file_name} does not match the expected serial number ({sn_i})"))
-    }
+    # if (file_name != sn_i) {
+    #   stop(glue("The name of file {file_name} does not match the expected serial number ({sn_i})"))
+    # }
 
     # is this file in the sn_table
-    if (!(file_name %in% sn_table$sensor_serial_number)) {
-      stop(glue("The name of file {file_name} does not match any serial numbers in sn_table"))
+    if (!(sn_i %in% sn_table$sensor_serial_number)) {
+      stop(glue("Serial number {sn_i[1]} does not match any serial numbers in sn_table"))
     }
 
     # is the time zone set to GMT+00:00?

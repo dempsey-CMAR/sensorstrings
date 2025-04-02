@@ -45,15 +45,13 @@ Compile and format data from hobo or tidbit sensors
 \details{
 This code does not correct dissolved oxygen data for salinity.
 
-Exported hobo data must be saved in a folder named hobo in csv format.
-Exported tidbit data must be saved in a folder named tidbit in csv format.
-Folder name is not case-sensitive.
+  Exported hobo and tidbit data must be saved in a folder named hobo in csv
+  format.
 
-All of the csv files in the hobo or tidbit folder will be compiled. The name
-of each file must be the serial number of the sensor.
+  All of the csv files in the hobo or tidbit folder will be compiled.
 
-The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
-HM", "Ymd HMS", "dmY HM", or "dmY HMS".
+  The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
+  HM", "Ymd HMS", "dmY HM", or "dmY HMS".
 }
 \seealso{
 Other compile: 

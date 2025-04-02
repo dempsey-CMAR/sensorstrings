@@ -80,11 +80,11 @@ hobo1 <- ss_read_hobo_data(path_hobo, "10755220.csv") %>%
   # the degree symbol was causing a problem
   dplyr::rename(temperature = 2)
 
-hobo2 <- ss_read_hobo_data(path_hobo, "20827226.csv") %>%
+hobo2 <- ss_read_hobo_data(path_hobo, "hobo_20827226.csv") %>%
   # the degree symbol was causing a problem
   dplyr::rename(temperature = 4)
 
-hobo3 <- ss_read_hobo_data(paste0(path_hobo, "/20827226.csv")) %>%
+hobo3 <- ss_read_hobo_data(paste0(path_hobo, "/hobo_20827226.csv")) %>%
   dplyr::rename(temperature = 4)
 
 # # ss_compile_hobo_data ----------------------------------------------------
@@ -105,7 +105,7 @@ hobo_all <- ss_compile_hobo_data(
 ## paths needed for dashboard
 hobo_all2 <- ss_compile_hobo_data(
   path = c(paste0(path_hobo, "/10755220.csv"),
-           paste0(path_hobo, "/20827226.csv")),
+           paste0(path_hobo, "/hobo_20827226.csv")),
   sn_table = sn_hobo,
   deployment_dates = deployment_dates,
   trim = FALSE
@@ -211,7 +211,7 @@ hobo_colnames_error <- c(
 
 hobo_units <- ss_read_hobo_data(
   path = system.file("testdata/Hobo", package = "sensorstrings"),
-  file_name = "20827226.csv"
+  file_name = "hobo_20827226.csv"
 ) %>%
   extract_hobo_units()
 
