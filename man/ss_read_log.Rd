@@ -4,7 +4,15 @@
 \alias{ss_read_log}
 \title{Read in deployment log}
 \usage{
-ss_read_log(path, parse = TRUE, verbose = TRUE)
+ss_read_log(
+  path,
+  parse = TRUE,
+  verbose = TRUE,
+  deployment_dates = TRUE,
+  area_info = TRUE,
+  sn_table = TRUE,
+  config = TRUE
+)
 }
 \arguments{
 \item{path}{File path to the log folder, or full path to the log file,
@@ -17,6 +25,18 @@ used by \code{ss_compile_*} functions.}
 
 \item{verbose}{Logical argument indicating whether to print messages when
 values are missing. Warnings will still be printed.}
+
+\item{deployment_dates}{Logical argument indicating whether to parse and
+return the deployment and retrieval dates.}
+
+\item{area_info}{Logical argument indicating whether to parse and return the
+location details.}
+
+\item{sn_table}{Logical argument indicating whether to parse and return the
+serial numbers and sensor depth.}
+
+\item{config}{Logical argument indicating whether to parse and return the
+string configuration.}
 }
 \value{
 Returns a a data frame of the deployment metadata. Option to parse

@@ -61,7 +61,15 @@ ss_convert_old_log <- function(log) {
 #'
 #' @export
 
-ss_read_log <- function(path, parse = TRUE, verbose = TRUE) {
+ss_read_log <- function(
+    path,
+    parse = TRUE,
+    verbose = TRUE,
+    deployment_dates = TRUE,
+    area_info = TRUE,
+    sn_table = TRUE,
+    config = TRUE
+) {
   # Read in log -----------------------------------------------------------
 
   if (length(path) > 1) {
@@ -109,7 +117,15 @@ ss_read_log <- function(path, parse = TRUE, verbose = TRUE) {
     log <- ss_convert_old_log(log)
   }
 
-  if(isTRUE(parse)) log <- ss_parse_log(log, verbose = verbose)
+  if(isTRUE(parse)) {
+    log <- ss_parse_log(
+      log,
+      deployment_dates = deployment_dates,
+      area_info = area_info,
+      sn_table = sn_table,
+      config = config,
+      verbose = verbose)
+  }
 
   log
 }
@@ -363,7 +379,7 @@ ss_parse_log <- function(
         detect_hobo = str_detect(log_sensor, "hobo"),
         detect_tidbit = str_detect(log_sensor, "tidbit"),
         detect_am = str_detect(log_sensor, "aquameasure"),
-        detect_vemco = str_detect(log_sensor, "vr2ar")
+        detect_vemco = str_detect(log_sensor, "vr2ar|vemco")
       )
 
     # warning if there are any sensors in the log that are NOT recognized by package

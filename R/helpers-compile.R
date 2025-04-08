@@ -87,7 +87,7 @@ set_up_compile <- function(path,
 
   if (length(dat_files) != nrow(sn_table)) {
     warning(glue("There are {length(dat_files)} csv files in {path}.
-              Expected {nrow(sn_table)} files"))
+              \nExpected {nrow(sn_table)} files"))
   }
 
   if (length(excel_files) > 0) {
