@@ -105,14 +105,14 @@ ss_xaxis_breaks <- function(dat){
   }
 
   if(between(timespan, 1461, 3100)){
-    date_breaks_major = "1 year"
-    date_breaks_minor = NULL
+    date_breaks_major = "12 months"
+    date_breaks_minor = "2 months"
     date_labels_format = "%Y-%m-%d"
   }
 
   if(timespan > 3100){
-    date_breaks_major = "18 month"
-    date_breaks_minor = NULL
+    date_breaks_major = "18 months"
+    date_breaks_minor = "3 months"
     date_labels_format = "%Y-%m-%d"
   }
 
