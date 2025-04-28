@@ -405,10 +405,10 @@ ss_parse_log <- function(
       "attached to fixed structure", "floating dock", "unknown", "calval", NA
     )
 
-    if ("configuration" %in% cols) {
+    if ("string_configuration" %in% cols) {
+      config <- unique(log$string_configuration)
+    } else if ("configuration" %in% cols) {
       config <- unique(log$configuration)
-    } else if ("mooring_type" %in% cols) {
-      config <- unique(log$mooring_type)
     } else config <- NA
 
     if (!(config %in% config_options)) {
