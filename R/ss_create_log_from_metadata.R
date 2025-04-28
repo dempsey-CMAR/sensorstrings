@@ -97,6 +97,7 @@ ss_create_log_from_metadata <- function(
       deployment_latitude, deployment_longitude,
       retrieval_latitude, retrieval_longitude,
       sensor_type, sensor_serial_number, sensor_depth_m,
+      string_configuration
     ) %>%
     dplyr::mutate(
       #Location_Description = str_to_title(Location_Description),
