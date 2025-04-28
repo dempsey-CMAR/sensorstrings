@@ -108,7 +108,7 @@ ss_check_station_in_ocean <- function(
 
   if(is.null(coast_shp)) {
     coast_shp <- read_sf(
-      "R:/data_branches/water_quality/processing_resources/ns_coast/ns_coast.shp") %>%
+      "R:/data_branches/ns_coast/ns_coast.shp") %>%
       na.omit()
   }
 
