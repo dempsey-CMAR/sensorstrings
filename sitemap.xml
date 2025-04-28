@@ -29,6 +29,7 @@
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_convert_old_log.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_coords_from_ddm_to_dd.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_create_log_from_metadata.html</loc></url>
+<url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_create_old_log_from_metadata.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_create_variable_labels.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_create_variable_labels_no_newline.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_download_data.html</loc></url>
