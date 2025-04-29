@@ -4,10 +4,10 @@
 \alias{extract_file_extension}
 \title{Extracts the extension of a file name}
 \usage{
-extract_file_extension(file_name)
+extract_file_extension(file_input)
 }
 \arguments{
-\item{file_name}{Character string of a file name or path. Must only include
+\item{file_input}{Character string of a file name or path. Must only include
 one ".", which is used as the separator.}
 }
 \description{

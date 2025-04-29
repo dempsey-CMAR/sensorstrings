@@ -13,12 +13,6 @@
 
 ss_write_report_table <- function(dat, keep_waterbody = FALSE){
 
- # dat <- suppressMessages(ss_import_data(county = "antigonish"))
-
-  # drop columns that are all NA so that they aren't listed as a variable
-  # dat <- dat %>%
-  #   select_if(~ !all(is.na(.)))
-
   all_vars <- c(
     "dissolved_oxygen_percent_saturation",
     "dissolved_oxygen_uncorrected_mg_per_l",
@@ -48,7 +42,6 @@ ss_write_report_table <- function(dat, keep_waterbody = FALSE){
       deployment_range,
       Latitude = latitude,
       Longitude = longitude,
-     # `Sensor Depth (m)` = sensor_depth_at_low_tide_m,
       any_of(all_vars),
       Configuration = string_configuration
     ) %>%
@@ -60,8 +53,6 @@ ss_write_report_table <- function(dat, keep_waterbody = FALSE){
       into = c("Deployment Date", "Retrieval Date"), sep = " to "
     ) %>%
     mutate(
-      `Deployment Date` = as_date(`Deployment Date`),
-      `Retrieval Date` = as_date(`Retrieval Date`),
       variable = case_when(
         variable == "dissolved_oxygen_percent_saturation" ~
           "dissolved oxygen (% sat)",
@@ -71,13 +62,15 @@ ss_write_report_table <- function(dat, keep_waterbody = FALSE){
         variable == "salinity_psu" ~ "salinity",
         variable == "temperature_degree_c" ~ "temperature"
       ),
-      `Deployment Date` = format(`Deployment Date`, "%Y-%m-%d"),
-      `Retrieval Date` = format(`Retrieval Date`, "%Y-%m-%d")
+      `Deployment Date` = format(as_date(`Deployment Date`), "%Y-%m-%d"),
+      `Retrieval Date` = format(as_date(`Retrieval Date`), "%Y-%m-%d"),
+      Latitude = round(Latitude, digits = 4),
+      Longitude = round(Longitude, digits = 4)
     ) %>%
     pivot_wider(
       values_from = "variable", names_from = "variable",
       names_sort = TRUE) %>%
-    unite("Variables Measured", any_of(vars), sep = ", ", na.rm = TRUE)
+    unite("Variables Measured", any_of(vars), sep = "\n", na.rm = TRUE)
 
 
   if(isTRUE(keep_waterbody)) {

@@ -21,6 +21,7 @@ test_that("ss_read_aquameasure_data() reads data when path includes file name", 
 
 test_that("ss_read_aquameasure_data() gives an error when file extension is not csv", {
   expect_error(ss_read_aquameasure_data(path, "1234567"))
+  expect_error(ss_read_aquameasure_data(path, "1234567.xls"))
   expect_error(ss_read_aquameasure_data(paste0(path_am, "/aquaMeasure-670364")))
 })
 

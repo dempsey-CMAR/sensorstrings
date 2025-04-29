@@ -246,21 +246,18 @@ extract_deployment_dates <- function(deployment_dates) {
 #'
 #' @param end_date POSIXct/POSIXt value of the last good timestamp.
 #'
-#' @importFrom assertthat assert_that
 #' @importFrom lubridate hours is.POSIXct
 #' @importFrom stringr str_detect
 #'
 #' @return Returns dat trimmed.
 
 trim_data <- function(dat, start_date, end_date) {
-  assert_that(
-    is.POSIXct(start_date),
-    msg = glue("'start_date' must be of type 'POSIXct', not {class(start_date)}")
-  )
-  assert_that(
-    is.POSIXct(end_date),
-    msg = glue("'end_date' must be of type 'POSIXct', not {class(end_date)}")
-  )
+  if(!is.POSIXct(start_date)) {
+    stop("'start_date' must be of type 'POSIXct', not ", class(start_date))
+  }
+  if(!is.POSIXct(end_date)){
+    stop("'end_date' must be of type 'POSIXct', not ", class(end_date))
+  }
   # assert_posixct(start_date)
   # assert_posixct(end_date)
 

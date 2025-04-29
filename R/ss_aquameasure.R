@@ -12,7 +12,6 @@
 #'
 #' @author Danielle Dempsey
 #'
-#' @importFrom assertthat assert_that has_extension
 #' @importFrom data.table fread
 #' @importFrom stringr str_glue
 #'
@@ -25,7 +24,11 @@ ss_read_aquameasure_data <- function(path, file_name = NULL) {
     path <- file.path(str_glue("{path}/{file_name}"))
   }
 
-  assert_that(has_extension(path, "csv"))
+  if (extract_file_extension(path) != "csv")  {
+    stop("file must have extension '.csv'.\nLooked in ", path)
+  }
+  # remove this so can delete assertthat dependency
+ # assert_that(has_extension(path, "csv"))
 
   data.table::fread(
     path,

@@ -3,17 +3,27 @@
 #' @details Extracts the file extension from a character string using "\\." as the
 #'   separator.
 #'
-#' @param file_name Character string of a file name or path. Must only include
+#' @param file_input Character string of a file name or path. Must only include
 #'   one ".", which is used as the separator.
 #'
 #' @importFrom tidyr separate
 
-extract_file_extension <- function(file_name) {
-  extension <- file_name %>%
+extract_file_extension <- function(file_input) {
+
+  if(length(file_input) == 0) {
+    stop(file_input, " must not be NULL.")
+  }
+
+  extension <- file_input %>%
     data.frame() %>%
     separate(col = 1, into = c(NA, NA, "EXT"), sep = "\\.", fill = "left")
 
-  extension$EXT
+  extension <- extension$EXT
+
+  if(file_input == extension) {
+    warning("no extension found in file ", file_input)
+  } else extension
+
 }
 
 

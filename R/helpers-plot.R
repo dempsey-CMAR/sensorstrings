@@ -239,7 +239,6 @@ ss_create_variable_labels_no_newline <- function(dat) {
 #'
 #' @return Returns \code{dat} filtered to the specified dates.
 #'
-#' @importFrom assertthat assert_that
 #' @importFrom lubridate period is.POSIXct  %m+% %m-%
 #' @importFrom plotly ggplotly
 #' @importFrom dplyr %>% filter
@@ -252,8 +251,12 @@ filter_dat_to_plot <- function(
     period = "2 days",
     custom_start = NULL,
     custom_end = NULL) {
-  assert_that(filter_to %in% c("start", "end", "custom"))
 
+  if(!(filter_to %in% c("start", "end", "custom"))) {
+    stop("argument << filter_to >> must be one of 'start', 'end', or 'custom'")
+  }
+
+  # assert_that(filter_to %in% c("start", "end", "custom"))
   #dat <- dat %>% rename(timestamp_ = contains("timestamp_"))
 
   if (filter_to == "start") {
@@ -273,8 +276,14 @@ filter_dat_to_plot <- function(
   }
 
   if (filter_to == "custom") {
-    assert_that(is.POSIXct(custom_start))
-    assert_that(is.POSIXct(custom_end))
+    # assert_that(is.POSIXct(custom_start))
+    # assert_that(is.POSIXct(custom_end))
+    if(!is.POSIXct(custom_start)) {
+      stop("'custom_start' must be of type 'POSIXct', not ", class(custom_start))
+    }
+    if(!is.POSIXct(custom_end)) {
+      stop("'custom_end' must be of type 'POSIXct', not ", class(custom_end))
+    }
 
     dat <- dat %>%
       filter(

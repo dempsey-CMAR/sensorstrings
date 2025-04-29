@@ -3,6 +3,8 @@
 test_that("extract_file_extension() identifies correct extension", {
   expect_equal(extract_file_extension("fake_file.csv"), "csv")
   expect_equal(extract_file_extension("folder/fake_file.xlsx"), "xlsx")
+  expect_warning(extract_file_extension("folder/fake_file"))
+  expect_error(extract_file_extension(NULL))
 })
 
 # ss_coords_from_ddm_to_dd()
