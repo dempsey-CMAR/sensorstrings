@@ -2,15 +2,9 @@
 % Please edit documentation in R/ss_hobo_ph.R
 \name{ss_compile_hobo_ph_data}
 \alias{ss_compile_hobo_ph_data}
-\title{Compile and format data from hobo pH sensors}
+\title{Compile and format data from hobo pH sensors (MX2501)}
 \usage{
-ss_compile_hobo_ph_data(
-  path,
-  sn_table,
-  deployment_dates,
-  trim = TRUE,
-  sensor_make = "hobo"
-)
+ss_compile_hobo_ph_data(path, sn_table, deployment_dates, trim = TRUE)
 }
 \arguments{
 \item{path}{File path to the hobo_ph folder.}
@@ -29,28 +23,15 @@ specified in \code{deployment_dates}. (Note: four hours are added to the
 retrieval date to account for AST, e.g., in case the sensor was retrieved
 after 20:00 AST, which is 00:00 UTC the next day.) Default is \code{trim =
 TRUE}.}
-
-\item{sensor_make}{Character string indicating whether data to be compiled is
-from hobo sensors (default) or tidbit sensors. Will be used to fill in the
-\code{sensor_type} column of the output file. The raw file format is the
-same for each type of sensor.}
-
-\item{file_name}{Name of the file to import, including file extension. Should
-be \code{NULL} if the file name is included in the \code{path} argument.}
 }
 \value{
-Returns a data frame of hobo or tidbit data, with the same columns as
-  in the original file.
-
 Returns a tibble with the data compiled from each of the hobo or
   tidbit sensors.
 }
 \description{
-Import data from hobo or tidbit csv file
+Compile and format data from hobo pH sensors (MX2501)
 }
 \details{
-The data must be saved in csv format.
-
 Exported data must be saved in a folder named hobo_ph in csv
   format.
 
