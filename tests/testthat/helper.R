@@ -6,8 +6,6 @@
 
 path <- system.file("testdata", package = "sensorstrings")
 
-#path_config <- paste0(system.file("testdata", package = "sensorstrings"), "/water_quality_configuration_table.xlsx")
-
 deployment_dates <- data.frame(START = "2019-05-30", END = "2019-10-19")
 
 
