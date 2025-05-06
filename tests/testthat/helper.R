@@ -123,7 +123,7 @@ hobo_ph1 <- ss_read_hobo_data(path_hobo_ph, "22058696.csv") %>%
 # # ss_compile_hobo_data ----------------------------------------------------
 
 sn_hobo_ph <- data.frame(
-  sensor_type = "hobo_ph",
+  sensor_type = "hobo ph",
   sensor_serial_number = 22058696,
   depth = 1
 )
@@ -131,9 +131,17 @@ sn_hobo_ph <- data.frame(
 hobo_ph_all <- ss_compile_hobo_ph_data(
   path,
   sn_table = sn_hobo_ph,
-  deployment_dates = data.frame(start = "2024-10-25", end = "2024-10-28"),
+  deployment_dates = deployment_dates,
   trim = FALSE
 )
+
+hobo_ph_trim <- ss_compile_hobo_ph_data(
+  path,
+  sn_table = sn_hobo_ph,
+  deployment_dates = deployment_dates,
+  trim = TRUE
+)
+
 
 # Vemco -------------------------------------------------------------------
 

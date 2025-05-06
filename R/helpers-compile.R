@@ -33,7 +33,8 @@ set_up_compile <- function(path,
                            deployment_dates,
                            sensor_make) {
 
-  #browser()
+  if(sensor_make == "ph") sensor_make <- "hobo ph"
+
   # make sure columns of sn_table are named correctly
   # log_sensor is the Logger_Model from the deployment log
   names(sn_table) <- c("log_sensor", "sensor_serial_number", "depth")
@@ -58,6 +59,7 @@ set_up_compile <- function(path,
     dat_files <- path
     excel_files <- dat_files[grep("xlsx|xls", dat_files)]
   } else{
+    sensor_make <- str_replace(sensor_make, " ", "_")
     folder <- list.files(path) %>%
       str_extract(
         regex(paste0("^", sensor_make, "$"), ignore_case = TRUE)

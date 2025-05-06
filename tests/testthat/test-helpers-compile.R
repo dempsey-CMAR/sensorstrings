@@ -105,7 +105,7 @@ test_that("extract_hobo_units() returns correct units", {
 })
 
 test_that("extract_hobo_ph_units() returns correct units", {
-  expect_equal(hobo_ph_units$units, c("adt", "degree_c", "ph"))
+  expect_equal(hobo_ph_units$units, c("utc", "degree_c", "ph"))
 })
 
 
@@ -119,7 +119,7 @@ test_that("make_column_names() returns correct names", {
 
   expect_equal(
     new_hobo_ph_colnames$col_name,
-    c("timestamp_adt", "ph_ph", "temperature_degree_c")
+    c("timestamp_utc", "ph_ph", "temperature_degree_c")
   )
 })
 

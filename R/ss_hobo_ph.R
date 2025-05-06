@@ -1,7 +1,6 @@
 #' @title Compile and format data from hobo pH sensors (MX2501)
 #'
-#' @details Exported data must be saved in a folder named hobo_ph in csv
-#'   format.
+#' @details Exported data must be saved in a folder named hobo_ph in csv format.
 #'
 #'   All of the csv files in the hobo_p h folder will be compiled.
 #'
@@ -18,6 +17,10 @@
 #'   the order year, month, day), and the second column holds the retrieval date
 #'   (a Date object, POSIXct object, or character string in the order year,
 #'   month, day).
+#'
+#' @param tz_check Logical argument indicating whether to check if the timestamp
+#'   column is in utc. If \code{TRUE}, a warning will be printed if the timezone
+#'   is NOT utc.
 #'
 #' @param trim Logical value indicating whether to trim the data to the dates
 #'   specified in \code{deployment_dates}. (Note: four hours are added to the
@@ -45,13 +48,14 @@
 ss_compile_hobo_ph_data <- function(path,
                                  sn_table,
                                  deployment_dates,
+                                 tz_check = FALSE,
                                  trim = TRUE) {
   # set up & check for errors
   setup <- set_up_compile(
     path = path,
     sn_table = sn_table,
     deployment_dates = deployment_dates,
-    sensor_make = "hobo_ph"
+    sensor_make = "ph"
   )
 
   path <- setup$path
@@ -91,8 +95,10 @@ ss_compile_hobo_ph_data <- function(path,
     }
 
     # is the time zone set to GMT+00:00?
-    if (tz_i$units != "utc") {
-      warning(glue("The timezone of file {file_name} is not UTC.\nTimezone: {tz_i$units}"))
+    if(isTRUE(tz_check)) {
+      if (tz_i$units != "utc") {
+        warning(glue("The timezone of file {file_name} is not UTC.\nTimezone: {tz_i$units}"))
+      }
     }
 
     # Select and add columns of interest ----------------------------------------------

@@ -4,7 +4,13 @@
 \alias{ss_compile_hobo_ph_data}
 \title{Compile and format data from hobo pH sensors (MX2501)}
 \usage{
-ss_compile_hobo_ph_data(path, sn_table, deployment_dates, trim = TRUE)
+ss_compile_hobo_ph_data(
+  path,
+  sn_table,
+  deployment_dates,
+  tz_check = FALSE,
+  trim = TRUE
+)
 }
 \arguments{
 \item{path}{File path to the hobo_ph folder.}
@@ -17,6 +23,10 @@ the deployment date (a Date object, POSIXct object, or character string in
 the order year, month, day), and the second column holds the retrieval date
 (a Date object, POSIXct object, or character string in the order year,
 month, day).}
+
+\item{tz_check}{Logical argument indicating whether to check if the timestamp
+column is in utc. If \code{TRUE}, a warning will be printed if the timezone
+is NOT utc.}
 
 \item{trim}{Logical value indicating whether to trim the data to the dates
 specified in \code{deployment_dates}. (Note: four hours are added to the
@@ -32,8 +42,7 @@ Returns a tibble with the data compiled from each of the hobo or
 Compile and format data from hobo pH sensors (MX2501)
 }
 \details{
-Exported data must be saved in a folder named hobo_ph in csv
-  format.
+Exported data must be saved in a folder named hobo_ph in csv format.
 
   All of the csv files in the hobo_p h folder will be compiled.
 

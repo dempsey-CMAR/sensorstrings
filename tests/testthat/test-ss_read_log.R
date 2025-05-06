@@ -1,5 +1,5 @@
 test_that("ss_read_log() reads in all observations", {
-  expect_equal(nrow(log_old), 6)
+  expect_equal(nrow(log_old), 7)
   expect_equal(ncol(log_old), 14)
 })
 

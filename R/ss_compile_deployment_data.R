@@ -69,7 +69,10 @@ ss_compile_deployment_data <- function(
 
   # hobo --------------------------------------------------------------------
   sn_hobo <- sn_table %>%
-    filter(str_detect(log_sensor, regex("hobo", ignore_case = TRUE)))
+    filter(
+      str_detect(log_sensor, regex("hobo", ignore_case = TRUE)),
+      !str_detect(log_sensor, regex("ph", ignore_case = TRUE))
+    )
 
   if (nrow(sn_hobo) > 0) {
     hobo <- ss_compile_hobo_data(
@@ -80,6 +83,21 @@ ss_compile_deployment_data <- function(
       sensor_make = "hobo"
     )
     depl_data <- bind_rows(depl_data, hobo)
+  }
+
+
+# hobo ph -----------------------------------------------------------------
+  sn_hobo_ph <- sn_table %>%
+    filter(str_detect(log_sensor, regex("ph", ignore_case = TRUE)))
+
+  if (nrow(sn_hobo_ph) > 0) {
+    hobo_ph <- ss_compile_hobo_ph_data(
+      path = path,
+      sn_table = sn_hobo_ph,
+      deployment_dates = deployment_dates,
+      trim = trim
+    )
+    depl_data <- bind_rows(depl_data, hobo_ph)
   }
 
   # tidbit --------------------------------------------------------------------
@@ -136,6 +154,7 @@ ss_compile_deployment_data <- function(
       contains("chlorophyll_red"),
       contains("dissolved_oxygen_percent"),
       contains("dissolved_oxygen_uncorrected"),
+      contains("ph"),
       contains("salinity"),
       contains("sensor_depth_measured"),
       contains("temperature")

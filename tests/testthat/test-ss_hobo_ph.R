@@ -1,21 +1,21 @@
 # ss_read_hobo_data -------------------------------------------------------
 
 test_that("ss_read_hobo_data() reads in correct classes", {
-  expect_equal(class(hobo_ph1$`Date-Time (ADT)`), "character")
+  expect_equal(class(hobo_ph1$`Date-Time (UTC)`), "character")
   expect_equal(class(hobo_ph1$temperature), "numeric")
   expect_equal(class(hobo_ph1$`pH   (pH)`), "numeric")
 })
 
 
 test_that("ss_read_hobo_data() reads in all observations", {
-  expect_equal(nrow(hobo_ph1), 436)
+  expect_equal(nrow(hobo_ph1), 41)
 })
 
 # ss_compile_hobo_ph_data ----------------------------------------------------
 
 test_that("ss_compile_hobo_ph_data() returns correct classes", {
   expect_equal(class(hobo_ph_all$deployment_range), "character")
-  expect_equal(class(hobo_ph_all$timestamp_adt), c("POSIXct", "POSIXt"))
+  expect_equal(class(hobo_ph_all$timestamp_utc), c("POSIXct", "POSIXt"))
   expect_equal(class(hobo_ph_all$sensor_type), "character")
   expect_equal(class(hobo_ph_all$sensor_serial_number), "numeric")
   expect_equal(class(hobo_ph_all$sensor_depth_at_low_tide_m), "numeric")
@@ -25,7 +25,7 @@ test_that("ss_compile_hobo_ph_data() returns correct classes", {
 
 
 test_that("ss_compile_hobo_ph_data() reads in all observations", {
-  expect_equal(nrow(hobo_ph_all), 432)
+  expect_equal(nrow(hobo_ph_all), 38)
 
 })
 
