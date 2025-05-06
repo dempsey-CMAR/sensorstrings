@@ -99,7 +99,8 @@ ss_compile_hobo_data <- function(path,
                                  deployment_dates,
                                  trim = TRUE,
                                  sensor_make = "hobo") {
-  # set up & check for errors
+
+    # set up & check for errors
   setup <- set_up_compile(
     path = path,
     sn_table = sn_table,
