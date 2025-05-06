@@ -5,13 +5,16 @@
 #' @param keep_waterbody Logical value indicating whether to keep the
 #'   \code{Waterbody} column.
 #'
+#' @param var_sep Separator between variables. Default will add a new line
+#'   between variables for Word and pdf outputs.
+#'
 #' @importFrom tidyr separate unite
 #' @importFrom lubridate as_date
 #' @importFrom dplyr %>% all_of any_of arrange case_when distinct mutate
 #'   relocate select
 #' @export
 
-ss_write_report_table <- function(dat, keep_waterbody = FALSE){
+ss_write_report_table <- function(dat, keep_waterbody = FALSE, var_sep = "\n"){
 
   all_vars <- c(
     "dissolved_oxygen_percent_saturation",
@@ -70,7 +73,8 @@ ss_write_report_table <- function(dat, keep_waterbody = FALSE){
     pivot_wider(
       values_from = "variable", names_from = "variable",
       names_sort = TRUE) %>%
-    unite("Variables Measured", any_of(vars), sep = "\n", na.rm = TRUE)
+    unite("Variables Measured", any_of(vars), sep = var_sep, na.rm = TRUE)
+
 
 
   if(isTRUE(keep_waterbody)) {
