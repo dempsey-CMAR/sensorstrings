@@ -14,7 +14,6 @@
 #' @author Danielle Dempsey
 #'
 #' @importFrom data.table fread
-#' @importFrom stringr str_glue
 #'
 #' @export
 
@@ -22,7 +21,7 @@ ss_read_hobo_data <- function(path, file_name = NULL) {
 
   # finish path if needed
   if (isFALSE(utils::file_test("-f", path))) {
-    path <- file.path(str_glue("{path}/{file_name}"))
+    path <- file.path(paste0(path, "/", file_name))
   }
 
   if (extract_file_extension(path) != "csv")  {
@@ -86,7 +85,6 @@ ss_read_hobo_data <- function(path, file_name = NULL) {
 #'
 #' @importFrom dplyr %>% contains everything filter if_all mutate rename select
 #'   tibble
-#' @importFrom glue glue
 #' @importFrom lubridate hours
 #' @importFrom purrr map_df
 #' @importFrom stats na.omit
@@ -140,18 +138,15 @@ ss_compile_hobo_data <- function(path,
 
     tz_i <- filter(hobo_units, str_detect(variable, pattern = "Date"))
 
-    # if (file_name != sn_i) {
-    #   stop(glue("The name of file {file_name} does not match the expected serial number ({sn_i})"))
-    # }
-
     # is this file in the sn_table
     if (!(sn_i %in% sn_table$sensor_serial_number)) {
-      stop(glue("Serial number {sn_i[1]} does not match any serial numbers in sn_table"))
+      stop(paste0("Serial number ", sn_i[1], " does not match any serial numbers in sn_table"))
     }
 
     # is the time zone set to GMT+00:00?
     if (tz_i$units != "utc") {
-      warning(glue("The timezone of file {file_name} is not UTC.\nTimezone: {tz_i$units}"))
+      warning(paste0("The timezone of file ", file_name,
+                     " is not UTC.\nTimezone: ", tz_i$units))
     }
 
     # Select and add columns of interest ----------------------------------------------

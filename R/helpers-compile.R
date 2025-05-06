@@ -24,7 +24,6 @@
 #'   the folder, and \code{sn_table}.
 #'
 #' @importFrom dplyr %>% mutate select
-#' @importFrom glue glue
 #' @importFrom lubridate parse_date_time
 #' @importFrom stringr str_detect
 
@@ -70,36 +69,35 @@ set_up_compile <- function(path,
       stop("There is no folder named << ", sensor_make, " >> in path << ", path, " >>")
     }
 
-    path <- glue("{path}/{folder}")
+    path <- paste0(path, "/", folder)
 
     # list files in the sensor folder
     dat_files <- list.files(path, all.files = FALSE, pattern = "*csv")
+
+    if (length(dat_files) == 0) {
+      stop(paste0("Can't find csv files in ", path))
+    }
+
     # check for excel files
     excel_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|xls")
 
-    dat_files <- glue("{path}/{dat_files}")
+    dat_files <- paste0(path, "/", dat_files)
   }
-
-  # check for surprises in dat_files
-  if (length(dat_files) == 0) {
-    stop(glue("Can't find csv files in {path}"))
-  }
-
 
   if (sensor_make == "vemco" && length(dat_files) > 1) {
-    warning(glue("There are {length(dat_files)} csv files in {path}.
-                 Expect 1 file for a typical deployment"))
+    warning(paste0("There are ", length(dat_files), " csv files in ", path, ".",
+                 "\nExpect 1 file for a typical deployment"))
   }
 
   if (length(dat_files) != nrow(sn_table)) {
-    warning(glue("There are {length(dat_files)} csv files in {path}.
-              \nExpected {nrow(sn_table)} files"))
+    warning(paste0("There are ", length(dat_files), " csv files in ", path, ".
+              \nExpected ", nrow(sn_table), " files"))
   }
 
   if (length(excel_files) > 0) {
-    warning(glue("Can't compile excel files.
-    {length(excel_files)} excel files found.
-    \nHINT: Please re-export in csv format."))
+    warning(paste0("Can't compile excel files.\n",
+                   length(excel_files), " excel files found. Please re-export in csv format.")
+    )
   }
 
   # return info
@@ -346,7 +344,6 @@ extract_aquameasure_vars <- function(am_colnames) {
 #'
 #' @return Returns the hobo serial number.
 #'
-#' @importFrom glue glue
 #' @importFrom stringr str_detect str_remove str_split
 
 extract_hobo_sn <- function(hobo_colnames) {
@@ -363,7 +360,9 @@ extract_hobo_sn <- function(hobo_colnames) {
     as.numeric(SENSOR_SN)
   } else {
     stop(
-      glue("Hobo file LOGR S/N ({LOGGER_SN}) does not match SEN S/N ({SENSOR_SN})")
+      paste0("Hobo file LOGR S/N (",
+             LOGGER_SN,
+             ") does not match SEN S/N (", SENSOR_SN, ")")
     )
   }
 }
@@ -424,7 +423,7 @@ extract_hobo_ph_units <- function(dat) {
 }
 
 
-#' Glue variable name and units to create column names
+#' Paste variable name and units to create column names
 #'
 #' @param unit_table Data frame including columns \code{variable} and
 #'   \code{units}, as returned from \code{extract_hobo_units()}.

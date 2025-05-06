@@ -54,7 +54,6 @@ ss_convert_old_log <- function(log) {
 #'
 #' @importFrom data.table fread
 #' @importFrom dplyr %>%
-#' @importFrom glue glue
 #' @importFrom readxl read_excel
 #' @importFrom stringr str_extract
 #' @importFrom utils file_test
@@ -83,7 +82,7 @@ ss_read_log <- function(
       str_extract(regex("log", ignore_case = TRUE)) %>%
       na.omit()
 
-    path <- glue("{path}/{folder}")
+    path <- paste0(path, "/", folder)
 
     dat_files <- list.files(path, all.files = FALSE, pattern = "*xlsx|*xls|*csv")
 
@@ -391,7 +390,7 @@ ss_parse_log <- function(
       extra_sensor <- sensors[which(n_sensors == 0), "log_sensor"]
 
       warning(
-        glue("{extra_sensor} found in the sensor_type column of the log.
+        paste0(extra_sensor, " found in the sensor_type column of the log.
             This sensor is not recognized by the sensorstrings package")
       )
     }

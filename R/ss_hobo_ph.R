@@ -37,7 +37,6 @@
 #'
 #' @importFrom dplyr %>% contains everything filter if_all mutate rename select
 #'   tibble
-#' @importFrom glue glue
 #' @importFrom lubridate hours
 #' @importFrom purrr map_df
 #' @importFrom stats na.omit
@@ -91,13 +90,14 @@ ss_compile_hobo_ph_data <- function(path,
 
     # is this file in the sn_table
     if (!(sn_i %in% sn_table$sensor_serial_number)) {
-      stop(glue("Serial number {sn_i[1]} does not match any serial numbers in sn_table"))
+      stop(paste0("Serial number ", sn_i[1], " does not match any serial numbers in sn_table"))
     }
 
     # is the time zone set to GMT+00:00?
     if(isTRUE(tz_check)) {
       if (tz_i$units != "utc") {
-        warning(glue("The timezone of file {file_name} is not UTC.\nTimezone: {tz_i$units}"))
+        warning(paste0("The timezone of file ", file_name,
+                       " is not UTC.\nTimezone: ", tz_i$units))
       }
     }
 

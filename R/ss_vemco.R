@@ -17,7 +17,6 @@
 #' @importFrom janitor convert_to_datetime
 #' @importFrom lubridate parse_date_time
 #' @importFrom readxl read_excel
-#' @importFrom stringr str_glue
 #'
 #' @export
 
@@ -26,7 +25,7 @@ ss_read_vemco_data <- function(path, file_name) {
 
   # finish path if needed
   if (isFALSE(utils::file_test("-f", path))) {
-    path <- file.path(str_glue("{path}/{file_name}"))
+    path <- file.path(paste0(path, "/", file_name))
   }
 
   if (extract_file_extension(path) != "csv")  {
@@ -127,14 +126,14 @@ ss_compile_vemco_data <- function(path,
     date_tz <- extract_vemco_tz(dat_colnames)
 
     if (date_tz != "utc") {
-      message(glue("Timestamp in file {dat_files} is in timezone: {date_tz}."))
+      message(paste0("Timestamp in file ", dat_files, "is in timezone: ", date_tz))
     }
 
     # serial number from data file
     sn_i <- as.numeric(str_remove(unique(dat_i$Receiver), "VR2AR-X-|VR2AR-"))
 
     if (!(sn_i %in% sn_table$sensor_serial_number)) {
-      stop(glue("Serial number {sn_i[1]} does not match any serial numbers in sn_table"))
+      stop(paste0("Serial number ", sn_i[1], " does not match any serial numbers in sn_table"))
     }
 
     # use serial number to identify the depth from sn_table

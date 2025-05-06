@@ -2,7 +2,7 @@
 % Please edit documentation in R/helpers-compile.R
 \name{make_column_names}
 \alias{make_column_names}
-\title{Glue variable name and units to create column names}
+\title{Paste variable name and units to create column names}
 \usage{
 make_column_names(unit_table)
 }
@@ -14,5 +14,5 @@ make_column_names(unit_table)
 Data frame with column names in the form \code{variable_units}.
 }
 \description{
-Glue variable name and units to create column names
+Paste variable name and units to create column names
 }

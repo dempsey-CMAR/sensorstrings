@@ -20,7 +20,6 @@
 #'
 #' @importFrom sf st_as_sf st_buffer st_intersection st_transform
 #' @importFrom dplyr %>% contains filter mutate select
-#' @importFrom glue glue
 #' @importFrom googlesheets4 gs4_deauth read_sheet
 #'
 #' @export
@@ -71,8 +70,9 @@ ss_check_station_radius <- function(
 
   if(nrow(location_check) == 0) {
     warning(
-      glue("The coordinates for station << {station_name} >> are outside of the
-           << {station_radius} m >> buffer from the official station location.")
+      paste0("The coordinates for station << ", station_name,
+      " >> are outside of the << ",
+      station_radius, " m >> buffer from the official station location.")
     )
     return(FALSE)
   }
@@ -94,7 +94,6 @@ ss_check_station_radius <- function(
 #'   land.
 #'
 #' @importFrom sf st_as_sf st_intersection read_sf
-#' @importFrom glue glue
 #'
 #' @export
 
@@ -122,7 +121,7 @@ ss_check_station_in_ocean <- function(
 
   if(nrow(overlap) > 0) {
     warning(
-      glue("The coordinates for station << {station_name} >> may be on land.")
+      paste0("The coordinates for station << ", station_name, " >> may be on land.")
     )
     return(FALSE)
   }
@@ -148,7 +147,6 @@ ss_check_station_in_ocean <- function(
 #'   distance.
 #'
 #' @importFrom sf st_as_sf st_distance
-#' @importFrom glue glue
 #'
 #' @return Logical value. Returns \code{TRUE} if the distance between deployment
 #'   and retrieval coordinates is less than \code{max_drift}. Returns
@@ -177,7 +175,7 @@ ss_check_station_drift <- function(
   drift_units = units(drift_distance)$numerator
   if(drift_units != "m") {
     warning(
-      glue("Drift distance was calculated in units of {drift_units}, not metres")
+    paste0("Drift distance was calculated in units of ", drift_units, "not metres")
     )
   }
 
@@ -185,8 +183,10 @@ ss_check_station_drift <- function(
 
   if(drift_distance > max_drift) {
     warning(
-      glue(
-        "The deployment and retrieval coordinates for station << {station_name} >> are << {drift_distance} >> m apart.\nMaximum acceptable distance is {max_drift} m")
+      paste0(
+        "The deployment and retrieval coordinates for station << ",
+        station_name, " >> are << ", drift_distance,
+        " >> m apart.\nMaximum acceptable distance is ", max_drift, "m")
     )
   }
 

@@ -13,7 +13,6 @@
 #' @author Danielle Dempsey
 #'
 #' @importFrom data.table fread
-#' @importFrom stringr str_glue
 #'
 #' @export
 
@@ -21,7 +20,7 @@ ss_read_aquameasure_data <- function(path, file_name = NULL) {
 
   # finish path if needed
   if (isFALSE(utils::file_test("-f", path))) {
-    path <- file.path(str_glue("{path}/{file_name}"))
+    path <- file.path(paste0(path, "/", file_name))
   }
 
   if (extract_file_extension(path) != "csv")  {
@@ -65,7 +64,6 @@ ss_read_aquameasure_data <- function(path, file_name = NULL) {
 #'
 #' @importFrom dplyr %>% across all_of any_of bind_rows distinct group_by mutate
 #'   n select slice summarise tibble
-#' @importFrom glue glue
 #' @importFrom lubridate parse_date_time
 #' @importFrom stringr str_detect str_replace
 #' @importFrom tidyr separate pivot_wider
@@ -136,11 +134,11 @@ ss_compile_aquameasure_data <- function(path,
 
     # if the serial number doesn't match any of the entries in sn_table
     if (!(sn_i %in% sn_table$sensor_serial_number)) {
-      stop(glue("Serial number {sn_i[1]} does not match any serial numbers in sn_table"))
+      stop(paste0("Serial number ", sn_i[1], "does not match any serial numbers in sn_table"))
     }
 
     if (date_tz != "utc") {
-      message(glue("Timestamp in file {file_name} is in timezone: {date_tz}."))
+      message(paste0("Timestamp in file ", file_name, "is in timezone: ", date_tz))
     }
 
     # Clean and format data ---------------------------------------------------
