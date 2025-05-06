@@ -1,50 +1,4 @@
-#' Import data from hobo or tidbit csv file
-#'
-#' @details The data must be saved in csv format.
-#'
-#' @param path File path to the hobo_ph folder, or full path to the data
-#'   file including file name and extension.
-#'
-#' @param file_name Name of the file to import, including file extension. Should
-#'   be \code{NULL} if the file name is included in the \code{path} argument.
-#'
-#' @return Returns a data frame of hobo or tidbit data, with the same columns as
-#'   in the original file.
-#'
-#' @author Danielle Dempsey
-#'
-#' @importFrom data.table fread
-#' @importFrom stringr str_glue
-#'
-#' @export
-
-# ss_read_hobo_ph_data <- function(path, file_name = NULL) {
-#
-#   # finish path if needed
-#   if (isFALSE(utils::file_test("-f", path))) {
-#     path <- file.path(str_glue("{path}/{file_name}"))
-#   }
-#
-#   if (extract_file_extension(path) != "csv")  {
-#     stop("file must have extension '.csv'.\nLooked in ", path)
-#   }
-#   # remove this so can delete assertthat dependency
-#   # assert_that(has_extension(path, "csv"))
-#
-#   # read in data
-#   # start with row that includes the "Date" header
-#   # use UTF-8 coding for degree symbol
-#   # return as data.frame (not data.table)
-#  x<- data.table::fread(
-#     path,
-#    # skip = "Date",
-#    # encoding = "UTF-8",
-#    data.table = FALSE
-#   )
-# }
-
-
-#' @title Compile and format data from hobo pH sensors
+#' @title Compile and format data from hobo pH sensors (MX2501)
 #'
 #' @details Exported data must be saved in a folder named hobo_ph in csv
 #'   format.
@@ -71,11 +25,6 @@
 #'   after 20:00 AST, which is 00:00 UTC the next day.) Default is \code{trim =
 #'   TRUE}.
 #'
-#' @param sensor_make Character string indicating whether data to be compiled is
-#'   from hobo sensors (default) or tidbit sensors. Will be used to fill in the
-#'   \code{sensor_type} column of the output file. The raw file format is the
-#'   same for each type of sensor.
-#'
 #' @return Returns a tibble with the data compiled from each of the hobo or
 #'   tidbit sensors.
 #'
@@ -96,14 +45,13 @@
 ss_compile_hobo_ph_data <- function(path,
                                  sn_table,
                                  deployment_dates,
-                                 trim = TRUE,
-                                 sensor_make = "hobo") {
+                                 trim = TRUE) {
   # set up & check for errors
   setup <- set_up_compile(
     path = path,
     sn_table = sn_table,
     deployment_dates = deployment_dates,
-    sensor_make = sensor_make
+    sensor_make = "hobo_ph"
   )
 
   path <- setup$path
@@ -179,7 +127,7 @@ ss_compile_hobo_ph_data <- function(path,
     map_df(rbind)
 
   # Return compiled data ----------------------------------------------------
-  message(paste(sensor_make, "data compiled"))
+  message("hobo_ph data compiled")
 
   tibble(hobo_out)
 }
