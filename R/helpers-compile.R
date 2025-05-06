@@ -375,6 +375,33 @@ extract_hobo_units <- function(hobo_dat) {
     )
 }
 
+#' Extract units from column names of hobo pH data
+#'
+#' @param dat Data as read in by \code{ss_read_hobo_ph_data()}.
+#'
+#' @return Returns a tibble of \code{variable} and \code{units} found in
+#'   \code{dat}. Units are ph for pH and degree_c for
+#'   temperature.
+#' @importFrom dplyr %>% contains mutate select
+#' @importFrom stringr str_replace str_remove str_remove_all
+#' @importFrom tidyr separate
+
+extract_hobo_ph_units <- function(dat) {
+  dat %>%
+    select(contains("Date"), contains("Temp"), contains("pH")) %>%
+    colnames() %>%
+    data.frame() %>%
+    separate(col = ".", into = c("variable", "units"), " \\(") %>%
+    mutate(
+      variable = str_remove_all(variable, " "),
+      units = str_remove(units, "\\)"),
+      units = str_replace(units, pattern = "pH", replacement = "ph"),
+      units = str_replace(units, pattern = "\u00B0C", replacement = "degree_c"),
+      units = tolower(units)
+    )
+}
+
+
 #' Glue variable name and units to create column names
 #'
 #' @param unit_table Data frame including columns \code{variable} and
@@ -384,32 +411,44 @@ extract_hobo_units <- function(hobo_dat) {
 #'
 #' @importFrom dplyr %>% arrange mutate
 #' @importFrom stringr str_detect str_replace
-#' @importFrom glue glue
 
 make_column_names <- function(unit_table) {
   new_names <- unit_table %>%
     mutate(
-      variable = str_replace(
-        variable,
-        pattern = "Date Time", replacement = "timestamp_"
+      variable_label = case_when(
+       variable == "Date Time" | variable == "Date-Time" ~ "timestamp_",
+       variable == "DO conc" ~ "dissolved_oxygen_uncorrected_",
+       variable == "Temp" | variable == "Temperature" ~ "temperature_",
+        variable == "pH" ~ "ph_",
+        TRUE ~ NA
       ),
-      variable = str_replace(
-        variable,
-        pattern = "DO conc", replacement = "dissolved_oxygen_uncorrected_"
-      ),
-      variable = str_replace(
-        variable,
-        pattern = "Temp", replacement = "temperature_"
-      ),
-      col_name = glue("{variable}{units}")
+      col_name = paste0(variable_label, units)
     )
 
+    #   variable = str_replace(
+    #     variable,
+    #     pattern = "Date Time|Date-Time", replacement = "timestamp_"
+    #   ),
+    #   variable = str_replace(
+    #     variable,
+    #     pattern = "DO conc", replacement = "dissolved_oxygen_uncorrected_"
+    #   ),
+    #   variable = str_replace(
+    #     variable,
+    #     # change this to EXACTLY Temp with regex
+    #     pattern = regex("^Temp$", ignore_case = FALSE),
+    #     replacement = "temperature_"
+    #   ),
+    #   col_name = glue("{variable}{units}")
+    # )
+
   # make ordered factor so rows will always be in this order
-  ## timestamp, dissolved oxygen, temperature
+  ## timestamp, dissolved oxygen, ph, temperature
   ## this is important because the columns will be named in this order
   f_levels <- c(
     new_names[str_detect(new_names$col_name, "timestamp"), ]$col_name,
     new_names[str_detect(new_names$col_name, "dissolved_oxygen"), ]$col_name,
+    new_names[str_detect(new_names$col_name, "ph"), ]$col_name,
     new_names[str_detect(new_names$col_name, "temperature"), ]$col_name
   )
 
