@@ -1,7 +1,3 @@
-# allow access to the google sheet
-# googlesheets4::gs4_deauth()
-
-
 # Common compile arguments ------------------------------------------------
 
 path <- system.file("testdata", package = "sensorstrings")
@@ -85,7 +81,7 @@ hobo2 <- ss_read_hobo_data(path_hobo, "hobo_20827226.csv") %>%
 hobo3 <- ss_read_hobo_data(paste0(path_hobo, "/hobo_20827226.csv")) %>%
   dplyr::rename(temperature = 4)
 
-# # ss_compile_hobo_data ----------------------------------------------------
+# ss_compile_hobo_data ----------------------------------------------------
 
 sn_hobo <- data.frame(
   sensor_type = c("HOBO", "hobo"),
@@ -113,6 +109,30 @@ hobo_trim <- ss_compile_hobo_data(
   path,
   sn_table = sn_hobo,
   deployment_dates = deployment_dates,
+)
+
+# Hobo pH -----------------------------------------------------------------
+
+path_hobo_ph <- system.file("testdata/hobo_ph", package = "sensorstrings")
+
+hobo_ph1 <- ss_read_hobo_data(path_hobo_ph, "22058696.csv") %>%
+  # the degree symbol was causing a problem
+  dplyr::rename(temperature = 3)
+
+
+# # ss_compile_hobo_data ----------------------------------------------------
+
+sn_hobo_ph <- data.frame(
+  sensor_type = "hobo_ph",
+  sensor_serial_number = 22058696,
+  depth = 1
+)
+
+hobo_ph_all <- ss_compile_hobo_ph_data(
+  path,
+  sn_table = sn_hobo_ph,
+  deployment_dates = data.frame(start = "2024-10-25", end = "2024-10-28"),
+  trim = FALSE
 )
 
 # Vemco -------------------------------------------------------------------
@@ -213,9 +233,16 @@ hobo_units <- ss_read_hobo_data(
 ) %>%
   extract_hobo_units()
 
+hobo_ph_units <- ss_read_hobo_data(
+  path = system.file("testdata/hobo_ph", package = "sensorstrings"),
+  file_name = "22058696.csv"
+) %>%
+  extract_hobo_ph_units()
+
 # make_column_names -------------------------------------------------------
 
 new_hobo_colnames <- make_column_names(hobo_units)
+new_hobo_ph_colnames <- make_column_names(hobo_ph_units)
 
 # ss_pivot ----------------------------------------------------------------
 
