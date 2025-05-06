@@ -32,6 +32,8 @@ set_up_compile <- function(path,
                            sn_table,
                            deployment_dates,
                            sensor_make) {
+
+  #browser()
   # make sure columns of sn_table are named correctly
   # log_sensor is the Logger_Model from the deployment log
   names(sn_table) <- c("log_sensor", "sensor_serial_number", "depth")
@@ -57,7 +59,9 @@ set_up_compile <- function(path,
     excel_files <- dat_files[grep("xlsx|xls", dat_files)]
   } else{
     folder <- list.files(path) %>%
-      str_extract(regex(sensor_make, ignore_case = TRUE)) %>%
+      str_extract(
+        regex(paste0("^", sensor_make, "$"), ignore_case = TRUE)
+      ) %>%
       na.omit()
 
     if (length(folder) == 0) {
@@ -139,14 +143,30 @@ add_deployment_columns <- function(
       sensor_type,
       sensor_serial_number,
       sensor_depth_at_low_tide_m,
-      chlorophyll_blue_ug_per_l = contains("blue_ug"),
-      chlorophyll_red_ug_per_l = contains("red_ug"),
+      contains("blue_ug"),
+      contains("red_ug"),
       dissolved_oxygen_percent_saturation = contains("percent_sat"),
       dissolved_oxygen_uncorrected_mg_per_l = contains("uncorrected_mg_per_l"),
       sensor_depth_measured_m = contains("sensor_depth_measured"),
-      salinity_psu = contains("psu"),
-      temperature_degree_c = contains("degree_c")
+      contains("ph"),
+      contains("psu"),
+      contains("degree_c")
     )
+    # select(
+    #   deployment_range,
+    #   contains("timestamp"),
+    #   sensor_type,
+    #   sensor_serial_number,
+    #   sensor_depth_at_low_tide_m,
+    #   chlorophyll_blue_ug_per_l = contains("blue_ug"),
+    #   chlorophyll_red_ug_per_l = contains("red_ug"),
+    #   dissolved_oxygen_percent_saturation = contains("percent_sat"),
+    #   dissolved_oxygen_uncorrected_mg_per_l = contains("uncorrected_mg_per_l"),
+    #   sensor_depth_measured_m = contains("sensor_depth_measured"),
+    #   ph_ph = contains("ph"),
+    #   salinity_psu = contains("psu"),
+    #   temperature_degree_c = contains("degree_c")
+    # )
 }
 
 
