@@ -57,6 +57,7 @@ Reads the deployment log and then calls
 Other compile: 
 \code{\link{ss_compile_aquameasure_data}()},
 \code{\link{ss_compile_hobo_data}()},
+\code{\link{ss_compile_hobo_ph_data}()},
 \code{\link{ss_compile_vemco_data}()},
 \code{\link{ss_read_log_old}()}
 }

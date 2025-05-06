@@ -65,6 +65,7 @@ Other compile:
 \code{\link{ss_compile_aquameasure_data}()},
 \code{\link{ss_compile_deployment_data}()},
 \code{\link{ss_compile_hobo_data}()},
+\code{\link{ss_compile_hobo_ph_data}()},
 \code{\link{ss_read_log_old}()}
 }
 \author{
