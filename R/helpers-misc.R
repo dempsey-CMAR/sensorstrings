@@ -21,7 +21,7 @@ extract_file_extension <- function(file_input) {
   extension <- extension$EXT
 
   if(file_input == extension) {
-    warning("no extension found in file ", file_input)
+    message("no extension found in file ", file_input)
   } else extension
 
 }
