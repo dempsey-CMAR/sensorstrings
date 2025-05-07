@@ -10,6 +10,7 @@
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/extract_aquameasure_vars.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/extract_deployment_dates.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/extract_file_extension.html</loc></url>
+<url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/extract_hobo_ph_units.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/extract_hobo_sn.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/extract_hobo_units.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/extract_vemco_tz.html</loc></url>
@@ -24,6 +25,7 @@
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_compile_aquameasure_data.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_compile_deployment_data.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_compile_hobo_data.html</loc></url>
+<url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_compile_hobo_ph_data.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_compile_vemco_data.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_convert_depth_to_ordered_factor.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_convert_old_log.html</loc></url>
@@ -35,6 +37,7 @@
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_download_data.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_export_county_files.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_export_path.html</loc></url>
+<url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_format_report_table.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_get_colour_palette.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_ggplot_variables.html</loc></url>
 <url><loc>https://dempsey-cmar.github.io/sensorstrings/reference/ss_import_data.html</loc></url>
