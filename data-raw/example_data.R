@@ -17,7 +17,7 @@ path <- here()
 # aquaMeasure -------------------------------------------------------------
 
 aquameasure_raw <- ss_read_aquameasure_data(
-  path = paste0(path, "/data-raw/aquameasure"),
+  path = paste0(path, "/aquameasure"),
   file_name = "aquaMeasure-670364.csv"
 )
 
