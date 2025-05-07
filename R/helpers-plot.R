@@ -62,7 +62,25 @@ ss_xaxis_breaks <- function(dat){
   timespan <- difftime(max(dat$timestamp_utc), min(dat$timestamp_utc), units = "days")
   timespan <- round(unclass(timespan)[1])
 
-  if(timespan <= 60){
+  if(timespan <= 2){
+    date_breaks_major = "12 hour"
+    date_breaks_minor = "12 hour"
+    date_labels_format = "%Y-%m-%d %H:%M"
+  }
+
+  if(between(timespan, 3, 10)){
+    date_breaks_major = "2 day"
+    date_breaks_minor = "1 day"
+    date_labels_format = "%Y-%m-%d"
+  }
+
+  if(between(timespan, 11, 40)){
+    date_breaks_major = "1 week"
+    date_breaks_minor = "1 week"
+    date_labels_format = "%Y-%m-%d"
+  }
+
+  if(between(timespan, 41, 60)){
     date_breaks_major = "2 week"
     date_breaks_minor = "2 week"
     date_labels_format = "%Y-%m-%d"
