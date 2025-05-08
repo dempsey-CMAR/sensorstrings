@@ -21,6 +21,7 @@ ss_pivot_longer <- function(dat_wide) {
         contains("chlorophyll"),
         contains("depth_measured"),
         contains("dissolved_oxygen"),
+        contains("ph"),
         contains("salinity"),
         contains("temperature")
       ),

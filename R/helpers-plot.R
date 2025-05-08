@@ -59,7 +59,8 @@ ss_get_colour_palette <- function(dat) {
 ss_xaxis_breaks <- function(dat){
 
   # timespan of the data
-  timespan <- difftime(max(dat$timestamp_utc), min(dat$timestamp_utc), units = "days")
+  dat <- rename(dat, timestamp_ = contains("timestamp"))
+  timespan <- difftime(max(dat$timestamp_), min(dat$timestamp_), units = "days")
   timespan <- round(unclass(timespan)[1])
 
   if(timespan <= 2){
@@ -68,7 +69,13 @@ ss_xaxis_breaks <- function(dat){
     date_labels_format = "%Y-%m-%d %H:%M"
   }
 
-  if(between(timespan, 3, 10)){
+  if(between(timespan, 3, 5)){
+    date_breaks_major = "1 day"
+    date_breaks_minor = "1 day"
+    date_labels_format = "%Y-%m-%d"
+  }
+
+  if(between(timespan, 6, 10)){
     date_breaks_major = "2 day"
     date_breaks_minor = "1 day"
     date_labels_format = "%Y-%m-%d"
@@ -145,10 +152,7 @@ ss_xaxis_breaks <- function(dat){
 #' Create plot labels from variable names
 #'
 #' @param dat Data frame of Water Quality data with variables in long
-#'   format. Entries in \code{variable} column must be
-#'   \code{dissolved_oxygen_percent_saturation},
-#'   \code{dissolved_oxygen_uncorrected_mg_per_l}, \code{salinity_psu},
-#'   \code{sensor_depth_measured_m}, or \code{temperature_degree_c}.
+#'   format.
 #'
 #' @return Returns \code{dat_long} with an addition column
 #'   \code{variable_label}. \code{variable_label}
@@ -163,6 +167,7 @@ ss_create_variable_labels <- function(dat) {
     "Dissolved Oxygen \n(% sat)",
     "Uncorrected \nDissolved Oxygen \n(mg / L)",
     "Dissolved Oxygen \n(mg / L)",
+    "pH",
     "Salinity \n(PSU)",
     "Chlorophyll Blue \n(\u03BCg/L)",
     "Chlorophyll Red \n(\u03BCg/L)",
@@ -184,6 +189,7 @@ ss_create_variable_labels <- function(dat) {
           "Uncorrected \nDissolved Oxygen \n(mg / L)",
         variable == "dissolved_oxygen_mg_per_l" ~
           "Dissolved Oxygen \n(mg / L)",
+        variable == "ph_ph" ~ "pH",
         variable == "salinity_psu" ~ "Salinity \n(PSU)",
         variable == "sensor_depth_measured_m" ~ "Sensor Depth \n(m)",
         variable == "temperature_degree_c" ~ "Temperature \n(\u00B0C)",
@@ -217,6 +223,7 @@ ss_create_variable_labels_no_newline <- function(dat) {
     "Dissolved Oxygen (% sat)",
     "Uncorrected\nDissolved Oxygen (mg / L)",
     "Dissolved Oxygen (mg / L)",
+    "pH",
     "Salinity (PSU)",
     "Chlorophyll Blue (\u03BCg / L)",
     "Chlorophyll Red (\u03BCg / L)",
@@ -236,6 +243,7 @@ ss_create_variable_labels_no_newline <- function(dat) {
           "Uncorrected\nDissolved Oxygen (mg / L)",
         variable == "dissolved_oxygen_mg_per_l" ~
           "Dissolved Oxygen (mg / L)",
+        variable == "ph_ph" ~ "pH",
         variable == "salinity_psu" ~ "Salinity (PSU)",
         variable == "sensor_depth_measured_m" ~ "Sensor Depth (m)",
         variable == "temperature_degree_c" ~ "Temperature (\u00B0C)",
