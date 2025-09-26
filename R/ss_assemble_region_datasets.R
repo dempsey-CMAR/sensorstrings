@@ -1,7 +1,7 @@
 #' Assemble region data
 #'
 #' @param prov Character string indicating which province the data to be
-#'   assembled is from. Options are "ns" (the default) and "nb". This dicates
+#'   assembled is from. Options are "ns" (the default) and "nb". This dictates
 #'   the file path for where the data will be exported on the CMAR R drive.
 #'
 #' @param folder Name of the folder where the rds files are saved.

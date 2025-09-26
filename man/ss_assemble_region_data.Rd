@@ -8,7 +8,7 @@ ss_assemble_region_data(prov = "ns", folder)
 }
 \arguments{
 \item{prov}{Character string indicating which province the data to be
-assembled is from. Options are "ns" (the default) and "nb". This dicates
+assembled is from. Options are "ns" (the default) and "nb". This dictates
 the file path for where the data will be exported on the CMAR R drive.}
 
 \item{folder}{Name of the folder where the rds files are saved.}
