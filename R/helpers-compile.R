@@ -200,20 +200,28 @@ check_n_rows <- function(dat, file_name, trimmed = TRUE) {
 #' @param dat Data frame with at least one column, \code{timestamp_} that has
 #'   datetimes as character values.
 #'
+#' @param parse_orders A character vector of date-time formats. If \code{NULL}
+#'   (the default), a vector of several year-month-day hour-minute-second and
+#'   day-month-year hour-minute-second orders are provided. The order must be
+#'   explicitly specified if the month is provided first. Passed to
+#'   \code{lubridate::paste_date_time()}.
+#'
 #' @details Converts the timestamp_ column to a POSIXct object. Every datetime
 #'   entry must be in the same order.
 #'
 #' @importFrom lubridate parse_date_time
 
-convert_timestamp_to_datetime <- function(dat) {
+convert_timestamp_to_datetime <- function(dat, parse_orders = NULL) {
   date_format <- dat$timestamp_[1] # first datetime value; use to check the format
 
-  parse_orders <- c(
-    "ymd IMS p", "Ymd IMS p",
-    "Ymd HM", "Ymd HMS",
-    "dmY HM", "dmY HMS",
-    "dmY IM p", "dmY IMS p", "Ymd"
-  )
+  if(is.null(parse_orders)) {
+    parse_orders <- c(
+      "ymd IMS p", "Ymd IMS p",
+      "Ymd HM", "Ymd HMS",
+      "dmY HM", "dmY HMS",
+      "dmY IM p", "dmY IMS p", "Ymd"
+    )
+  }
 
   check_date <- suppressWarnings(
     parse_date_time(date_format, orders = parse_orders)

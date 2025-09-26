@@ -1,14 +1,14 @@
 # ss_read_hobo_data -------------------------------------------------------
 
 test_that("ss_read_hobo_data() reads in correct classes", {
-  expect_equal(class(hobo_ph1$`Date-Time (UTC)`), "character")
+  expect_equal(class(hobo_ph1$`Date-Time (AST/ADT)`), "character")
   expect_equal(class(hobo_ph1$temperature), "numeric")
-  expect_equal(class(hobo_ph1$`pH   (pH)`), "numeric")
+  expect_equal(class(hobo_ph1$`pH (pH)`), "numeric")
 })
 
 
 test_that("ss_read_hobo_data() reads in all observations", {
-  expect_equal(nrow(hobo_ph1), 41)
+  expect_equal(nrow(hobo_ph1), 54)
 })
 
 # ss_compile_hobo_ph_data ----------------------------------------------------
@@ -25,20 +25,20 @@ test_that("ss_compile_hobo_ph_data() returns correct classes", {
 
 
 test_that("ss_compile_hobo_ph_data() reads in all observations", {
-  expect_equal(nrow(hobo_ph_all), 38)
-
+  expect_equal(nrow(hobo_ph_all), 51)
 })
+
 
 test_that("ss_compile_hobo_ph_data() returns error if file name does not match entries in sn_table", {
   expect_error(
     ss_compile_hobo_ph_data(
       path,
       sn_table = data.frame(
-        sensor = "hobo_ph",
+        sensor = "hobo ph",
         serial = 1234,
         depth = 2
       ),
-      deployment_dates = deployment_dates
+      deployment_dates = deployment_dates_ph
     )
   )
 })

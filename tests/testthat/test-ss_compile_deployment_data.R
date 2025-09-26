@@ -21,6 +21,6 @@ test_that("ss_compile_deployment_data() reads in all observations", {
   )
   expect_equal(
     nrow(depl_trim),
-    sum(nrow(am_trim), nrow(hobo_trim), nrow(hobo_ph_trim), nrow(vem_trim))
+    sum(nrow(am_trim), nrow(hobo_trim), nrow(vem_trim)) # don't include hobo_ph because dates are different
   )
 })

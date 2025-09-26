@@ -44,7 +44,7 @@ Compile and format data from hobo pH sensors (MX2501)
 \details{
 Exported data must be saved in a folder named hobo_ph in csv format.
 
-  All of the csv files in the hobo_p h folder will be compiled.
+  All of the csv files in the hobo_ph folder will be compiled.
 
   The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
   HM", "Ymd HMS", "dmY HM", or "dmY HMS".

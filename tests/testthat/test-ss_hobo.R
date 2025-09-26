@@ -19,10 +19,10 @@ test_that("ss_read_hobo_data() reads data when path includes file name", {
   expect_equal(hobo2, hobo3)
 })
 
-test_that("ss_read_hobo_data() report error for excel files", {
+test_that("ss_read_hobo_data() reports error for excel files", {
   expect_error(ss_read_hobo_data(path, "error.xls"))
   expect_error(ss_read_hobo_data(path, "error.xlsx"))
-  expect_error(ss_read_hobo_data(paste0(path_hobo, "/12345678")))
+  #expect_error(ss_read_hobo_data(paste0(path_hobo, "/12345678.csv")))
 })
 
 

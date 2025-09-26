@@ -2,7 +2,7 @@
 #'
 #' @details Exported data must be saved in a folder named hobo_ph in csv format.
 #'
-#'   All of the csv files in the hobo_p h folder will be compiled.
+#'   All of the csv files in the hobo_ph folder will be compiled.
 #'
 #'   The timestamp columns must be in the order "ymd IMS p", "Ymd IMS p", "Ymd
 #'   HM", "Ymd HMS", "dmY HM", or "dmY HMS".
@@ -37,7 +37,7 @@
 #'
 #' @importFrom dplyr %>% contains everything filter if_all mutate rename select
 #'   tibble
-#' @importFrom lubridate hours
+#' @importFrom lubridate force_tz with_tz
 #' @importFrom purrr map_df
 #' @importFrom stats na.omit
 #' @importFrom stringr regex str_extract str_remove
@@ -54,7 +54,7 @@ ss_compile_hobo_ph_data <- function(path,
     path = path,
     sn_table = sn_table,
     deployment_dates = deployment_dates,
-    sensor_make = "ph"
+    sensor_make = "hobo ph"
   )
 
   path <- setup$path
@@ -84,10 +84,11 @@ ss_compile_hobo_ph_data <- function(path,
     new_col_names <- make_column_names(hobo_units)
 
     # sn and timezone checks --------------------------------------------------
-    sn_i <- str_split(file_name, " |_",)[[1]][1]
+    sn_i <- as.numeric(str_split(file_name, " |_",)[[1]][1])
 
     tz_i <- filter(hobo_units, str_detect(variable, pattern = "Date"))
 
+    #browser()
     # is this file in the sn_table
     if (!(sn_i %in% sn_table$sensor_serial_number)) {
       stop(paste0("Serial number ", sn_i[1], " does not match any serial numbers in sn_table"))
@@ -97,7 +98,7 @@ ss_compile_hobo_ph_data <- function(path,
     if(isTRUE(tz_check)) {
       if (tz_i$units != "utc") {
         warning(paste0("The timezone of file ", file_name,
-                       " is not UTC.\nTimezone: ", tz_i$units))
+                       " will be converted from: ", tz_i$units, "to UTC"))
       }
     }
 
@@ -105,10 +106,20 @@ ss_compile_hobo_ph_data <- function(path,
     hobo_i <- hobo_i %>%
       select(contains("Date"), contains("pH"), contains("Temp")) %>%
       rename(timestamp_ = 1) %>%
-      mutate(timestamp_ = parse_date_time(timestamp_, orders = "mdy HMS")) %>%
-      convert_timestamp_to_datetime()
+      convert_timestamp_to_datetime(parse_orders = "mdY HMS")
 
     colnames(hobo_i) <- new_col_names$col_name
+
+    if(tz_i$units == "ast/adt") {
+      hobo_i <- hobo_i %>%
+        mutate(
+          timestamp_at = force_tz(`timestamp_ast/adt`, tzone = "America/Halifax"),
+          #is_dst = dst(timestamp_at),
+          timestamp_utc = with_tz(timestamp_at, tzone = "UTC")
+        ) %>%
+        select(timestamp_utc, ph_ph, temperature_degree_c)
+    }
+
 
     # add other useful columns and re-order ------------------------------------------------
 

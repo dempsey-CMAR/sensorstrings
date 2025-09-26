@@ -157,6 +157,11 @@ utils::globalVariables(
     "Deployment_Waterbody",
     "Lease#",
     "Logger_Latitude",
-    "Logger_Longitude"
+    "Logger_Longitude",
+
+    ## ss_hobo_ph
+    "ph_ph",
+    "timestamp_ast/adt",
+    "timestamp_at"
   )
 )

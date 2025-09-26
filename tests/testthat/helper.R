@@ -113,32 +113,33 @@ hobo_trim <- ss_compile_hobo_data(
 
 # Hobo pH -----------------------------------------------------------------
 
-path_hobo_ph <- system.file("testdata/hobo_ph", package = "sensorstrings")
+path_hobo_ph <- system.file("testdata", package = "sensorstrings")
 
-hobo_ph1 <- ss_read_hobo_data(path_hobo_ph, "22058696.csv") %>%
+hobo_ph1 <- ss_read_hobo_data(path_hobo_ph, "hobo_ph/22058687.csv") %>%
   # the degree symbol was causing a problem
   dplyr::rename(temperature = 3)
 
 
 # # ss_compile_hobo_data ----------------------------------------------------
+deployment_dates_ph <- data.frame(START = "2025-03-08", END = "2025-03-09")
 
 sn_hobo_ph <- data.frame(
   sensor_type = "hobo ph",
-  sensor_serial_number = 22058696,
+  sensor_serial_number = 22058687,
   depth = 1
 )
 
 hobo_ph_all <- ss_compile_hobo_ph_data(
-  path,
+  path_hobo_ph,
   sn_table = sn_hobo_ph,
-  deployment_dates = deployment_dates,
+  deployment_dates = deployment_dates_ph,
   trim = FALSE
 )
 
 hobo_ph_trim <- ss_compile_hobo_ph_data(
-  path,
+  path_hobo_ph,
   sn_table = sn_hobo_ph,
-  deployment_dates = deployment_dates,
+  deployment_dates = deployment_dates_ph,
   trim = TRUE
 )
 
@@ -196,7 +197,10 @@ vem_trim2 <- ss_compile_vemco_data(
 
 depl_all <- ss_compile_deployment_data(path, trim = FALSE)
 
-depl_trim <- ss_compile_deployment_data(path, trim = TRUE)
+# hobo ph sensors have a different time period to check time zone conversion
+depl_trim <- ss_compile_deployment_data(
+  path, trim = TRUE, ignore_sensors = 22058687
+)
 
 # helpers-compile ---------------------------------------------------------
 
@@ -243,7 +247,7 @@ hobo_units <- ss_read_hobo_data(
 
 hobo_ph_units <- ss_read_hobo_data(
   path = system.file("testdata/hobo_ph", package = "sensorstrings"),
-  file_name = "22058696.csv"
+  file_name = "22058687.csv"
 ) %>%
   extract_hobo_ph_units()
 
