@@ -4,11 +4,17 @@
 \alias{convert_timestamp_to_datetime}
 \title{Convert timestamp to datetime}
 \usage{
-convert_timestamp_to_datetime(dat)
+convert_timestamp_to_datetime(dat, parse_orders = NULL)
 }
 \arguments{
 \item{dat}{Data frame with at least one column, \code{timestamp_} that has
 datetimes as character values.}
+
+\item{parse_orders}{A character vector of date-time formats. If \code{NULL}
+(the default), a vector of several year-month-day hour-minute-second and
+day-month-year hour-minute-second orders are provided. The order must be
+explicitly specified if the month is provided first. Passed to
+\code{lubridate::paste_date_time()}.}
 }
 \description{
 Convert timestamp to datetime
