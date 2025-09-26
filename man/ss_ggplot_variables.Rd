@@ -15,7 +15,8 @@ ss_ggplot_variables(
   date_breaks_minor = NULL,
   date_labels_format = "\%Y-\%m-\%d",
   axis_label_newline = TRUE,
-  point_size = 0.25
+  point_size = 0.25,
+  convert_sn_to_factor = TRUE
 )
 }
 \arguments{
@@ -50,6 +51,13 @@ observations.}
 a new line.}
 
 \item{point_size}{Numeric value indicating size of points.}
+
+\item{convert_sn_to_factor}{Logical argument indicating whether to convert
+column \code{sensor_serial_number} to a factor. Only used when
+\code{color_col = "sensor_serial_number"}. Set to \code{FALSE} if making
+separate plots with some overlapping serial numbers. In this case, the
+\code{sensor_serial_number} should be converted to a factor before calling
+the plot function.}
 }
 \value{
 Returns a ggplot object of ocean variables plotted over time and

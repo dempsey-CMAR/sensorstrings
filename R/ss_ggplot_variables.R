@@ -26,6 +26,13 @@
 #'
 #' @param point_size Numeric value indicating size of points.
 #'
+#' @param convert_sn_to_factor Logical argument indicating whether to convert
+#'   column \code{sensor_serial_number} to a factor. Only used when
+#'   \code{color_col = "sensor_serial_number"}. Set to \code{FALSE} if making
+#'   separate plots with some overlapping serial numbers. In this case, the
+#'   \code{sensor_serial_number} should be converted to a factor before calling
+#'   the plot function.
+#'
 #' @return Returns a ggplot object of ocean variables plotted over time and
 #'   coloured by sensor depth.
 #'
@@ -51,7 +58,8 @@ ss_ggplot_variables <- function(
     date_breaks_minor = NULL,
     date_labels_format = "%Y-%m-%d",
     axis_label_newline = TRUE,
-    point_size = 0.25
+    point_size = 0.25,
+    convert_sn_to_factor = TRUE
     ) {
   theme_set(theme_light())
 
@@ -60,8 +68,11 @@ ss_ggplot_variables <- function(
   }
 
   if (color_col == "sensor_serial_number") {
-    dat <- dat %>%
-      mutate(sensor_serial_number = factor(sensor_serial_number))
+
+    if(isTRUE(convert_sn_to_factor)){
+      dat <- dat %>%
+        mutate(sensor_serial_number = factor(sensor_serial_number))
+    }
 
     n_sensor_sn <- length(unique(dat$sensor_serial_number))
 
@@ -150,7 +161,7 @@ ss_ggplot_variables <- function(
       )
     )
   ) +
-    geom_point(size = point_size) +
+    geom_point(size = point_size, show.legend = TRUE) +
     scale_colour +
     x_axis_date +
     facet_wrap(~variable_label, scales = "free_y", ncol = 1, strip.position = "left") +
